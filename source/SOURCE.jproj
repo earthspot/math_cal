@@ -1,4 +1,5 @@
 header.ijs
+help.ijs
 constants.ijs
 utilities.ijs
 handy4cal.ijs
@@ -26,6 +27,5 @@ recordplot.ijs
 newplot.ijs
 animate.ijs
 ttbrowse.ijs
-tabmath.ijs
 dashboard.ijs
 start.ijs

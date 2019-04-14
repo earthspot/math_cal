@@ -1,8 +1,8 @@
 NB. CAL test1.ijs - individual instructions basic test
 0 :0
-Sunday 27 January 2019  13:14:25
+Sunday 14 April 2019  01:36:16
 -
-open '~Gitcal/test/test.ijs'
+open '~Gitcal/test/test.ijs'  NB. the top-level of the test suite
 )
 
 cocurrent 'base'
@@ -10,6 +10,8 @@ cocurrent 'base'
 'PLS' default~ LF,~LF,60$'+'
 
 smoutput PLS,'+++ CAL test1.ijs - entered',PLS
+
+EXPECTED=: '<UNSET>'
 
 start_cal_ 1	NB. start with SAMPLE1: Church Clock
 
@@ -52,16 +54,7 @@ assert EXPECTED-: tt'TFIT'	[EXPECTED=: '~/documents/github/math_cal_new/SAMPLE1.
 assert EXPECTED-: tt'TFLU'	[EXPECTED=: 'untitled'
 assert EXPECTED-: tt'TNAM'	[EXPECTED=: 'SAMPLE1'
 assert EXPECTED-: tt'TNMX'	[EXPECTED=: 'SAMPLE1.ijs'
-assert EXPECTED-: tt'TPAR'	[EXPECTED=: jpath'~Archive'
-assert EXPECTED-: tt'TPCA'	[EXPECTED=: jpath'~CAL'
-assert EXPECTED-: tt'TPCL'	[EXPECTED=: logpath LOGNAME
-assert EXPECTED-: tt'TPSA'	[EXPECTED=: jpath'~Samples'
-assert EXPECTED-: tt'TPTA'	[EXPECTED=: jpath'~TAB'
-assert EXPECTED-: tt'TPTT'	[EXPECTED=: jpath'~Ttables'
-assert EXPECTED-: tt'TPUU'	[EXPECTED=: jpath'~UU'
-assert EXPECTED-: tt'TPUC'	[EXPECTED=: jpath'~UUC'
-assert EXPECTED-: tt'TPUF'	[EXPECTED=: jpath'~UUF'
-assert EXPECTED-: tt'TPUM'	[EXPECTED=: jpath'~UUM'
+assert EXPECTED-: tt'TPCA'	[EXPECTED=: TPCA_z_
 assert EXPECTED-: tt'UCMU 6'	[EXPECTED=: ,<,'V'
 assert EXPECTED-: tt'UCOM 6'	[EXPECTED=: ,<,'V'
 assert EXPECTED-: tt'UNIF Ang'	[EXPECTED=: 'Å'
@@ -74,9 +67,8 @@ assert EXPECTED-: tt'UNSU 5'	[EXPECTED=: 'A s'
 assert EXPECTED-: tt'UNIT 5'	[EXPECTED=: <'A h'
 assert EXPECTED-: tt'UNTU 5'	[EXPECTED=: 'A h'
 assert EXPECTED-: tt'VALF 3'	[EXPECTED=: '9.813'
-NB. assert EXPECTED-: tt'VALU 3'	[EXPECTED=: 9.812865328
-assert EXPECTED-: tt'VALU 3'	[EXPECTED=: 981287r100000
-assert EXPECTED-: tt'VERS'	[EXPECTED=: '2.0.0'
+assert EXPECTED-: ":float tt'VALU 3'	[EXPECTED=: '9.81287'
+assert EXPECTED-: tt'VERS'	[EXPECTED=: '2.1.00'
 
 NB. >>> lowercase instrs not started yet
 NB. suggest use new (small) t-table,

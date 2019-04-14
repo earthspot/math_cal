@@ -13,6 +13,7 @@ bh=:    ] }.~ [: >: ' ' i.~ ]	NB. behead y up to 1st SP
 boxvec=: [: dltb&.> <"1		NB. convert cmx-->boxed list
 brace=: 1 |. '}{' , ":
 brack=: 1 |. '][' , ":
+createDirIfAbsent=: [: 1!:5 ::0: <
 cmx=: [: > <;._2			NB. fwd-ref fixup
 cr=: [: 5!:5 boxopen
 crr=: > , '=: ' , cr
@@ -38,20 +39,22 @@ sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs	  NB. tbx: ext for t-tables (if it ever changes)
 thRootOf=: ] ^ [: % [  NB. x thRootOf y == y^1%x
 to=: [ + [: i. [: >: -~
+v=: 3 : 'y{vquan'  NB. use with: calco, e.g. :v 4
+f=: float&v
+vsi=: 3 : 'y{vsiqn'
+fsi=: float&vsi
 
 dyadic=: [: :
 monadic=: : [:
 
   NB. the 'op-colon' monadics
-  NB. >>> consider moving into: tabmath.ijs
 double=:	+: monadic
 twice=:	+: monadic
 halve=:	-: monadic
 square=:	*: monadic
 sq=:	*: monadic
-sqrt=:	%: monadic
+NB. sqrt=:	%: monadic  --suppressed in favor of UU
   NB. …more are needed, e.g. abs int roundup …
-  NB. sqr -has been supressed (in tabmath.ijs)
 
 	NB. Generate integer-suffixed id
 	NB. eg pq012 from: 'pq000' aann 12
@@ -62,7 +65,7 @@ n=. -+/x e. '0123456789'  NB. n<0 -to count from end
 (n}.x),n{.":100000000+y	  NB. re-fit suffix
 )
 
-breakback=: 3 : 0
+bbk=: breakback=: 3 : 0
   NB. show reference diagram of breakback work-vars
 cocurrent 'tabby' NB. to get a search-path including jgl2
 a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
@@ -157,11 +160,12 @@ or=:  +.		NB. own copy of tabz verb
 not=: -.		NB. own copy of tabz verb
 
   NB. Heritage to support old t-tables
-  NB. (calls to these verbs embedded in t-table script)
-sig=: 3 : 0
-SIG__uun=: y
-)
+  NB. (calls to these verbs may be embedded in t-table script)
+sig=: 3 : 'SIG__uun=: y'
+uunicode=: 3 : 'SIC__uun=: y'
 
-uunicode=: 3 : 0
-SIC__uun=: y
-)
+  NB. "boxed" variant of ct'' - for special t-table displays
+ctb=: 3 : '}.each ,.each vhold ; CH ; vquan ; (>UNITN) ; (>UNITS) ; TTn'
+
+cv_z_=: cv_cal_
+cx_z_=: cx_cal_

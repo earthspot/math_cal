@@ -2,23 +2,26 @@
 '==================== [cal] dashboard.ijs ===================='
 
 0 :0
-Friday 29 March 2019  13:02:02
+Monday 8 April 2019  12:14:16
 -
-sswInversion (set to empty by: start)
- …controls tracing in inversion* locales.
- These locales call: ssw (set on entry to: sswInversion_cal_)
- The verb: trace -plays no part in this independent tracing mechanism.
+WARNING: MSLOG can build up indefinitely.
 -
-wd 'psel dash; qform;'  NB. for adjusting POS below
+sswInversion is set to: empty by: start
+ …controls tracing in inver* locales, which call: ssw INSTEAD OF: msg
+ …ssw is set to: sswInversion_cal_ -on entry to: inversion_inver*_
+The verb: trace -plays no part in this separate tracing mechanism.
 -
-To show dashboard: dash 1
+To move the form: update DASHPOS below after running this phrase…
+ wd 'psel dash; qform;'
+To show dashboard:
+ dash 1
 )
 
 cocurrent 'cal'
 
-ckTraceTAB=: ckTraceINV=: ckTraceUU=: ckTrace=: ,'0'
-
 DASHPOS=: 810 647 321 483
+
+ckRAT=: ckTraceTAB=: ckTraceINV=: ckTraceUU=: ckTrace=: ,'0'
 
 DASH=: 0 : 0
 pc dash;pn "CAL dashboard";
@@ -29,6 +32,7 @@ cc inslog listbox;
 cc panel edit;
 
 bin hs;
+cc ckRAT checkbox; cn "RAT";
 cc ckTraceTAB checkbox; cn "trace TAB";
 cc ckTrace checkbox; cn "…CAL";
 cc ckTraceINV checkbox; cn "…INV";
@@ -56,10 +60,11 @@ pshow;
 )
 
 DASHINFO=: 0 : 0
- [VERSION=: (VERSION) [STARTED=: (STARTED) [DIRTY=:(DIRTY) 
+ [VERSION=: '(VERSION)' [STARTED=: (STARTED) [DIRTY=:(DIRTY) 
  [MAXINVERT=:(MAXINVERT) [OVERHELDS=: ,'(OVERHELDS)'
  [PAD=: (PAD) [PROTECT=: (PROTECT) [PLOT=:(PLOT)
  [TIMEOUT=: (TIMEOUT) [TOLERANCE=: (TOLERANCE)
+ [RATIONALIZED_z_=: (RATIONALIZED)
 )
 
 refresh=: 3 : 0
@@ -97,12 +102,7 @@ else.
 end.
 )
 
-dashDead=: 3 : 0
-  NB. =1 iff dashboard not showing
-try. wd 'psel dash'
-catch. 1 return. end.
-0 return.
-)
+dash_z_=: dash_cal_
 
 dashDead=: 3 : '{. ,wd :: 1: ''psel dash'''
 
@@ -112,15 +112,14 @@ dash_default=: 3 : 0
 smoutput '>>> missing handler: ',sysevent
 )
 
-dash_close=: 3 : 0
-wd :: empty 'psel dash; pclose;'
-)
+dash_close=: (wd :: empty) bind 'psel dash; pclose'
 
-line=: 3 : 'smoutput 50#UL'
+smline=: 3 : 'smoutput 50#UL'
 
 dash_bnRefresh_button=: refresh
-dash_panel_button=: 3 : 'refresh NIL [do panel-.LF'
+dash_panel_button=: 3 : 'refresh$0 [do panel-.LF'
 
+dash_ckRAT_button=:      3 : 'rationalize ".ckRAT'
 dash_ckTrace_button=:    3 : 'trace ".ckTrace'
 dash_ckTraceINV_button=: 3 : 'traceINV ".ckTraceINV'
 dash_ckTraceTAB_button=: 3 : 'trace_tabby_ ".ckTraceTAB'
@@ -130,42 +129,42 @@ dash_bnsmx_button=: smclear
 
 dash_bnVEX_button=: 3 : 0
   NB. handler: reveal the latest VEX_tabby_
-line''
+smline''
 smoutput sw '+++ VEX is:'
 smoutput VEX_tabby_
-line''
+smline''
 )
 
 dash_bnCTBU_button=: 3 : 0
   NB. handler: reveal the current CTBU display
-line''
+smline''
 smoutput sw '+++ CTBU is:'
 smoutput tabengine 'CTBU'  NB. why not: ct'' ??
-line''
+smline''
 )
 
 dash_bnINV_button=: 3 : 0
   NB. handler: reveal INVERSION
-line''
+smline''
 smoutput sw '+++ INVERSION is:'
 smoutput INVERSION
-line''
+smline''
 )
 
 dash_bninv_button=: 3 : 0
   NB. handler: reveal INVERSION
-line''
+smline''
 smoutput sw '+++ inversion is:'
 smoutput 5!:5 <'inversion'
-line''
+smline''
 )
 
 dash_bnRETURNED_button=: 3 : 0
   NB. handler: reveal the RETURNED cache
-line''
+smline''
 smoutput sw '+++ RETURNED is (datatype RETURNED)[($RETURNED)]:'
 smoutput RETURNED
-line''
+smline''
 )
 
 putsb=: 3 : 0
@@ -173,6 +172,7 @@ putsb=: 3 : 0
 wd 'psel dash; set sbar text *',":,y
 )
 
+0 :0
 trace=: 3 : 0
   NB. enable/disable tracing verbs: msg, sllog
   NB. y== boolean
@@ -183,7 +183,7 @@ else.
   msg=: empty
   sllog=: empty
 end.
-smoutput '+++ trace ',":y
+NB. smoutput '+++ trace ',":y
 i.0 0
 )
 

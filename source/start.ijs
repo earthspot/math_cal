@@ -1,31 +1,31 @@
 	NB. cal - start.ijs
 '==================== [cal] start.ijs ===================='
 
-0 :0
-WARNING: MSLOG can build up indefinitely.
-)
-
 cocurrent 'cal'
 
-VERSION=: '2.0.0'
-dash_z_=: dash_cal_
+VERSION=: '0.0.0'  NB. overridden by: manifest.ijs
 
-
+0 :0
++++ CHOICE OF INVERSION HEURISTICS
+inversionA=: beginstop ::inversion_inverNRUC_ ::endstop  NB. TAY expt
+inversionB=: beginstop ::inversion_inverTAY_ ::endstop  NB. TAY expt
+	NB. use temp 41 to switch inversion between inversionA/B
+-
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
 inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
+-
 inversion0=: beginstop ::inverCser ::endstop    NB. debug inverCser
 inversion1=: beginstop ::inverNRser ::endstop   NB. debug inverNRser
 inversion2=: beginstop ::inverNRRser ::endstop  NB. debug N-R
 inversion3=: beginstop ::inverCser ::inverNRser ::endstop  NB. operational use
-
-inversionA=: beginstop ::inversion_inverNRUC_ ::endstop  NB. TAY expt
-inversionB=: beginstop ::inversion_inverTAY_ ::endstop  NB. TAY expt
-
-inversion=: inversion3  NB. the best option to-date
-	NB. use temp 41 to switch inversion between inversionA/B
+)
+inversion3=: beginstop ::inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRFC_ ::inversion_inverNRUC_ ::endstop  NB. operational use
 
 NB. ========================================================
+inversion=: inversion3  NB. the best option to-date
+NB. ========================================================
+
 start=: 3 : 0
   NB. start the CAL-engine
   NB. start 0 -- starts with SAMPLE0
@@ -36,37 +36,35 @@ start=: 3 : 0
   NB. start path -- starts with t-table: (path)
 trace 0
 sswInversion=: empty  NB. >>>>> DISABLE inversion heuristics tracing
-  NB. switches ALL calls to ssw within the set of _inver*_ locales
-load 'math/uu'
-uuconnect''  NB. create and use an instance of class 'uu'
-NB. make_tabengineCore''  NB. the core of: tabengine0 [OBSOLETE]
-make_CAL''  NB. create semantic fns for tabengine
+NB. …switches ALL calls to: ssw within the set of _inver*_ locales
+  NB. Create the TP*_z_ nouns (the JAL addon lacks tpathdev)
+try.	load (pathof CREATOR) sl 'tpathdev.ijs'
+catch.	load (pathof CREATOR) sl 'tpathjal.ijs'
+end.
+load TPMC sl 'manifest.ijs'  NB. to get VERSION
+  NB. erase unwanted globals loaded by manifest
+erase'CAPTION FILES DESCRIPTION RELEASE FOLDER LABCATEGORY PLATFORMS'
+  NB. load class UU
+load TPUU sl 'uu.ijs'
+uun=: uuconnect''  NB. create instance of class UU
+make_CAL'' NB. create semantic fns for tabengine
 globmake'' NB. make global nouns
 progress _ NB. init progressbar to idle state
 0 enlog 0  NB. start a new log file
-  NB. ENSURE up-to-date currency conversion table ...
-NB. load :: 0: jpath'~CAL/exch.ijs' --no such file anymore
-NB. try. start_exch_'' catch. end.
+createDirIfAbsent TPTT  NB. establish user's t-table library
+createDirIfAbsent TPAR  NB. establish user's t-table archive
+  NB. load a starting t-table (picked by y)
 select. y
 case. '' do. ttnew''  NB. new empty t-table
 case. 0 do. ttload 0
-NB. similar cases handled by (case. do.) below…
-NB. case. 1 do. ttload 1
-NB. case. 2 do. ttload 2
-NB. case. 3 do. ttload 3
-NB. case. 4 do. ttload 4
-NB. case. 5 do. ttload 5
-NB. case. 6 do. ttload 6
-NB. case. 7 do. ttload 7
-NB. case. 8 do. ttload 8
-NB. case. 9 do. ttload 9
+  NB. similar cases 1 to 9 handled by (case. do.) below…
 case. '$' do. ttload'$'  NB. load SAMPLE, builtin only
 case. '$$' do. ttload'$$'  NB. load SAMPLE, builtin or saved
 case.   do. ttload y [smoutput '+++ start: loaded by default: ',":y
 end.
-vchecks''  NB. check integrity of v-buffers
-onload_z_=: do  NB. to leave it nice for the J IDE
-STARTED=: 1  NB. registers successful completion of: start
+vchecks''		NB. check integrity of v-buffers
+onload_z_=: do	NB. leave it nice for the J IDE
+STARTED=: 1	NB. registers successful completion of: start
 )
 
 tt_z_=: tabengine_cal_
@@ -85,13 +83,13 @@ uun=: '' conew 'uu'
 uuengine		=: uuengine__uun
 uniform		=: uniform__uun
 kosher		=: (0&uniform)"1	NB. to convert units to ASCII
-i.0 0
+uun return.
 )
 
 globmake=: 3 : 0
   NB. Init global nouns
-  NB. These may change in-session
-  NB. If _cal_ used as a class these must be in numbered locale
+  NB. These are NOT "constants" - they may change in-session
+  NB. If _cal_ used as a class these will be in the numbered locale
 file=: tbx UNDEF
 ARROWCH=: ARROWCH1	NB. arrow-drawing chars (see consts.ijs)
 DASHBOARD=: 0	NB. 1==dashboard enabled
@@ -142,7 +140,7 @@ else.
 end.
 )
 
-
 NB. ======================================================
-NB. OPERATIONALLY: CAL MUST NOT SELF-START!
+NB. OPERATIONALLY: CAL MUST NOT START-ON-LOAD.
+NB. TABULA STARTS IT WITH AN EXPLICIT CALL: start
 NB. ======================================================

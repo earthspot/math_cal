@@ -1,23 +1,29 @@
+badged'~home/documents/github/math_cal_new/cal.ijs'
 0 :0
-Friday 29 March 2019  13:56:26
+Sunday 14 April 2019  04:20:09
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
 )
 
-clear 'cal'
 coclass 'cal'
+
+CREATOR=: ;(4!:4<'zx'){4!:3''[zx=.''
 onload_z_=: empty
+RATIONALIZED_z_=: 1
+smoutputINV_z_=: empty
 
-AABUILT=: '2019-03-29  13:57:38'
-AABUILT=: '2019-03-29  14:34:30'
-AABUILT=: '2019-03-29  14:47:42'
-AABUILT=: '2019-03-29  14:55:47'
-AABUILT=: '2019-03-30  19:54:25'
-AABUILT=: '2019-03-30  20:15:13'
-AABUILT=: '2019-03-30  20:39:29'
+AABUILT=: '2019-04-14  04:38:18'
+AABUILT=: '2019-04-14  04:42:26'
 
-'==================== [cal] constants.ijs ===================='
+'==================== [cal] help.ijs ===================='
+0 :0
+Sunday 14 April 2019  03:13:26
+-
+When Help > Help for CAL is selected,
+the CAL instruction set is appended to noun: HELP below
+)
+
 cocurrent 'cal'
 
 ABOUT=: 0 : 0
@@ -25,26 +31,38 @@ CAL: scientific calculator engine
 -serves multiple TABULA implementations.
 )
 
+
 HELP=: 0 : 0
 ============
 HELP for CAL
 ============
-dash 1
-…show the CAL dashboard
 
-cv''
-…show the v-caches
+++ Type into the "calco" input field…
 
-cx''
-…check for any complex nouns in _cal_
+;ABOUT		…view description of TABULA calculator
+:ABOUT		…view description of CAL engine
+,ABOUT		…view description of UU units converter
+:dash 1		…show the CAL dashboard
+\VALU 12		…see {12} value
+$valu 12 0	…set {12} to 0
 
-tt'CTBU'
-…show current t-table
+++ Type into the Term Window…
 
-=======================================================================
+dash 1		…show the CAL dashboard
+cv''		…show the v-caches
+cx''		…check for any complex nouns in _cal_
+tt''		…show current t-table
+v 12		…see {12} value
+tt'valu 12 0'	…set {12} to 0
+
+====================
 CAL instruction set…
-=======================================================================
+====================
 )
+
+'==================== [cal] constants.ijs ===================='
+cocurrent 'cal'
+
 AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 az=: tolower AZ
 n9=: '0123456789'
@@ -62,7 +80,7 @@ HOLD=: '='
 LOGNAME=: 'cal_log.txt'
 LP=: '(' [ RP=: ')'
 NB=: 'NB','.'
-PLOTNAME_z_=: jpath'~tempuu/latestplot.pdf'
+QT=: ''''
 SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'
@@ -89,6 +107,7 @@ bh=:    ] }.~ [: >: ' ' i.~ ]
 boxvec=: [: dltb&.> <"1
 brace=: 1 |. '}{' , ":
 brack=: 1 |. '][' , ":
+createDirIfAbsent=: [: 1!:5 ::0: <
 cmx=: [: > <;._2
 cr=: [: 5!:5 boxopen
 crr=: > , '=: ' , cr
@@ -114,10 +133,13 @@ sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs
 thRootOf=: ] ^ [: % [
 to=: [ + [: i. [: >: -~
+v=: 3 : 'y{vquan'
+f=: float&v
+vsi=: 3 : 'y{vsiqn'
+fsi=: float&vsi
 
 dyadic=: [: :
 monadic=: : [:
-
 
 
 double=:	+: monadic
@@ -125,8 +147,6 @@ twice=:	+: monadic
 halve=:	-: monadic
 square=:	*: monadic
 sq=:	*: monadic
-sqrt=:	%: monadic
-
 
 
 
@@ -138,7 +158,7 @@ n=. -+/x e. '0123456789'
 (n}.x),n{.":100000000+y
 )
 
-breakback=: 3 : 0
+bbk=: breakback=: 3 : 0
 
 cocurrent 'tabby'
 a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
@@ -227,13 +247,114 @@ not=: -.
 
 
 
-sig=: 3 : 0
-SIG__uun=: y
+sig=: 3 : 'SIG__uun=: y'
+uunicode=: 3 : 'SIC__uun=: y'
+
+
+ctb=: 3 : '}.each ,.each vhold ; CH ; vquan ; (>UNITN) ; (>UNITS) ; TTn'
+
+cv_z_=: cv_cal_
+cx_z_=: cx_cal_
+
+'==================== [cal] handy4cal.ijs ===================='
+cocurrent 'z'
+
+append=: [ 1!:3 [: < ]
+az=: 'abcdefghijklmnopqrstuvwxyz'
+begins=: beginsWith=: [ (] -: [ {.~ [: # ]) [: , ]
+
+countdown=: 3 : 0
+
+
+
+
+
+if. y-:'?' do.
+  COUNTDOWN_z_
+elseif. 0=#y do.
+  if. 0=COUNTDOWN_z_ do. 'countdown over'(13!:8)199 end.
+  COUNTDOWN_z_=: COUNTDOWN_z_-1
+elseif. do.
+  assert. 0< <.y
+  COUNTDOWN_z_=: <.y
+end.
 )
 
-uunicode=: 3 : 0
-SIC__uun=: y
+crex=: 0&$: :(4 : 0)
+
+
+
+if. 0 e. $y do. 5!:6 <'y' return. end.
+z=. y rplc QT ; QT,QT
+z=. q1 z rplc CRLF ; (q1',CRLF,') ; CR ; (q1',CR,') ; LF ; (q1',LF,') ; TAB ; (q1',TAB,')
+for_c. ~. y -. 32}. 127{. a. do.
+  z=. z rplc c ; q1 CM, CM,~ paren (":a. i. c),'{a.'
+end.
+z=. z rplc (CM,QT,QT,CM) ; CM
+if. (3{.z)-:QT,QT,CM do. z=. 3}.z end.
+if. (_3{.z)-:CM,QT,QT do. z=. _3}.z end.
+if. ($y)-:(,1) do. z=. CM,z end.
+try. assert y -: ".z
+catch.
+  if. x do.
+    smoutput '>>> crex: BAD lit repn: z --'
+    smoutput z
+    smoutput '>>> crex: --using instead: 5!:6 <''y'''
+  end.
+  5!:6 <'y' return.
+end.
+z
 )
+
+
+
+
+s=. 3 3 2$1 0 0 0 0 0 2 1 2 1 2 1 2 0 0 3 2 0
+m=. < '(' ; ')'
+smresolve=: ((0;s;m) ;: ucp)"1
+sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
+ssw=: smoutput&sw
+
+
+s=. 6 3 2$0 0 0 0 1 1 2 3 2 3 1 0 2 0 2 0 3 1 4 3 4 3 3 0 4 0 4 0 5 1 0 3 5 0 5 0
+m=. < LF ; NUL,SP,TAB
+smcut3utf=: (0;s;m)&(;:"1)
+smcut3ucp=: ((0;s;m) ;: ucp)"1
+smcut3=: smcut3ucp
+
+date=: 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)
+ddefine=: 1 : 'm&$: : (4 : 0)'
+dec=: 16 #. 16 | '0123456789ABCDEF0123456789abcdef' i. ]
+errno=: 13!:11
+isEmpty=: 0 = [: */ $
+isLit=: 2 2048 e.~ 3!:0
+listnameswithprefix=: 0 1 2 3&$: :(] ((] -: ({.~ #))S:0 _ # [)~ a: , [ 4!:1~ [: {. ])
+llog=: (1 { ":)@(,@([: ] ;: ,. [: ".&.> ;:))
+log=: [: ": ;: ,. [: ".&.> ;:
+nouns=: 3 : 'z ,. (datatype each v) ,. v=.".each z=.nl 0'
+np=: [: <: 2 * -.
+pathof=: ] {.~ [: >: '/' i:~ ]
+pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
+read=: [: 1!:1 <
+
+sl=: 4 : 0
+
+
+SL=. '/'
+if. SL={:x do. x=. }:x end.
+if. SL={.y do. x=. }.y end.
+x,SL,y
+)
+
+st=: [: 1!:1 [: < tmp
+sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
+temp=: lasttemp`tmp@.(*@#@])
+tmp=: [: jpath '~temp/' , ijs@":
+ts=: 6!:2 , 7!:2@]
+wide=: uucp
+write=: [ 1!:2 [: < ]
+x2b=: [: (#~ ([: +./\. ' '&~:))&.> <"1
+x2f=: }.@((<10{a.) ;@,. ])@([: (#~ ([: +./\. ' '&~:))&.> <"1)
 
 '==================== [cal] main.ijs ===================='
 cocurrent 'cal'
@@ -374,7 +495,8 @@ bcalc=: 3 : 0
 
 
 
-deltaz=. 'bcalc'ratit y{(vsiqn-vsiq0)
+deltaz=. 'bcalc'ratit (y{vsiqn)-(y{vsiq0)
+
 deltaz beval y
 
 
@@ -413,7 +535,11 @@ if. (0~:x)*.(hasf y) do.
 
 
 
-  r1=. r inversion deltaz
+  if. RATIONALIZED do.
+    r1=. r inversion deltaz
+  else.
+    r1=. ('beval'&ratit) (float r) inversion (float deltaz)
+  end.
 end.
   ssw '--- beval: heuristics used: ',,>INVERSION
 
@@ -689,7 +815,7 @@ enlog=: 0&$: : (4 : 0)
 
 
 
-fi=. <logpath LOGNAME
+fi=. <TPCL sl LOGNAME
 if. x do. empty fi 1!:3~ nounreturned y return. end.
 if. y-:0 do.
   empty fi 1!:2~ (": 6!:0''),' start ',LOGNAME,LF
@@ -1241,11 +1367,6 @@ ln=: ^.
 log10=: 10&^.
 log2=: 2&^.
 
-logpath=: 3 : 0
-
- jpath'~home/',y
-)
-
 mandhold=: _1&$: :(4 : 0)
 
 if. 1<#y do. for_i. y do. x mandhold i end. return. end.
@@ -1721,7 +1842,7 @@ ttappend=: 3 : 0
 sllog'ttappend y'
 invalexe''
 SWAPPED=: 0
-file1=: expandedPath y
+file1=. expandedPath y
 if. mt file1            do. 19 message '' return.
 elseif. -.fexist file1  do. 20 message file1 return.
 end.
@@ -2119,7 +2240,7 @@ else.
     34 message tag return.
   end.
 end.
-  ssw '(LF)+++ (tag): nZN=(nZN) nrestore=(nrestore)'
+  msg '(LF)+++ (tag): nZN=(nZN) nrestore=(nrestore)'
 nrestore snapshot''
 33 message tag; nrestore
 )
@@ -2226,6 +2347,7 @@ unbox=: nb^:(L. > 0:)
 tabengine=: 3 : 0 "1
 
 'INST YY'=: 4 split INSTR=: unbox y
+if. INST-:4#SP do. INST=: 'CTBU' end.
 LOGINSTR=: LOGINSTR,INSTR,LF
 if. -. INST-:'MSSG' do. ''message'' end.
 vchecks RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError) dltb YY
@@ -2254,28 +2376,27 @@ assert. isNum y
 assert. -. any isNaN y
 y return.
 )
+
 ttlib=: 3 : 0
-jpath tbx '~Ttables/',y
+jpath tbx TPTT sl y
 )
 
 ttsamps=: 3 : 0
-jpath tbx '~Samples/',y
+jpath tbx TPSA sl y
 )
 
 archive=: 3 : 0
 
 
-require'files'
-
 xtx=. tbx
-sce=. jpath sw'~Ttables/(y).ijs'
+sce=. ttlib y
 
 if. 0=#z=.freads sce do. _2 return. end.
 
 if. _1=z do. _3 return. end.
-1!:5 :: 0: <jpath '~Archive'
-1!:5 <fld=. (jpath'~Archive/'), 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
-tgt=. fld , SL , xtx y
+createDirIfAbsent TPAR
+createDirIfAbsent fld=. TPAR sl 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
+tgt=. fld sl xtx y
 tgt fcopynew sce
 )
 
@@ -2307,7 +2428,6 @@ else.
   msg=: empty
   sllog=: empty
 end.
-smoutput '+++ trace ',":y
 i.0 0
 )
 
@@ -2321,7 +2441,16 @@ if. y do.
 else.
   sswInversion=: empty
 end.
-smoutput '+++ traceINV ',":y
+i.0 0
+)
+
+rationalize=: 3 : 0
+
+if. y do.
+  RATIONALIZED_z_=: 1
+else.
+  RATIONALIZED_z_=: 0
+end.
 i.0 0
 )
 ratit=: ('tag' ddefine) "1 _ 1
@@ -2331,7 +2460,7 @@ ratit=: ('tag' ddefine) "1 _ 1
 if. 1 4 64 128 e.~ {.3!:0 y do. y
 else.
   msg '>>> ratit called in (x): converting: [(y)]'
-  rational__uun y
+  x:!.0 y
 end.
 )
 0 :0
@@ -2350,50 +2479,19 @@ smoutput expandedPath '$'
 )
 
 '==================== [cal] ct.ijs ===================='
-cocurrent 'cal'
-
-ct1=: 3 : 0
-
-
-
-if. 0=#y do. y=. ,3 end.
-
-if. NaNoun'CAPT' do. ,:40 message'' return. end.
-if. 1=#items'' do. ,:CAPT return. end.
-d=. ] ; $ ; datatype
-uc=. uucp"1
-d sp=. uc SP $~ 1,~#items''
-d st=. uc ST $~ 1,~#items''
-d vd=. uc SP $~ 0,~#items''
-d arrw=. unis=. fact=. star=. vd
-d lnos=. uc >brace each ":each items''
-d hold=. uc (HOLD fl vhold)
-d altd=. uc ('@'fl CH)
-	d quan=. uc UNITN nfx vquan
-d unin=. sp ,. > (uc&uniform) each UNITN
-if. 1 e. y do.
-  d unis=. sp ,. > (uc&uniform) each UNITS
-	  d fact=. uc 'j'nfx vfact
-  d star=. uc sp ,.st
-end.
-if. 3 e. y do.
-  d arrw=. uc arrowch arrowgen''
-  if. mt arrw do. arrw=. vd else. arrw=. arrw ,. sp end.
-
-end.
-d uttn=. sp ,.sp ,.uc TTn
-z=. 'arrw lnos hold altd quan unin unis star fact uttn'
-d z=. ". z rplc SP;',.'
-if. -. 4 e. y do. z=. }.z end.
-z=. z ,~ CAPT
-if. mt z do. z=. 1 1$SP end.
-z=. (-.vhidd) # z
+0 :0
+Thursday 4 April 2019  22:18:14
+-
+ct=="see t-table" -generates display layout for the t-table
 )
 
+cocurrent 'cal'
 
 
 
-ct2=: 3 : 0
+
+
+ct=: 3 : 0
 
 
 if. NaNoun'CAPT' do. ,:40 message'' return. end.
@@ -2438,11 +2536,9 @@ end.
 lin0 , z #~ force0 -.vhidd
 )
 
-ct=: ct2
-
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 0 :0
-Wednesday 7 November 2018  16:28:08
+Monday 8 April 2019  13:27:46
 -
 INVERSION TEST: use SAMPLE4
 -
@@ -2494,24 +2590,31 @@ inversion=: endstop
 
 beginstop=: 4 : 0
 
-ssw date''
-ssw '>>> beginstop: called with:(LF)   (x) inversion_cal_ (y)'
+ssw LF,'+++++ beginstop[(date$0)]: entered via:'
+ssw '  (x) inversion_cal_ (y)'
 assert. 0
 )
 
 endstop=: 4 : 0
 
-ssw '>>> endstop: called with:(LF)   (x) inversion_cal_ (y)'
+qAssertionFailure''
+ssw LF,'+++++ endstop[(date$0)]: entered via:'
+ssw '  (x) inversion_cal_ (y)'
 register 'endstop'
+
+
+
 x return.
 )
 
 qAssertionFailure=: 3 : 0
 
 if. 12= errno=. 13!:11'' do. i.0 0 return. end.
-loc=. >coname''
-smoutput sw '+++ qAssertionFailure_(loc)_: errno=(errno) WAS NOT assertion failure!'
-smoutput <13!:12''
+if. 3= errno=. 13!:11'' do. i.0 0 return. end.
+smoutput sw '+++ qAssertionFailure: errno=(errno) WAS NOT assertion failure!'
+smoutput '============================'
+smoutput 13!:12''
+smoutput '============================'
 )
 
 register=: 3 : 0
@@ -2520,6 +2623,7 @@ z [INVERSION_cal_=: INVERSION_cal_ , <z=. y
 )
 
 inversionC=: 4 : 0
+	smoutputINV '+++++ inversion_(>coname$0)_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 
@@ -2544,6 +2648,7 @@ ssw'... (me): Y0D=(Y0D) ~= fwdX1=(fwd X1) ??'
 assert. Y0D approximates_cal_ fwd X1
 ssw'--- (me): …yes, close enough. […Exits]'
 register me
+	smoutputINV '----- inversion_(>coname$0)_ returns X1'
 X1 return.
 )
 
@@ -2555,13 +2660,12 @@ approximates=: 4 : '(x=y) or (TOLERANCE >: |x-y)'
 
 '==================== [cal] inverC0.ijs ===================='
 0 :0
-Monday 22 October 2018  05:59:56
+Monday 8 April 2019  13:05:08
 -
 TEST WITH line {4} of SAMPLE 4 -- PI * X[1]
 )
 
-coclass z=.'inverC0'
-clear z
+coclass 'inverC0'
 
 inversion=: inversionC_cal_ f.
 
@@ -2581,8 +2685,7 @@ Monday 22 October 2018  05:26:53
 TEST WITH line {5,6} of SAMPLE 4
 )
 
-coclass z=.'inverC1'
-clear z
+coclass 'inverC1'
 
 inversion=: inversionC_cal_ f.
 
@@ -2599,8 +2702,7 @@ Monday 22 October 2018  18:03:32
 TEST WITH lines {7,8} of SAMPLE 4
 )
 
-coclass z=.'inverC2'
-clear z
+coclass 'inverC2'
 
 inversion=: inversionC_cal_ f.
 
@@ -2622,8 +2724,7 @@ Monday 22 October 2018  18:02:28
 TEST WITH line {9} of SAMPLE 4 -- X[1]^2
 )
 
-coclass z=.'inverC3'
-clear z
+coclass 'inverC3'
 
 inversion=: inversionC_cal_ f.
 
@@ -2641,8 +2742,7 @@ TEST WITH lines {10} of SAMPLE 4
 HOW ON EARTH does it manage line {13} also?
 )
 
-coclass z=.'inverC4'
-clear z
+coclass 'inverC4'
 
 inversion=: inversionC_cal_ f.
 
@@ -2660,8 +2760,7 @@ Monday 22 October 2018  18:36:29
 TEST WITH lines {11} of SAMPLE 4
 )
 
-coclass z=.'inverC5'
-clear z
+coclass 'inverC5'
 
 inversion=: inversionC_cal_ f.
 
@@ -2687,8 +2786,7 @@ BASED ON inverC5 with items in the reverse order.
 It would be redundant if beval recognised the need to reverse X0.
 )
 
-coclass z=.'inverC6'
-clear z
+coclass 'inverC6'
 
 inversion=: inversionC_cal_ f.
 
@@ -2711,8 +2809,7 @@ Wednesday 24 October 2018  01:40:54
 Based on inverC5, with - for %
 )
 
-coclass z=.'inverC7'
-clear z
+coclass 'inverC7'
 
 inversion=: inversionC_cal_ f.
 
@@ -2736,7 +2833,6 @@ Based on inverC6, with - for %
 )
 
 coclass z=.'inverC8'
-clear z
 
 inversion=: inversionC_cal_ f.
 
@@ -2759,8 +2855,7 @@ Monday 22 October 2018  17:42:07
 Expand this script to handle a new conjecture about (fwd X)
 )
 
-coclass z=.'inverC9'
-clear z
+coclass 'inverC9'
 
 inversion=: inversionC_cal_ f.
 
@@ -2792,6 +2887,7 @@ fwd=: empty
 register=: register_cal_ f.
 record=: empty
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverNRS_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 
@@ -2826,6 +2922,7 @@ ssw '--- (me): dX=(dX) d1X=(d1X)'
   2 record''
 X1=: X0+dX
 register me
+	smoutputINV '----- inversion_inverNRS_ returns X1'
 X1 return.
 )
 
@@ -2857,6 +2954,7 @@ register=: register_cal_ f.
 record=: record_cal_
 
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverNRFCR_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
@@ -2889,6 +2987,7 @@ ssw '--- (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd X1=: X0+dX
 assert. Y1 approximates_cal_ fwdX1
 register me
+	smoutputINV '----- inversion_inverNRFCR_ returns X1'
 X1 return.
 )
 
@@ -2911,13 +3010,13 @@ Wednesday 7 November 2018  17:18:23
 )
 
 coclass z=.'inverNRFC'
-clear z
-
 MAXLOOP=: 20
 fwd=: empty
 register=: register_cal_ f.
 
+
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverNRFC_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
@@ -2927,6 +3026,7 @@ amodel=: amodel_cal_
 ssw=: sswInversion_cal_ f.
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
+COUNT=: 0
 
 X0=: argLEFT
 Y0=: fwdX0=: fwd(X0)
@@ -2948,6 +3048,7 @@ ssw '--- (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd X1=: X0+dX
 assert. Y1 approximates_cal_ fwdX1
 register me
+	smoutputINV '----- inversion_inverNRFC_ returns X1'
 X1 return.
 )
 
@@ -2956,44 +3057,53 @@ g=: 3 : 0
 
 
 d_X=. y
+COUNT=: COUNT+1
 d_Y=. (fwd X0+d_X) -(fwd X0)
 d_X=. real amodel * d_X * dY0 % d_Y
-ssw '... g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
+wd'msgs' [ssw 'g[(COUNT)] y=[(y)] d_X=[(d_X)] d_Y=(float d_Y)'
 d_X return.
 
 )
 
 '==================== [cal] inverNR_C.ijs ===================='
 0 :0
-Friday 9 November 2018  17:55:42
+Monday 1 April 2019  16:27:06
+-
+rerun=: 3 : '2.5 40230 1 inversion_inverNRUC_ 7036300000000'
 )
 
 coclass z=.'inverNRUC'
-clear z
-
 TIMEOUT=: 5
+TOLERANCE=: 1e_5
 
 timeout=: 3 : 0
 
+
 if. 0<#y do. TIME=: y+ 6!:1'' return. end.
-assert. TIME > 6!:1''
+assert. TIMEOUT=: 0< TIME - 6!:1''
 )
 
 fwd=: empty
 
-register=: register_cal_ f.
-approximates=: approximates_cal_
 
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverNRUC_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
+INVERSIONx__=: x [INVERSIONy__=: y
 erase 'X Y X0 Y0 fwdX0 X1 Y0D dY dY0 dX d_X d1X d2X'
+register=: register_cal_ f.
+
+TOLERANCE=: TOLERANCE_cal_
 fwd=: fwd_cal_
 amodel=: amodel_cal_
 ssw=: sswInversion_cal_ f.
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
+ssw'>>> but you may find rerun__$0 more convenient! <<<'
+
+". sw'rerun__=: 3 : ''(argLEFT) (me) (argRIGHT)'''
 timeout TIMEOUT [COUNT=: 0
 
 X0=: argLEFT
@@ -3008,18 +3118,16 @@ G=: H=: __
 ssw '... argLEFT=X0=(X0) argRIGHT=dY0=(dY0) start g with d1X=(d1X)'
 dX=: (g^:_) :: vd_X d1X
 
-ssw '=====  ======= ======= =======  ====='
-ssw 'COUNT  y       d_X     d_Y      G  H'
-ssw '=====  ======= ======= =======  ====='
-ssw '... (me): dX=(dX) d1X=(d1X)'
+ssw '... (me): dX=[(dX)] d1X=[(d1X)]'
 fwdX1=: fwd X1=: X0+dX
-if. Y0D approximates_cal_ fwdX1 do.
-  ssw'--- yes… Y0D=(Y0D) approximates fwdX1=(fwdX1)'
+if. Y0D approximates fwdX1 do.
+  ssw'... yes… Y0D=(Y0D) approximates fwdX1=(fwdX1)'
 else.
-  ssw'--- no… Y0D=(Y0D) <==> fwdX1=(fwdX1) not close enough.'
+  ssw'>>> no… Y0D=(Y0D) <==> fwdX1=(float fwdX1) not close enough.'
   assert. 0
 end.
 register me
+	smoutputINV '----- inversion_inverNRUC_ returns X1'
 X1 return.
 )
 
@@ -3028,14 +3136,20 @@ vd_X=: 3 : 'd_X'
 g=: 3 : 0
 
 
-timeout'' [COUNT=: COUNT+1
 d_X=: y
-d_Y=. (fwd X0+d_X) - fwdX0
+timeout'' [COUNT=: COUNT+1
+d_Y=: (fwd X0+d_X) - fwdX0
 d_X=: real amodel * d_X * dY0 % d_Y
-wd'msgs' [ssw 'g[(COUNT)] (y) (d_X) (d_Y) (G)'
+wd'msgs' [ssw 'g[(COUNT)] y=[(y)] d_X=[(d_X)] d_Y=(float d_Y)'
 d_X return.
 
 )
+
+aa=: approximates=: 4 : 0
+APPROXIMATED=: (x=y) or TOLERANCE >: (|x-y) % (x max y)
+)
+
+onload 'rerun__$0'
 
 '==================== [cal] inverTAY.ijs ===================='
 0 :0
@@ -3062,7 +3176,9 @@ assert. TIME > 6!:1''
 fwd=: empty
 register=: register_cal_ f.
 
+
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverTAY_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
@@ -3090,9 +3206,6 @@ H=: % D2fwd X0
 ssw '... argLEFT=X0=(X0) argRIGHT=dY0=(dY0) G=(G); start g with d1X=(d1X)'
 dX=: (g^:_) :: vd_X d1X
 
-ssw '=====  ======= ======= =======  ======= ======='
-ssw 'COUNT  y       d_X     d_Y      G       H'
-ssw '=====  ======= ======= =======  ======= ======='
 ssw '... (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd(X1=: X0+dX)
 if. Y0D approximates_cal_ fwdX1 do.
@@ -3102,6 +3215,7 @@ else.
   assert. 0
 end.
 register me
+	smoutputINV '----- inversion_inverTAY_ returns X1'
 X1 return.
 )
 
@@ -3112,8 +3226,8 @@ avg=: +/ % #
 g=: 3 : 0
 
 
-timeout'' [COUNT=: COUNT+1
 d_X=: y
+timeout'' [COUNT=: COUNT+1
 d_Y=. (fwd X0+d_X) - fwdX0
 d_Xsemi=. d_X%2
 d_Ysemi=. (fwd X0+d_Xsemi) - fwdX0
@@ -3156,14 +3270,14 @@ d_X return.
 )
 
 '==================== [cal] CAL_interface.ijs ===================='
-0 :0
-Inic void start''                  \=(re-)start with clear tt
-Inif void start'$'                 \=(re-)start with factory SAMPLE tt
-Inis n    start n                  \=(re-)start with factory SAMPLEn tt
-Init void start'$$'                \=(re-)start with (saved) SAMPLE tt
-)
 
 cocurrent 'cal'
+
+CAL_SAVED=: }: 0 :0
+Sunday 14 April 2019  01:18:37
+)
+
+
 
 
 
@@ -3177,7 +3291,7 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '2019-03-26  03:01:30'   \noun: CAL last saved
+QSAV void CAL_SAVED                \noun: CAL last saved
 Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
 Revt void revert''                 \=revert all changes
@@ -3188,6 +3302,8 @@ ANCS r    ancestors r              \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
+CTBB void ctb''                    \t-table display: boxed raw data
+CTBN n    utf8 x2f ct n            \t-table display choice: utf-8
 CTBU void utf8 x2f ct''            \t-table display: utf-8
 DIRT void dirty''                  \flag: unsaved changes
 FMLA r    formula r                \formula of item r
@@ -3201,11 +3317,6 @@ MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
 PARS r    parents r                \parents of item r
 QCAL void CAL                      \the CAL instruction set
-QSCI void uuengine INSTR           \query scientific notation threshold
-QSIC void uuengine INSTR           \query SI conformance level
-QSIG void uuengine INSTR           \query significant figures
-QSIZ void uuengine INSTR           \query zero attraction
-QZER yy   uuengine INSTR           \query Boolean ZERO word
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
@@ -3217,33 +3328,17 @@ TFLU void UNDEF                    \t-table file name -undefined
 TNAM void filename file            \t-table file name-only
 TNMS void ttnames''                \t-table all its names
 TNMX void tbx filename file        \t-table file name.ext
-TPAR void jpath'~Archive'          \reference path to archive
-TPCA void jpath'~CAL'              \reference path to CAL addon
-TPCL void logpath LOGNAME          \reference path of callogfile
-TPSA void jpath'~Samples'          \reference path to SAMPLES
-TPTA void jpath'~TAB'              \reference path to TABULA
-TPTT void jpath'~Ttables'          \reference path to t-tables
-TPUU void jpath'~UU'               \reference path to UU addon
-TPUC void jpath'~UUC'              \reference path to constants
-TPUF void jpath'~UUF'              \reference path to functions
-TPUM void jpath'~UUM'              \reference path to macros
+TPCA void TPCA                     \reference path to CAL addon
+TPTT void TPTT                     \reference path to ttable library
 UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 UCOM r    docompatlist r           \item compat units (system)
-UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
 UNIS r    r{UNITS                  \SI units of item (system)
 UNSU r    uniform >r{UNITS         \SI units of item (SIC-mode)
 UNIT r    r{UNITN                  \units of item -nominal (system)
 UNTU r    uniform >r{UNITN         \units of item -nominal (SIC-mode)
-UUUU yy   uuengine INSTR           \call uu converter directly
 VALF r    getformattedvalue r      \value of item -formatted string
 VALU r    getvalue r               \value of item -numeric
-VERS void VERSION                  \version of engine
-VUUC yy   uuengine INSTR           \UUC (filtered by yy)
-VUUF yy   uuengine INSTR           \UUF (filtered by yy)
-VUUN yy   uuengine INSTR           \UUN (filtered by yy)
-WUUC yy   uuengine INSTR           \UUC (filtered by yy case-insens)
-WUUF yy   uuengine INSTR           \UUF (filtered by yy case-insens)
-WUUN yy   uuengine INSTR           \UUN (filtered by yy case-insens)
+VERS void VERSION                  \version of CAL engine
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
@@ -3379,11 +3474,6 @@ savo yy   ttsavo yy                \save as yy over existing
 savs void ttsavs ''                \save t-table COPY as SAMPLE
 savt void ttsavt ''                \save t-table from caption
 sign r    r setvalue~ *vr          \signum of item
-ssci n    uuengine INSTR           \set scientific notation threshold
-ssic n    uuengine INSTR           \set SI conformance level
-ssig n    uuengine INSTR           \set significant figures
-ssiz n    uuengine INSTR           \set zero attraction threshold
-szer n    uuengine INSTR           \set Boolean ZERO word
 sort rrr  1 ttsort rrr             \sort by perm
 sqrl r    r fnline~ 'sq'           \copy item squared
 sqrv r    r setvalue~ sq vr        \squared value of r
@@ -3429,6 +3519,43 @@ yott r    'Y' scaleunits r         \yotta- item
 zept r    'z' scaleunits r         \zepto- item
 zero r    0 setvalue r             \set item to 0
 zett r    'Z' scaleunits r         \zetta- item
+CPAT yy   uuengine INSTR           \are 2 units compatible?
+CPLI yy   uuengine INSTR           \list of compatible units
+CNVJ yy   uuengine INSTR           \cut a cunit
+CONV yy   uuengine INSTR           \convert units: yy
+CONS yy   uuengine INSTR           \cut "cons" formatted string
+DISP yy   uuengine INSTR           \displacement for units
+DUMB yy   uuengine INSTR           \cut "dumb" formatted string
+FUNC yy   uuengine INSTR           \cut "func" formatted string
+FMTI yy   uuengine INSTR           \format string-qty
+FMTO yy   uuengine INSTR           \format qty: arg as output string
+QRAT void uuengine INSTR           \query rational value saved by: uu
+QSCI void uuengine INSTR           \query scientific notation threshold
+QSIC void uuengine INSTR           \query SI conformance level
+QSIG void uuengine INSTR           \query significant figures
+QSIZ void uuengine INSTR           \query zero attraction threshold
+QZER void uuengine INSTR           \query Boolean ZERO word
+SCIN yy   uuengine INSTR           \numarg-->(string) scientific notation
+SELF yy   uuengine INSTR           \self-cancel units
+UCOD yy   uuengine INSTR           \convert special symbols-->"goy"
+UCOS yy   uuengine INSTR           \ditto UCOD (not currency)
+UNUC yy   uuengine INSTR           \un-convert "goy" symbols-->"kosher"
+UDIV yy   uuengine INSTR           \divide two units symbolically
+UNIF yy   uuengine INSTR           \convert symbs wrto SI-compliance
+UUUU yy   uuengine INSTR           \call uu converter directly
+VUUC yy   uuengine INSTR           \UUC (filtered by yy)
+VUUF yy   uuengine INSTR           \UUF (filtered by yy)
+VUUM void uuengine INSTR           \UUM (filtered by yy)
+WUUC yy   uuengine INSTR           \UUC (filtered by yy case-insens)
+WUUF yy   uuengine INSTR           \UUF (filtered by yy case-insens)
+WUUM void uuengine INSTR           \UUM (filtered by yy case-insens)
+fcty void uuengine INSTR           \restore UU factory settings
+ssci yy   uuengine INSTR           \set scientific notation threshold
+ssic yy   uuengine INSTR           \set SI-conformance level
+ssig yy   uuengine INSTR           \set significant figures
+ssiz yy   uuengine INSTR           \set zero attraction threshold
+strt void uuengine INSTR           \restart this instance of UU
+szer yy   uuengine INSTR           \set Boolean ZERO word
 )
 
 '==================== [cal] message.ijs ===================='
@@ -4018,7 +4145,7 @@ end.
 directory=: 3 : 0
 
 
-DIR=: 1!:0 jpath '~Ttables/*.ijs'
+DIR=: 1!:0 TPTT,'/*.ijs'
 )
 
 window_close=: 3 : 0
@@ -4093,7 +4220,7 @@ ttb_g_mark=: 3 : 0
 fno=: {.".g
 fname=: 0 pick fno{DIR
 smoutput fname
-path=: jpath '~Ttables/',fname
+path=: TPTT,SL,fname
 tagid=. tagpath path
 tag=. > tagid { ;:'notag red green'
 text=: info=: UNSET
@@ -4134,73 +4261,29 @@ wd 'psel ttb; set g sort 0 ',direction 0
 
 onload 'start 0'
 
-'==================== [cal] tabmath.ijs ===================='
-cocurrent 'z'
-
-sqr=: SUPPRESSED
-sqrt=: %:
-cube=: 3 ^~ ]
-
-
-PI=:	o.1
-PI2=:	o.2
-PI4=:	o.4
-PIb3=:	o.1r3
-PI4b3=:	o.4r3
-RT2=:	2^0.5
-RT3=:	3^0.5
-abs=: |
-avg=: +/ % #
-exp=: ^
-div=: %
-int=: [: <. ] + 0 > ]
-mod=: |~
-times=: *
-
-choice=: 4 : '((0>.1<.x)){y'
-sin=: 1&o."0
-cos=: 2&o."0
-tan=: 3&o."0
-
-sinh=: 5&o."0
-cosh=: 6&o."0
-tanh=: 7&o."0
-
-arcsin=: _1&o."0
-arccos=: _2&o."0
-arctan=: _3&o."0
-
-arcsinh=: _5&o."0
-arccosh=: _6&o."0
-arctanh=: _7&o."0
-
-pi=: 1p1
-
-dfr=: *&(180%pi)
-rfd=: *&(pi%180)
-BP=: 373.15
-FP=: 273.15
-
 '==================== [cal] dashboard.ijs ===================='
 
 0 :0
-Friday 29 March 2019  13:02:02
+Monday 8 April 2019  12:14:16
 -
-sswInversion (set to empty by: start)
- …controls tracing in inversion* locales.
- These locales call: ssw (set on entry to: sswInversion_cal_)
- The verb: trace -plays no part in this independent tracing mechanism.
+WARNING: MSLOG can build up indefinitely.
 -
-wd 'psel dash; qform;'
+sswInversion is set to: empty by: start
+ …controls tracing in inver* locales, which call: ssw INSTEAD OF: msg
+ …ssw is set to: sswInversion_cal_ -on entry to: inversion_inver*_
+The verb: trace -plays no part in this separate tracing mechanism.
 -
-To show dashboard: dash 1
+To move the form: update DASHPOS below after running this phrase…
+ wd 'psel dash; qform;'
+To show dashboard:
+ dash 1
 )
 
 cocurrent 'cal'
 
-ckTraceTAB=: ckTraceINV=: ckTraceUU=: ckTrace=: ,'0'
-
 DASHPOS=: 810 647 321 483
+
+ckRAT=: ckTraceTAB=: ckTraceINV=: ckTraceUU=: ckTrace=: ,'0'
 
 DASH=: 0 : 0
 pc dash;pn "CAL dashboard";
@@ -4211,6 +4294,7 @@ cc inslog listbox;
 cc panel edit;
 
 bin hs;
+cc ckRAT checkbox; cn "RAT";
 cc ckTraceTAB checkbox; cn "trace TAB";
 cc ckTrace checkbox; cn "…CAL";
 cc ckTraceINV checkbox; cn "…INV";
@@ -4238,10 +4322,11 @@ pshow;
 )
 
 DASHINFO=: 0 : 0
- [VERSION=: (VERSION) [STARTED=: (STARTED) [DIRTY=:(DIRTY) 
+ [VERSION=: '(VERSION)' [STARTED=: (STARTED) [DIRTY=:(DIRTY) 
  [MAXINVERT=:(MAXINVERT) [OVERHELDS=: ,'(OVERHELDS)'
  [PAD=: (PAD) [PROTECT=: (PROTECT) [PLOT=:(PLOT)
  [TIMEOUT=: (TIMEOUT) [TOLERANCE=: (TOLERANCE)
+ [RATIONALIZED_z_=: (RATIONALIZED)
 )
 
 refresh=: 3 : 0
@@ -4279,12 +4364,7 @@ else.
 end.
 )
 
-dashDead=: 3 : 0
-
-try. wd 'psel dash'
-catch. 1 return. end.
-0 return.
-)
+dash_z_=: dash_cal_
 
 dashDead=: 3 : '{. ,wd :: 1: ''psel dash'''
 
@@ -4294,15 +4374,14 @@ dash_default=: 3 : 0
 smoutput '>>> missing handler: ',sysevent
 )
 
-dash_close=: 3 : 0
-wd :: empty 'psel dash; pclose;'
-)
+dash_close=: (wd :: empty) bind 'psel dash; pclose'
 
-line=: 3 : 'smoutput 50#UL'
+smline=: 3 : 'smoutput 50#UL'
 
 dash_bnRefresh_button=: refresh
-dash_panel_button=: 3 : 'refresh NIL [do panel-.LF'
+dash_panel_button=: 3 : 'refresh$0 [do panel-.LF'
 
+dash_ckRAT_button=:      3 : 'rationalize ".ckRAT'
 dash_ckTrace_button=:    3 : 'trace ".ckTrace'
 dash_ckTraceINV_button=: 3 : 'traceINV ".ckTraceINV'
 dash_ckTraceTAB_button=: 3 : 'trace_tabby_ ".ckTraceTAB'
@@ -4312,42 +4391,42 @@ dash_bnsmx_button=: smclear
 
 dash_bnVEX_button=: 3 : 0
 
-line''
+smline''
 smoutput sw '+++ VEX is:'
 smoutput VEX_tabby_
-line''
+smline''
 )
 
 dash_bnCTBU_button=: 3 : 0
 
-line''
+smline''
 smoutput sw '+++ CTBU is:'
 smoutput tabengine 'CTBU'
-line''
+smline''
 )
 
 dash_bnINV_button=: 3 : 0
 
-line''
+smline''
 smoutput sw '+++ INVERSION is:'
 smoutput INVERSION
-line''
+smline''
 )
 
 dash_bninv_button=: 3 : 0
 
-line''
+smline''
 smoutput sw '+++ inversion is:'
 smoutput 5!:5 <'inversion'
-line''
+smline''
 )
 
 dash_bnRETURNED_button=: 3 : 0
 
-line''
+smline''
 smoutput sw '+++ RETURNED is (datatype RETURNED)[($RETURNED)]:'
 smoutput RETURNED
-line''
+smline''
 )
 
 putsb=: 3 : 0
@@ -4355,6 +4434,7 @@ putsb=: 3 : 0
 wd 'psel dash; set sbar text *',":,y
 )
 
+0 :0
 trace=: 3 : 0
 
 
@@ -4365,7 +4445,6 @@ else.
   msg=: empty
   sllog=: empty
 end.
-smoutput '+++ trace ',":y
 i.0 0
 )
 
@@ -4373,29 +4452,27 @@ onload 'dash _1'
 
 '==================== [cal] start.ijs ===================='
 
-0 :0
-WARNING: MSLOG can build up indefinitely.
-)
-
 cocurrent 'cal'
 
-VERSION=: '2.0.0'
-dash_z_=: dash_cal_
+VERSION=: '0.0.0'
 
+0 :0
++++ CHOICE OF INVERSION HEURISTICS
+inversionA=: beginstop ::inversion_inverNRUC_ ::endstop
+inversionB=: beginstop ::inversion_inverTAY_ ::endstop
 
+-
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
 inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
+-
 inversion0=: beginstop ::inverCser ::endstop
 inversion1=: beginstop ::inverNRser ::endstop
 inversion2=: beginstop ::inverNRRser ::endstop
 inversion3=: beginstop ::inverCser ::inverNRser ::endstop
-
-inversionA=: beginstop ::inversion_inverNRUC_ ::endstop
-inversionB=: beginstop ::inversion_inverTAY_ ::endstop
-
+)
+inversion3=: beginstop ::inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRFC_ ::inversion_inverNRUC_ ::endstop
 inversion=: inversion3
-
 start=: 3 : 0
 
 
@@ -4407,16 +4484,26 @@ start=: 3 : 0
 trace 0
 sswInversion=: empty
 
-load 'math/uu'
-uuconnect''
+try.	load (pathof CREATOR) sl 'tpathdev.ijs'
+catch.	load (pathof CREATOR) sl 'tpathjal.ijs'
+end.
+load TPMC sl 'manifest.ijs'
+
+erase'CAPTION FILES DESCRIPTION RELEASE FOLDER LABCATEGORY PLATFORMS'
+
+load TPUU sl 'uu.ijs'
+uun=: uuconnect''
 make_CAL''
 globmake''
 progress _
 0 enlog 0
+createDirIfAbsent TPTT
+createDirIfAbsent TPAR
 
 select. y
 case. '' do. ttnew''
 case. 0 do. ttload 0
+
 case. '$' do. ttload'$'
 case. '$$' do. ttload'$$'
 case.   do. ttload y [smoutput '+++ start: loaded by default: ',":y
@@ -4442,7 +4529,7 @@ uun=: '' conew 'uu'
 uuengine		=: uuengine__uun
 uniform		=: uniform__uun
 kosher		=: (0&uniform)"1
-i.0 0
+uun return.
 )
 
 globmake=: 3 : 0
@@ -4498,4 +4585,3 @@ else.
   pd_z_ y
 end.
 )
-

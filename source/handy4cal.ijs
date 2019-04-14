@@ -1,36 +1,10 @@
 	NB. handy4cal.ijs
+'==================== [cal] handy4cal.ijs ===================='
 cocurrent 'z'
 
-AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-CM=: ','
-CO=: ':'
-DT=: '.'
-NB=: 'NB.'
-QT=: ''''
-SC=: ';'
-SH=: '!'
-ST=: '*'
-UL=: '_'
-
-aann=: 'aa00'&$: :(4 : 0)
-	NB. Generate integer-suffixed id
-	NB. eg pq012 from: 'pq000' aann 12
-	NB. 0 can be replaced by 0-9
-	NB. x is any valid (str) id
-n=. -+/x e. '0123456789'  NB. n<0 -to count from end
-(n}.x),n{.":100000000+y	  NB. re-fit suffix
-)
-
-and=: *.
-andnot=: [ *. [: -. ]
-any=: +./
 append=: [ 1!:3 [: < ]
 az=: 'abcdefghijklmnopqrstuvwxyz'
-begins=: [ (] -: [ {.~ [: # ]) [: , ]
-beginsWith=: [ (] -: [ {.~ [: # ]) [: , ]
-brace=: 1 |. '}{' , ":
-brack=: 1 |. '][' , ":
-cmx=: [: > <;._2
+begins=: beginsWith=: [ (] -: [ {.~ [: # ]) [: , ]
 
 countdown=: 3 : 0
 	NB. Returns a countdown to control potential runaways.
@@ -48,8 +22,6 @@ elseif. do.
   COUNTDOWN_z_=: <.y
 end.
 )
-
-cr=: [: 5!:5 boxopen
 
 crex=: 0&$: :(4 : 0)
 	NB. printable lit repn of (string)noun y
@@ -81,133 +53,55 @@ end.
 z
 )
 
-crr=: > , '=: ' , cr
+  NB. Swift-style string substitution. Use like this:
+  NB. ssw '>> The result of (x) is (y) with FLAG=(FLAG)'
+  NB. sw returns a resolved string, ssw smoutputs a resolved message
+s=. 3 3 2$1 0 0 0 0 0 2 1 2 1 2 1 2 0 0 3 2 0
+m=. < '(' ; ')'
+smresolve=: ((0;s;m) ;: ucp)"1
+NB. smresolve=: (((<0),(<3 3 2$1 0 0 0 0 0 2 1 2 1 2 1 2 0 0 3 2 0),<'(';')') ;: ucp)"1
+NB. …as J delivers it back
+sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
+ssw=: smoutput&sw
+
+  NB. smcut3: cut into 3 cols at first TWO whitespace-sections
+s=. 6 3 2$0 0 0 0 1 1 2 3 2 3 1 0 2 0 2 0 3 1 4 3 4 3 3 0 4 0 4 0 5 1 0 3 5 0 5 0
+m=. < LF ; NUL,SP,TAB
+smcut3utf=: (0;s;m)&(;:"1)      NB. cuts utf-8 (byte) string
+smcut3ucp=: ((0;s;m) ;: ucp)"1  NB. cuts unicoded string
+smcut3=: smcut3ucp
+
 date=: 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)
 ddefine=: 1 : 'm&$: : (4 : 0)'
 dec=: 16 #. 16 | '0123456789ABCDEF0123456789abcdef' i. ]
-
-default=: 0&$: :(4 : 0)
-	NB. pronoun (y) created with value (x)
-	NB. UNLESS name (y) already in-use.
-	NB. NOT compatible with the "misc.ijs" version
-	NB. which has x<--> swapped.
-	NB. Permits MYVAR=: 99 default 'MYVAR'
-	NB. as well as:   99 default 'MYVAR'
-if. 0<: 4!:0 <y do. y~ return. end.
-(y)=:x
-)
-
-double=: +: :[:
-dtlf=: #~ ([: +./\. (10{a.)&~:)
-dyadic=: [: :
 errno=: 13!:11
-extx=: (0 < [: # ]) # ] , [ #~ [: -. '.' e. ]
-filename=: 3 : '''.'' taketo 1 pick fpathname y'
-
-from=: 4 : 0
-  NB. extract x from anytype list y
-z=. '<from:unset>'
-try.
-select. datatype y
-  case. 'literal'	do.
-	x=. {.x
-	if. 'literal'-:datatype x do.
-		z=. x lfrom ;:y
-	else.	z=. x { ;:y
-	end.
-  case. 'boxed'	do.
-	x=. {.x
-	if. 'literal'-:datatype x do.
-		z=. x lfrom y
-	else.	z=. x{ y
-	end.
- fcase. 'floating' do.
-  case. 'integer'	do.	z=. x { y
-  case.		do.	z=. x { y
-end.
-catch.
-  ''
-end.
->z
-)
-
-halve=: -: :[:
-ifdefined=: 0 <: [: 4!:0 <
-ii=: ] {. [: i. 10 #~ #
-ijs=: '.ijs'&extx
-isBool=: isBools *. isScalar
-isBools=: [: all 0 1 e.~ ]
-isBoxed=: 32 = 3!:0
 isEmpty=: 0 = [: */ $
-isFin=: isNum andnot isInf
-isInf=: _ e. |
-isLen2=: 2 = #
 isLit=: 2 2048 e.~ 3!:0
-isNo=: isNum *. isScalar
-isNum=: 1 4 8 64 128 e.~ 3!:0
-isScalar=: [: {. 0 = [: $ $
 listnameswithprefix=: 0 1 2 3&$: :(] ((] -: ({.~ #))S:0 _ # [)~ a: , [ 4!:1~ [: {. ])
 llog=: (1 { ":)@(,@([: ] ;: ,. [: ".&.> ;:))
 log=: [: ": ;: ,. [: ".&.> ;:
-max=: $:/ :>.
-monadic=:  :[:
-mt=: 0 e. $
-nb=: ([: }:@; (<' ') ,.~ ,.)@:(":&.>)
-not=: -.
 nouns=: 3 : 'z ,. (datatype each v) ,. v=.".each z=.nl 0'
 np=: [: <: 2 * -.
-nxt=: newtempscript_j_
-op=: 3 : 'opec ijs ''~proj/'',y'
-or=: +.
-ornot=: [ +. [: -. ]
-pad=: ([: - [) {. [: ": 100000000 + ]
-paren=: 1 |. ')(' , ":
+NB. op=: 3 : 'opec ijs ''~proj/'',y'
 pathof=: ] {.~ [: >: '/' i:~ ]
 pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
-
-q=: 3 : 0
-QQQ_z_=: y	NB. cr needs a global!
-QQ_z=. cr 'QQQ_z_'
-erase 'QQQ_z_'
-QQ_z
-)
-
-re=: 3 : 0
-  NB. reloads a test word declared in this script
-re_path=. '~/re.ijs'  NB. path of this script
-select. y
-case. 0     do. shell 'open ',re_path
-case. 1     do. load re_path
-end.
-)
-
 read=: [: 1!:1 <
-sllog=: smoutput@llog
-smcut3=: smcut3ucp
-sq=: *: :[:
-sqr=: %: :[:
-sqrt=: %: :[:
-square=: *: :[:
-ssw=: smoutput&sw
+
+sl=: 4 : 0
+  NB. RELIABLE path catenator
+  NB. IAC Thursday 30 August 2018  16:42:51
+SL=. '/'
+if. SL={:x do. x=. }:x end.
+if. SL={.y do. x=. }.y end.
+x,SL,y
+)
+
 st=: [: 1!:1 [: < tmp
 sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
 temp=: lasttemp`tmp@.(*@#@])
-
-timeout=: 3 : 0
-  NB. timeout'' ---force error when TIME exceeded.
-  NB. timeout 2 ---init TIME to 2 seconds ahead of now
-if. 0<#y do. TIME=: y+ 6!:1'' return. end.
-assert. TIME > 6!:1''
-)
-
 tmp=: [: jpath '~temp/' , ijs@":
-to=: [ + [: i. [: >: -~
 ts=: 6!:2 , 7!:2@]
-twice=: +: :[:
-txt=: '.txt'&extx
 wide=: uucp
 write=: [ 1!:2 [: < ]
 x2b=: [: (#~ ([: +./\. ' '&~:))&.> <"1
 x2f=: }.@((<10{a.) ;@,. ])@([: (#~ ([: +./\. ' '&~:))&.> <"1)
-
-startonload ''

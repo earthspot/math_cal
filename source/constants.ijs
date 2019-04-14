@@ -5,34 +5,6 @@ NB. (See: globmake in: start.ijs for those that do change)
 
 cocurrent 'cal'
 
-ABOUT=: 0 : 0
-CAL: scientific calculator engine
--serves multiple TABULA implementations.
-)
-
-HELP=: 0 : 0
-============
-HELP for CAL
-============
-dash 1
-…show the CAL dashboard
-
-cv''
-…show the v-caches
-
-cx''
-…check for any complex nouns in _cal_
-
-tt'CTBU'
-…show current t-table
-
-=======================================================================
-CAL instruction set…
-=======================================================================
-)
-
-NB. ----------------------------------------------------------
-
 AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 az=: tolower AZ
 n9=: '0123456789'
@@ -50,7 +22,7 @@ HOLD=: '='		NB. "hold" symbol displayed by ct
 LOGNAME=: 'cal_log.txt'
 LP=: '(' [ RP=: ')'	NB. used with: sw
 NB=: 'NB','.'
-PLOTNAME_z_=: jpath'~tempuu/latestplot.pdf'
+QT=: ''''
 SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'
