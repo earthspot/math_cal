@@ -6,6 +6,7 @@ CAPTION=: 'Scientific calculator engine'
 VERSION=: '2.1.00'
 
 DEPENDS=: 0 : 0
+graphics/plot
 math/uu
 )
 
