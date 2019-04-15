@@ -2,7 +2,6 @@
 '==================== [cal] handy4cal.ijs ===================='
 cocurrent 'z'
 
-SP=: ' '
 NUL=: 0{a.
 
 append=: [ 1!:3 [: < ]
