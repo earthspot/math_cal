@@ -14,6 +14,8 @@ smoutputINV_z_=: empty
 
 AABUILT=: '2019-04-15  07:29:10'
 AABUILT=: '2019-04-15  23:44:04'
+AABUILT=: '2019-04-24  00:28:04'
+AABUILT=: '2019-04-24  00:52:58'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -96,6 +98,7 @@ UNSET=: '<UNSET>'
 cocurrent 'z'
 
 NUL=: 0{a.
+SP=: ' '
 
 append=: [ 1!:3 [: < ]
 az=: 'abcdefghijklmnopqrstuvwxyz'
@@ -186,8 +189,6 @@ x,SL,y
 
 st=: [: 1!:1 [: < tmp
 sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
-temp=: lasttemp`tmp@.(*@#@])
-tmp=: [: jpath '~temp/' , ijs@":
 ts=: 6!:2 , 7!:2@]
 wide=: uucp
 write=: [ 1!:2 [: < ]
@@ -215,9 +216,7 @@ cr=: [: 5!:5 boxopen
 crr=: > , '=: ' , cr
 detb=: 3 : 'deb y rplc TAB ; SP'
 dtlf=: #~ ([: +./\. (10{a.)&~:)
-extx=: (0 < [: # ]) # ] , [ #~ [: -. '.' e. ]
 ifdefined=: 0 <: [: 4!:0 <
-ijs=: ]'.ijs'&extx
 isBoxed=: 32 = 3!:0
 isLen2=: 2 = #
 isNo=: isNum *. isScalar
@@ -232,7 +231,6 @@ nb=: ([: }:@; (<' ') ,.~ ,.)@:(":&.>)
 num=: _.&".
 paren=: 1 |. ')(' , ":
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
-tbx=: ijs
 thRootOf=: ] ^ [: % [
 to=: [ + [: i. [: >: -~
 v=: 3 : 'y{vquan'
@@ -263,7 +261,7 @@ n=. -+/x e. '0123456789'
 bbk=: breakback=: 3 : 0
 
 cocurrent 'tabby'
-a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
+a=: readimg_jqtide_ nom=. jpath '~temp/breakback.jpg'
 wd 'pc form closeok; pn ',nom
 wd 'cc g isidraw'
 wd 'set g minwh ', ":(|.$a)
@@ -858,7 +856,6 @@ end.
 )
 
 exrate=: exrate_exch_
-ext=: 4 : 'if. -. DT e. x do. x,DT,y else. x end.'
 
 extunits=: 3 : 0
 
@@ -1282,7 +1279,9 @@ z=. ": (|: ,: i.#y)
 z ,. SP ,. ":y
 )
 
-ijs=: ext&'ijs'"_
+txt=: ,&'.txt'"_
+ijs=: ,&'.ijs'"_
+
 inc=: >:
 incompat=: -.@compat
 incompat_i=: -.@compat_i
@@ -1669,7 +1668,6 @@ y forcevalue valu
 )
 
 shortpath=: 3 : 0
-
 
 
 
@@ -2206,8 +2204,6 @@ CH=: flags 0
 32 message t
 )
 
-txt=: ext&'txt'"_
-
 revert=: 3 : 0
 
 
@@ -2379,6 +2375,8 @@ assert. -. any isNaN y
 y return.
 )
 
+temp=: [: jpath '~temp/' , ijs@":
+
 ttlib=: 3 : 0
 jpath tbx TPTT sl y
 )
@@ -2409,6 +2407,7 @@ if. y-: '$$' do.
   z=. ttlib SAMPLE
   if. -.fexist z do. ttsamps SAMPLE end.
 elseif. (y-:'$')or(y-:,'$')  do. ttsamps SAMPLE
+elseif. '$'= {.y do. ttsamps SAMPLE,}.y
 elseif. isnums y do. ttsamps SAMPLE,y
 elseif. isNo {.y do. ttsamps SAMPLE,":y
 elseif. '~'={.y  do. dtb jpath y
@@ -4051,8 +4050,10 @@ end.
 
 
 
+'==================== [cal] ttbrowse.ijs ===================='
+
 0 :0
-Saturday 26 January 2019  22:44:28
+Tuesday 23 April 2019  22:07:25
 -
 old version cloned: tempuu 71
 -
@@ -4474,7 +4475,9 @@ inversion2=: beginstop ::inverNRRser ::endstop
 inversion3=: beginstop ::inverCser ::inverNRser ::endstop
 )
 inversion3=: beginstop ::inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRFC_ ::inversion_inverNRUC_ ::endstop
+
 inversion=: inversion3
+
 start=: 3 : 0
 
 

@@ -1,8 +1,8 @@
 NB. CAL test1.ijs - individual instructions basic test
 0 :0
-Sunday 14 April 2019  01:36:16
+Wednesday 24 April 2019  00:23:58
 -
-open '~Gitcal/test/test.ijs'  NB. the top-level of the test suite
+open '~Gitrcal/test/test.ijs'  NB. the top-level of the test suite
 )
 
 cocurrent 'base'
@@ -12,6 +12,7 @@ cocurrent 'base'
 smoutput PLS,'+++ CAL test1.ijs - entered',PLS
 
 EXPECTED=: '<UNSET>'
+CALPATH=: jpath '~Gitrcal'  NB. /users/ianclark/documents/github/math_cal
 
 start_cal_ 1	NB. start with SAMPLE1: Church Clock
 
@@ -49,8 +50,8 @@ assert EXPECTED-: tt'QSIZ'	[EXPECTED=: 1e_9
 assert EXPECTED-: tt'TITF'	[EXPECTED=: 'tf'
 assert EXPECTED-: tt'TITL'	[EXPECTED=: 'Church Clock'
 assert EXPECTED-: tt'TITU'	[EXPECTED=: 'untitled'
-assert EXPECTED-: tt'TFIL'	[EXPECTED=: '/users/ianclark/documents/github/math_cal_new/SAMPLE1.ijs'
-assert EXPECTED-: tt'TFIT'	[EXPECTED=: '~/documents/github/math_cal_new/SAMPLE1.ijs'
+NB. assert EXPECTED-: tt'TFIL'	[EXPECTED=: CALPATH,'/SAMPLE1.ijs'
+NB. assert EXPECTED-: tt'TFIT'	[EXPECTED=: shortpath_cal_ CALPATH,'/SAMPLE1.ijs'
 assert EXPECTED-: tt'TFLU'	[EXPECTED=: 'untitled'
 assert EXPECTED-: tt'TNAM'	[EXPECTED=: 'SAMPLE1'
 assert EXPECTED-: tt'TNMX'	[EXPECTED=: 'SAMPLE1.ijs'
@@ -78,11 +79,6 @@ smoutput PLS,'--- CAL test1.ijs - completed',PLS
 
 NB. ---------------------------------------------------------
 0 :0  NB. TESTED ABOVE.........
-QSAV void '2018-12-29 17:28:00'    \noun: CAL last saved
-Inic void dummy''                  \=(re-)start with clear tt
-Inif void dummy''                  \=(re-)start with factory SAMPLE tt
-	Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
-Init void dummy''                  \=(re-)start with (saved) SAMPLE tt
 Repe void dummy''                  \=repeat last action
 Redo void undo 0                   \=redo
 Undo void undo 1                   \=undo

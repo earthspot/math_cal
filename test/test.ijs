@@ -24,12 +24,14 @@ zz=: tabengine_cal_ 'CTBU'
 
 NB. ---------------------------------------------------------
 
-load '~Gitcal/test/test1.ijs'
+load '~Gitrcal/test/test1.ijs'
+load '~Gitrcal/test/test2.ijs'
 
 NB. ---------------------------------------------------------
 0 :0
 	Inspect these when analysing failures...
-open '~Gitcal/test/test1.ijs'
+open '~Gitrcal/test/test1.ijs'
+open '~Gitrcal/test/test2.ijs'
 )
 NB. ---------------------------------------------------------
 

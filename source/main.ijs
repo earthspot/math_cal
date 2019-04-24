@@ -294,7 +294,7 @@ combine=: 4 : 0
 invalplot''
 y=. ,y      NB. in case there's only 1 item
 fmla=. fixfmla ,|: x, ,:(#y){.az
-vn=. ''  NB. the fmla "ext", describing the participating vars
+vn=. ''  NB. the fmla "extension", describing the participating vars
 for_i. i.#y do.
   d=. i{y    NB. the i'th item#
   vn=.vn, ',', (i{az), paren unit=.>d{UNITN  NB. the NOMINAL units of item d
@@ -327,7 +327,7 @@ for_i. i.#y do.
   end.  NB. (select.)
 end.  NB. (for.)
 if. 1<$y do. fmla=. }.fmla end.  NB. eg to drop leading '+' from: +a+b+c
-fmla=. fmla, ': ', }.vn  NB. attach the fmla "ext".
+fmla=. fmla, ': ', }.vn  NB. attach the fmla "extension".
   NB. Now compose a descriptive label...
 if. 1=$y do. label=. x,brace y
 else. label=. (SP;x)stringreplace }. ;SP,each brace each y
@@ -513,7 +513,6 @@ end.
 )
 
 exrate=: exrate_exch_
-ext=: 4 : 'if. -. DT e. x do. x,DT,y else. x end.'
 
 extunits=: 3 : 0
   NB. boxed units of item#: y
@@ -952,7 +951,9 @@ z=. ": (|: ,: i.#y)
 z ,. SP ,. ":y
 )
 
-ijs=: ext&'ijs'"_
+txt=: ,&'.txt'"_
+ijs=: ,&'.ijs'"_
+
 inc=: >:
 incompat=: -.@compat
 incompat_i=: -.@compat_i
@@ -1353,7 +1354,6 @@ shortpath=: 3 : 0
   NB. short-path of: y (usually: file) for message output
   NB. e.g. '~/tabula-user/tt25.ijs'
   NB. expects SystemFolders_j_ sorted in descending length of path strings
-  NB. ...CURRENTLY SystemFolders_j_ is sorted by starter.payload.ijs
 for_s. (<'install') -.~ {."1 SystemFolders_j_ do. su=. >s
 su=. (-. su-:'home')#su
 y [np=. # p=.jpath t=.'~',su,'/'
@@ -1908,8 +1908,6 @@ CH=: flags 0
 32 message t
 )
 
-txt=: ext&'txt'"_
-
 revert=: 3 : 0
   NB. revert all changes
   NB. assume that ZN-cache (nxt 1) records the t-table as-loaded
@@ -2097,6 +2095,8 @@ assert. -. any isNaN y
 y return.
 )
 
+temp=: [: jpath '~temp/' , ijs@":
+
 ttlib=: 3 : 0
 jpath tbx TPTT sl y
 )
@@ -2127,6 +2127,7 @@ if. y-: '$$' do.
   z=. ttlib SAMPLE  NB. look in t-tables library first
   if. -.fexist z do. ttsamps SAMPLE end.  NB. then factory
 elseif. (y-:'$')or(y-:,'$')  do. ttsamps SAMPLE  NB. only factory
+elseif. '$'= {.y do. ttsamps SAMPLE,}.y
 elseif. isnums y do. ttsamps SAMPLE,y
 elseif. isNo {.y do. ttsamps SAMPLE,":y
 elseif. '~'={.y  do. dtb jpath y

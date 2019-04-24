@@ -3,6 +3,7 @@
 cocurrent 'z'
 
 NUL=: 0{a.
+SP=: ' '
 
 append=: [ 1!:3 [: < ]
 az=: 'abcdefghijklmnopqrstuvwxyz'
@@ -100,8 +101,6 @@ x,SL,y
 
 st=: [: 1!:1 [: < tmp
 sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
-temp=: lasttemp`tmp@.(*@#@])
-tmp=: [: jpath '~temp/' , ijs@":
 ts=: 6!:2 , 7!:2@]
 wide=: uucp
 write=: [ 1!:2 [: < ]

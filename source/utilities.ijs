@@ -19,9 +19,7 @@ cr=: [: 5!:5 boxopen
 crr=: > , '=: ' , cr
 detb=: 3 : 'deb y rplc TAB ; SP'	NB. c/f deb, but TAB-->SP
 dtlf=: #~ ([: +./\. (10{a.)&~:)   NB. delete trailing LF's
-extx=: (0 < [: # ]) # ] , [ #~ [: -. '.' e. ]
 ifdefined=: 0 <: [: 4!:0 <
-ijs=: ]'.ijs'&extx
 isBoxed=: 32 = 3!:0
 isLen2=: 2 = #
 isNo=: isNum *. isScalar
@@ -36,7 +34,6 @@ nb=: ([: }:@; (<' ') ,.~ ,.)@:(":&.>)
 num=: _.&".
 paren=: 1 |. ')(' , ":
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
-tbx=: ijs	  NB. tbx: ext for t-tables (if it ever changes)
 thRootOf=: ] ^ [: % [  NB. x thRootOf y == y^1%x
 to=: [ + [: i. [: >: -~
 v=: 3 : 'y{vquan'  NB. use with: calco, e.g. :v 4
@@ -68,7 +65,7 @@ n=. -+/x e. '0123456789'  NB. n<0 -to count from end
 bbk=: breakback=: 3 : 0
   NB. show reference diagram of breakback work-vars
 cocurrent 'tabby' NB. to get a search-path including jgl2
-a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
+a=: readimg_jqtide_ nom=. jpath '~temp/breakback.jpg'
 wd 'pc form closeok; pn ',nom
 wd 'cc g isidraw'
 wd 'set g minwh ', ":(|.$a)

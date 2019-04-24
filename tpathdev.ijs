@@ -1,7 +1,7 @@
 NB. tpathdev.ijs - defines symbolic paths for CAL
-NB. DEVELOPMENT (GitHub) VERSION
+NB. DEVELOPMENT (GitHub) VERSION  for Gitrcal !!!
 0 :0
-Saturday 13 April 2019  17:28:58
+Wednesday 24 April 2019  00:46:02
 )
 
 cocurrent 'z'
@@ -27,9 +27,9 @@ TPUT	TAB 	usertools.ijs
 TPUU	CAL  	uu.ijs
 )
 
-TPCA=: jpath'~Gitcal'                  NB. path to CAL build
-TPTA=: jpath'~Gittab'                  NB. path to TABULA build
-TPUU=: jpath'~Gituu'                   NB. path to UU build
+TPCA=: jpath'~Gitrcal'                  NB. path to CAL build
+TPTA=: jpath'~Gitrtab'                  NB. path to TABULA build
+TPUU=: jpath'~Gitruu'                   NB. path to UU build
 TPMT=: TPTA				NB. manifest in TABULA
 TPAT=: TPTA				NB. patch.ijs
 TPUT=: TPTA				NB. usertools.ijs

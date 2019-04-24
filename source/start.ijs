@@ -22,9 +22,7 @@ inversion3=: beginstop ::inverCser ::inverNRser ::endstop  NB. operational use
 )
 inversion3=: beginstop ::inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRFC_ ::inversion_inverNRUC_ ::endstop  NB. operational use
 
-NB. ========================================================
 inversion=: inversion3  NB. the best option to-date
-NB. ========================================================
 
 start=: 3 : 0
   NB. start the CAL-engine

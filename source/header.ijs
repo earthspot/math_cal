@@ -1,5 +1,5 @@
 0 :0
-Sunday 14 April 2019  04:20:09
+Wednesday 24 April 2019  01:03:40
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -11,7 +11,3 @@ CREATOR=: ;(4!:4<'zx'){4!:3''[zx=.''
 onload_z_=: empty
 RATIONALIZED_z_=: 1  NB. switch for inversion heuristics
 NB. smoutputINV_z_=: smoutput&sw  NB. trace inversion heuristics
-smoutputINV_z_=: empty  NB. trace inversion heuristics
-
-AABUILT=: '2019-04-15  07:29:10'
-AABUILT=: '2019-04-15  23:44:04'
