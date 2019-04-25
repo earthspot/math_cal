@@ -2,7 +2,7 @@ NB. math/cal manifest
 
 CAPTION=: 'Scientific calculator engine'
 
-VERSION=: '2.1.08'
+VERSION=: '2.1.09'
 
 DEPENDS=: 0 : 0
 graphics/plot
