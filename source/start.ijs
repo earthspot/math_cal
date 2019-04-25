@@ -48,6 +48,7 @@ uun=: uuconnect''  NB. create instance of class UU
 make_CAL'' NB. create semantic fns for tabengine
 globmake'' NB. make global nouns
 progress _ NB. init progressbar to idle state
+extendedSine EXTENDEDSINE  NB. enable/disable extended trig fns
 0 enlog 0  NB. start a new log file
 createDirIfAbsent TPTT  NB. establish user's t-table library
 createDirIfAbsent TPAR  NB. establish user's t-table archive

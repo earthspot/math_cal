@@ -2,6 +2,8 @@
 '==================== [cal] handy4cal.ijs ===================='
 cocurrent 'z'
 
+ddefine=: 1 : 'm&$: : (4 : 0)'
+
 NUL=: 0{a.
 SP=: ' '
 
@@ -75,7 +77,6 @@ smcut3ucp=: ((0;s;m) ;: ucp)"1  NB. cuts unicoded string
 smcut3=: smcut3ucp
 
 date=: 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)
-ddefine=: 1 : 'm&$: : (4 : 0)'
 dec=: 16 #. 16 | '0123456789ABCDEF0123456789abcdef' i. ]
 errno=: 13!:11
 isEmpty=: 0 = [: */ $

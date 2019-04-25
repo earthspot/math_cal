@@ -4,7 +4,7 @@
 cocurrent 'cal'
 
 CAL_SAVED=: }: 0 :0
-Sunday 14 April 2019  01:18:37
+Thursday 25 April 2019  02:11:14
 )
 
   NB. The tabengine instruction set.
@@ -69,6 +69,7 @@ UNTU r    uniform >r{UNITN         \units of item -nominal (SIC-mode)
 VALF r    getformattedvalue r      \value of item -formatted string
 VALU r    getvalue r               \value of item -numeric
 VERS void VERSION                  \version of CAL engine
+XSIN void isExtendedSine''         \test extended trig verbs enabled
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
@@ -244,6 +245,7 @@ unit rzz  zz changeunits r         \set units of item
 unsc r    '' scaleunits r          \unscaled units
 valu rv   v setvalue r             \set value of item
 vunn rzz  zz setvunits r           \set value+units of item
+xsin n    extendedSine n           \enable extended trig verbs
 yoct r    'y' scaleunits r         \yocto- item
 yott r    'Y' scaleunits r         \yotta- item
 zept r    'z' scaleunits r         \zepto- item
