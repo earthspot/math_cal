@@ -2,7 +2,7 @@
 '==================== [cal] ttbrowse.ijs ===================='
 
 0 :0
-Tuesday 23 April 2019  22:07:25
+Thursday 25 April 2019  23:05:15
 -
 old version cloned: tempuu 71
 -
@@ -19,6 +19,8 @@ TAG0=: <,''
 POS=: 322 23 830 400
 
 loadit=: 0:
+loadFixed=: load&dquote
+
 
 ttb_default=: 3 : 0
   NB. warns of a missing handler
@@ -191,7 +193,7 @@ tag=. > tagid { ;:'notag red green'
 text=: info=: UNSET
 text=: read path
 erase 'TT TTIMAGE TTINFO vquan vfact'
-load :: 0: path  NB. creates: TT, TTIMAGE (vquan, vfact
+loadFixed :: 0: path  NB. creates: TT, TTIMAGE (vquan, vfact
 if. -.NaNoun'TTIMAGE' do. text=: TTIMAGE end.
 if. -.NaNoun'TTINFO' do. info=: TTINFO end.
 if. loadit'' do. ttb_bnLoad_button''

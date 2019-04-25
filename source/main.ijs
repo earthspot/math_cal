@@ -1541,7 +1541,7 @@ vhiddS=. vhidd
 UNITSsav=. UNITS
 UNITNsav=. UNITN
 vhidd=: vmodl=: _
-load file1
+loadFixed file1
 CAPT=: CAPTsav  NB. discard new caption and restore old one
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
@@ -1692,7 +1692,7 @@ NB. 	smoutput 'ttload ',quote file
 NB. 	smoutput '──────────────────────────────────────────────'
 if. -.fexist file do. 20 message file return. end.  NB. IAC 5 DEC 18
 vhidd=: vmodl=: _
-load file
+loadFixed file
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
 empty 't' setcols TT  NB. to set: tn tu ts td tf

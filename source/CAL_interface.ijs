@@ -144,7 +144,7 @@ ltwl r    r fnline~ 'log2'         \copy log2(item)
 ltnv r    r setvalue~ log10 vr     \log base-10 of r
 ltwv r    r setvalue~ log2 vr      \log base-2 of r
 load yy   ttload yy                \load named t-table
-loap yy   load yy                  \load (path yy)
+loap yy   loadFixed yy             \load (path yy)
 mega r    'M' scaleunits r         \mega- item
 merg rr   merge rr                 \merge 2 lines
 micr r    'u' scaleunits r         \micro- item

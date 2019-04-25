@@ -16,6 +16,7 @@ AABUILT=: '2019-04-25  02:31:26'
 AABUILT=: '2019-04-25  02:32:39'
 AABUILT=: '2019-04-25  02:37:26'
 AABUILT=: '2019-04-25  02:49:03'
+AABUILT=: '2019-04-25  23:08:11'
 
 '==================== [cal] handy4cal.ijs ===================='
 cocurrent 'z'
@@ -2038,7 +2039,7 @@ vhiddS=. vhidd
 UNITSsav=. UNITS
 UNITNsav=. UNITN
 vhidd=: vmodl=: _
-load file1
+loadFixed file1
 CAPT=: CAPTsav
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
 
@@ -2179,7 +2180,7 @@ SWAPPED=: 0
 file=: expandedPath y
 if. -.fexist file do. 20 message file return. end.
 vhidd=: vmodl=: _
-load file
+loadFixed file
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
 
 empty 't' setcols TT
@@ -3598,7 +3599,7 @@ ltwl r    r fnline~ 'log2'         \copy log2(item)
 ltnv r    r setvalue~ log10 vr     \log base-10 of r
 ltwv r    r setvalue~ log2 vr      \log base-2 of r
 load yy   ttload yy                \load named t-table
-loap yy   load yy                  \load (path yy)
+loap yy   loadFixed yy             \load (path yy)
 mega r    'M' scaleunits r         \mega- item
 merg rr   merge rr                 \merge 2 lines
 micr r    'u' scaleunits r         \micro- item
@@ -4238,7 +4239,7 @@ end.
 '==================== [cal] ttbrowse.ijs ===================='
 
 0 :0
-Tuesday 23 April 2019  22:07:25
+Thursday 25 April 2019  23:05:15
 -
 old version cloned: tempuu 71
 -
@@ -4255,6 +4256,8 @@ TAG0=: <,''
 POS=: 322 23 830 400
 
 loadit=: 0:
+loadFixed=: load&dquote
+
 
 ttb_default=: 3 : 0
 
@@ -4414,7 +4417,7 @@ tag=. > tagid { ;:'notag red green'
 text=: info=: UNSET
 text=: read path
 erase 'TT TTIMAGE TTINFO vquan vfact'
-load :: 0: path
+loadFixed :: 0: path
 if. -.NaNoun'TTIMAGE' do. text=: TTIMAGE end.
 if. -.NaNoun'TTINFO' do. info=: TTINFO end.
 if. loadit'' do. ttb_bnLoad_button''
@@ -4674,14 +4677,14 @@ start=: 3 : 0
 trace 0
 sswInversion=: empty
 
-if. fexist p=. (pathof CREATOR) sl 'tpathdev.ijs' do. load p
-else.     load (pathof CREATOR) sl 'tpathjal.ijs'
+if. fexist p=. (pathof CREATOR) sl 'tpathdev.ijs' do. loadFixed p
+else.     loadFixed (pathof CREATOR) sl 'tpathjal.ijs'
 end.
-load TPMC sl 'manifest.ijs'
+loadFixed TPMC sl 'manifest.ijs'
 
 erase'CAPTION FILES DESCRIPTION RELEASE FOLDER LABCATEGORY PLATFORMS'
 
-load TPUU sl 'uu.ijs'
+loadFixed TPUU sl 'uu.ijs'
 uun=: uuconnect''
 make_CAL''
 globmake''
@@ -4703,6 +4706,8 @@ vchecks''
 onload_z_=: do
 STARTED=: 1
 )
+
+loadFixed=: load&dquote
 
 tt_z_=: tabengine_cal_
 

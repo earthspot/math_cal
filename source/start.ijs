@@ -36,14 +36,14 @@ trace 0
 sswInversion=: empty  NB. >>>>> DISABLE inversion heuristics tracing
 NB. …switches ALL calls to: ssw within the set of _inver*_ locales
   NB. Create the TP*_z_ nouns (the JAL addon lacks tpathdev)
-if. fexist p=. (pathof CREATOR) sl 'tpathdev.ijs' do. load p
-else.     load (pathof CREATOR) sl 'tpathjal.ijs'
+if. fexist p=. (pathof CREATOR) sl 'tpathdev.ijs' do. loadFixed p
+else.     loadFixed (pathof CREATOR) sl 'tpathjal.ijs'
 end.
-load TPMC sl 'manifest.ijs'  NB. to get VERSION
+loadFixed TPMC sl 'manifest.ijs'  NB. to get VERSION
   NB. erase unwanted globals loaded by manifest
 erase'CAPTION FILES DESCRIPTION RELEASE FOLDER LABCATEGORY PLATFORMS'
   NB. load class UU
-load TPUU sl 'uu.ijs'
+loadFixed TPUU sl 'uu.ijs'
 uun=: uuconnect''  NB. create instance of class UU
 make_CAL'' NB. create semantic fns for tabengine
 globmake'' NB. make global nouns
@@ -65,6 +65,8 @@ vchecks''		NB. check integrity of v-buffers
 onload_z_=: do	NB. leave it nice for the J IDE
 STARTED=: 1	NB. registers successful completion of: start
 )
+
+loadFixed=: load&dquote
 
 tt_z_=: tabengine_cal_
 
