@@ -1,5 +1,5 @@
 0 :0
-Thursday 25 April 2019  01:57:47
+Thursday 25 April 2019  23:35:48
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -7,21 +7,25 @@ CAL: scientific calculator engine
 
 coclass 'cal'
 
-CREATOR=: ;(4!:4<'zx'){4!:3''[zx=.''
+PARENTDIR=: (zx i:'/'){.zx=.jpathsep>(4!:4<'zx'){4!:3''[zx=.''
 onload_z_=: empty
 RATIONALIZED_z_=: 1
 EXTENDEDSINE_z_=: 0
 smoutputINV_z_=: empty
-AABUILT=: '2019-04-25  02:31:26'
-AABUILT=: '2019-04-25  02:32:39'
-AABUILT=: '2019-04-25  02:37:26'
-AABUILT=: '2019-04-25  02:49:03'
-AABUILT=: '2019-04-25  23:08:11'
+AABUILT=: '2019-04-29  01:07:35'
 
 '==================== [cal] handy4cal.ijs ===================='
 cocurrent 'z'
 
 ddefine=: 1 : 'm&$: : (4 : 0)'
+
+ide=: 3 : 0
+select. y
+  case. 0 do. wd 'ide hide' [IDE_z_=: y
+  case. 1 do. wd 'ide show' [IDE_z_=: y
+  case.   do. ide -.IDE_z_
+end.
+)
 
 NUL=: 0{a.
 SP=: ' '
@@ -92,6 +96,7 @@ smcut3=: smcut3ucp
 date=: 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)
 dec=: 16 #. 16 | '0123456789ABCDEF0123456789abcdef' i. ]
 errno=: 13!:11
+f4x=: }.@((<10{a.) ;@,. ])@([: (#~ ([: +./\. ' '&~:))&.> <"1)
 isEmpty=: 0 = [: */ $
 isLit=: 2 2048 e.~ 3!:0
 listnameswithprefix=: 0 1 2 3&$: :(] ((] -: ({.~ #))S:0 _ # [)~ a: , [ 4!:1~ [: {. ])
@@ -99,7 +104,6 @@ llog=: (1 { ":)@(,@([: ] ;: ,. [: ".&.> ;:))
 log=: [: ": ;: ,. [: ".&.> ;:
 nouns=: 3 : 'z ,. (datatype each v) ,. v=.".each z=.nl 0'
 np=: [: <: 2 * -.
-pathof=: ] {.~ [: >: '/' i:~ ]
 pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
 read=: [: 1!:1 <
 
@@ -928,8 +932,9 @@ deletefile=: 3 : 0
 
 
 me=. 'deletefile'
+y=. jpathsep y
 nom=. filename expandedPath y
-if. SL e. y do. pth=. pathof y else. pth=.'' end.
+if. SL e. y do. pth=.(y i:'/'){.y else. pth=.'' end.
   sllog 'me nom pth y'
 file0=: jpath ttlib nom
 if. fexist file0 do.
@@ -4677,8 +4682,8 @@ start=: 3 : 0
 trace 0
 sswInversion=: empty
 
-if. fexist p=. (pathof CREATOR) sl 'tpathdev.ijs' do. loadFixed p
-else.     loadFixed (pathof CREATOR) sl 'tpathjal.ijs'
+if. fexist p=. PARENTDIR sl 'tpathdev.ijs' do. loadFixed p
+else.     loadFixed PARENTDIR sl 'tpathjal.ijs'
 end.
 loadFixed TPMC sl 'manifest.ijs'
 
