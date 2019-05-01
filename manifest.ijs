@@ -2,9 +2,10 @@ NB. math/cal manifest
 
 CAPTION=: 'Scientific calculator engine'
 
-VERSION=: '2.1.09'
+VERSION=: '2.1.10'
 
 DEPENDS=: 0 : 0
+format/zulu
 graphics/plot
 math/uu
 )
