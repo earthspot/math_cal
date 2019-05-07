@@ -1,9 +1,13 @@
 0 :0
-Thursday 25 April 2019  23:35:48
+Wednesday 1 May 2019  06:04:06
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
 )
+
+require 'format/zulu'
+require 'plot'
+require 'math/uu/handy4uu'
 
 coclass 'cal'
 
@@ -12,118 +16,8 @@ onload_z_=: empty
 RATIONALIZED_z_=: 1
 EXTENDEDSINE_z_=: 0
 smoutputINV_z_=: empty
-AABUILT=: '2019-04-29  01:07:35'
-
-'==================== [cal] handy4cal.ijs ===================='
-cocurrent 'z'
-
-ddefine=: 1 : 'm&$: : (4 : 0)'
-
-ide=: 3 : 0
-select. y
-  case. 0 do. wd 'ide hide' [IDE_z_=: y
-  case. 1 do. wd 'ide show' [IDE_z_=: y
-  case.   do. ide -.IDE_z_
-end.
-)
-
-NUL=: 0{a.
-SP=: ' '
-
-append=: [ 1!:3 [: < ]
-az=: 'abcdefghijklmnopqrstuvwxyz'
-begins=: beginsWith=: [ (] -: [ {.~ [: # ]) [: , ]
-
-countdown=: 3 : 0
-
-
-
-
-
-if. y-:'?' do.
-  COUNTDOWN_z_
-elseif. 0=#y do.
-  if. 0=COUNTDOWN_z_ do. 'countdown over'(13!:8)199 end.
-  COUNTDOWN_z_=: COUNTDOWN_z_-1
-elseif. do.
-  assert. 0< <.y
-  COUNTDOWN_z_=: <.y
-end.
-)
-
-crex=: 0&$: :(4 : 0)
-
-
-
-if. 0 e. $y do. 5!:6 <'y' return. end.
-z=. y rplc QT ; QT,QT
-z=. q1 z rplc CRLF ; (q1',CRLF,') ; CR ; (q1',CR,') ; LF ; (q1',LF,') ; TAB ; (q1',TAB,')
-for_c. ~. y -. 32}. 127{. a. do.
-  z=. z rplc c ; q1 CM, CM,~ paren (":a. i. c),'{a.'
-end.
-z=. z rplc (CM,QT,QT,CM) ; CM
-if. (3{.z)-:QT,QT,CM do. z=. 3}.z end.
-if. (_3{.z)-:CM,QT,QT do. z=. _3}.z end.
-if. ($y)-:(,1) do. z=. CM,z end.
-try. assert y -: ".z
-catch.
-  if. x do.
-    smoutput '>>> crex: BAD lit repn: z --'
-    smoutput z
-    smoutput '>>> crex: --using instead: 5!:6 <''y'''
-  end.
-  5!:6 <'y' return.
-end.
-z
-)
-
-
-
-
-s=. 3 3 2$1 0 0 0 0 0 2 1 2 1 2 1 2 0 0 3 2 0
-m=. < '(' ; ')'
-smresolve=: ((0;s;m) ;: ucp)"1
-sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
-ssw=: smoutput&sw
-
-
-s=. 6 3 2$0 0 0 0 1 1 2 3 2 3 1 0 2 0 2 0 3 1 4 3 4 3 3 0 4 0 4 0 5 1 0 3 5 0 5 0
-m=. < LF ; NUL,SP,TAB
-smcut3utf=: (0;s;m)&(;:"1)
-smcut3ucp=: ((0;s;m) ;: ucp)"1
-smcut3=: smcut3ucp
-
-date=: 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)
-dec=: 16 #. 16 | '0123456789ABCDEF0123456789abcdef' i. ]
-errno=: 13!:11
-f4x=: }.@((<10{a.) ;@,. ])@([: (#~ ([: +./\. ' '&~:))&.> <"1)
-isEmpty=: 0 = [: */ $
-isLit=: 2 2048 e.~ 3!:0
-listnameswithprefix=: 0 1 2 3&$: :(] ((] -: ({.~ #))S:0 _ # [)~ a: , [ 4!:1~ [: {. ])
-llog=: (1 { ":)@(,@([: ] ;: ,. [: ".&.> ;:))
-log=: [: ": ;: ,. [: ".&.> ;:
-nouns=: 3 : 'z ,. (datatype each v) ,. v=.".each z=.nl 0'
-np=: [: <: 2 * -.
-pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
-read=: [: 1!:1 <
-
-sl=: 4 : 0
-
-
-SL=. '/'
-if. SL={:x do. x=. }:x end.
-if. SL={.y do. x=. }.y end.
-x,SL,y
-)
-
-st=: [: 1!:1 [: < tmp
-sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
-ts=: 6!:2 , 7!:2@]
-wide=: uucp
-write=: [ 1!:2 [: < ]
-x2b=: [: (#~ ([: +./\. ' '&~:))&.> <"1
-x2f=: }.@((<10{a.) ;@,. ])@([: (#~ ([: +./\. ' '&~:))&.> <"1)
-x4f=: ([: <;._1 LF , ]) (1 : 'if. 0=#y do. 0 0$'''' else. >@u y end.')
+AABUILT=: '2019-05-07  09:39:15'
+AABUILT=: '2019-05-07  10:12:10'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -2343,20 +2237,20 @@ if. x and PROTECT and fexist file do.
 end.
 
 if.-. 'literal' -: datatype z do.
-  smoutput sw'>>> ttsav: z to be saved is:  (datatype z) shape=($z)'
+  msg'... ttsav: z to be saved is: (datatype z) shape=($z)'
   z=. utf8 x2f z
-  smoutput sw'>>> ttsav: z now: (datatype z) shape=($z)'
+  msg'... ttsav: z now: (datatype z) shape=($z)'
   PROTECT=: 1
 end.
 bytes=. z fwrite file
 	msg 28 message bytes; mfile
 if. bytes>0 do.
   ]mmm=. 30 message mfile; bytes
-  'ttsav' dirty 0
+  'ttsav'dirty 0
 else.
   ]mmm=. 31 message mfile
 end.
-smoutput sw'>>> ttsav returns message:(LF)(mmm)'
+msg'--- ttsav returns message:(LF)(mmm)'
 mmm return.
 )
 
@@ -3973,7 +3867,7 @@ f_1=: 3 : '(<./y -. __) (I. y=__)}y' "1
 setup_plot=: 4 : 0
 
 
-ssw'+++ setup_plot x=[(crex x)] XRANGE=(y)'
+msg'+++ setup_plot x=[(x)] XRANGE=(y)'
 iX=: x
 select. y
 case. 0 do. step=. step0
@@ -3988,7 +3882,7 @@ iX genDATA step iX
 setup_plot_integers=: 4 : 0
 
 
-ssw'+++ setup_plot_integers x=[(crex x)] XRANGE=(y)'
+msg'+++ setup_plot_integers x=[(x)] XRANGE=(y)'
 iX=: x
 select. y
 case. 0 do. istep=. istep0
@@ -4069,7 +3963,7 @@ DATA=: barDATA
 plotChart=: 'line' ddefine
 
 CHART_TYPE=: x
-ssw '... plotChart: CHART_TYPE=(CHART_TYPE): y=[(crex y)]'
+msg'... plotChart: CHART_TYPE=(CHART_TYPE): y=[(y)]'
 X=: {.y [ Y=: }.y
 if. 0=#Y do. Y=: I. X e."1 TD end.
 X do_plot Y

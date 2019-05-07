@@ -103,7 +103,7 @@ f_1=: 3 : '(<./y -. __) (I. y=__)}y' "1  NB. clip minus-infinity
 setup_plot=: 4 : 0
   NB. setup DATA table according to XRANGE (y)
   NB. code taken from proto- plotl
-ssw'+++ setup_plot x=[(crex x)] XRANGE=(y)'
+msg'+++ setup_plot x=[(x)] XRANGE=(y)'
 iX=: x
 select. y
 case. 0 do. step=. step0
@@ -118,7 +118,7 @@ iX genDATA step iX
 setup_plot_integers=: 4 : 0
   NB. setup DATA table according to XRANGE (y)
   NB. code taken from proto- plotl
-ssw'+++ setup_plot_integers x=[(crex x)] XRANGE=(y)'
+msg'+++ setup_plot_integers x=[(x)] XRANGE=(y)'
 iX=: x
 select. y
 case. 0 do. istep=. istep0
@@ -199,7 +199,7 @@ DATA=: barDATA
 plotChart=: 'line' ddefine
   NB. plot Chart of type: x
 CHART_TYPE=: x
-ssw '... plotChart: CHART_TYPE=(CHART_TYPE): y=[(crex y)]'
+msg'... plotChart: CHART_TYPE=(CHART_TYPE): y=[(y)]'
 X=: {.y [ Y=: }.y
 if. 0=#Y do. Y=: I. X e."1 TD end.  NB. all dependents of X
 X do_plot Y
