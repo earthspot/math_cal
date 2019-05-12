@@ -1598,7 +1598,7 @@ vdisp=: 3 : 0
 
 ttauc=: 3 : 0
   NB. add line from consts table to t-table
-ttadl udumb__uun USAV=: 0 udat__uun y  NB. y is seltext''
+ttadl 0 udat__uun y  NB. y is seltext''
 )
 
 ttauf=: 3 : 0

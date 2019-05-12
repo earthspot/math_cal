@@ -1,6 +1,6 @@
 NB. math_cal repo - run
 0 :0
-Tuesday 7 May 2019  10:07:41
+Saturday 11 May 2019  08:23:57
 -
 open BUILTFILE
 )
@@ -8,21 +8,20 @@ open BUILTFILE
 cocurrent 'base'
 
 NB.==================================
-GIT=. '~Gitrcal'  NB. for DEV
-GTB=. '~Gitrtab'  NB. for DEV
-UUFILE_z_=: '~Gitruu/uu.ijs'
-UULOC=. 'cal'
+GIT=. '~Gitrcal'  NB. for JAL release
+GTB=. '~Gitrtab'  NB. for JAL release
+UUFILE_z_=: '~Gitruu/uu.ijs'  NB. latest accompanying build
 NB.==================================
 
 BUILTFILE_z_=: GIT,'/cal.ijs'
-NB. TESTFILE_z_=:  GIT,'/test/test.ijs'
-TESTFILE_z_=: '~TestCAL/*.ijs'
+TESTFILE_z_=:  GIT,'/test/*.ijs'
+NB. TESTFILE_z_=: '~TestCAL/*.ijs'
 
 NB. ---------------------------------------------------------
 
 load UUFILE  NB. >>> RELOADS _uu_ FROM ITS LAST BUILTFILE
 
-clear UULOC
+clear 'cal'
 load BUILTFILE	
 
 smoutput sw'+++ run.ijs: BUILTFILE=[(BUILTFILE)] loaded ok'

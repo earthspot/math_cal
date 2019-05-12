@@ -1989,7 +1989,7 @@ vdisp=: 3 : 0
 
 ttauc=: 3 : 0
 
-ttadl udumb__uun USAV=: 0 udat__uun y
+ttadl 0 udat__uun y
 )
 
 ttauf=: 3 : 0
