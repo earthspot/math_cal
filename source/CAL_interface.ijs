@@ -4,7 +4,7 @@
 cocurrent 'cal'
 
 CAL_SAVED=: }: 0 :0
-Thursday 25 April 2019  02:11:14
+Saturday 25 May 2019  18:08:39
 )
 
   NB. The tabengine instruction set.
@@ -29,10 +29,11 @@ Undo void undo 1                   \=undo
 AABT void AABUILT                  \last-updated timestamp
 ABOU void ABOUT                    \About the engine
 ANCS r    ancestors r              \ancestors of item r
+ARRO void (arrowch z);z=.arrowgen''\arrow drawing data
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
-CTBB void ctb''                    \t-table display: boxed raw data
+CTBB void ct 3                     \t-table display: boxed raw data
 CTBN n    utf8 x2f ct n            \t-table display choice: utf-8
 CTBU void utf8 x2f ct''            \t-table display: utf-8
 DIRT void dirty''                  \flag: unsaved changes

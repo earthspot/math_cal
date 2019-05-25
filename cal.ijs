@@ -1,5 +1,5 @@
 0 :0
-Wednesday 1 May 2019  06:04:06
+Wednesday 15 May 2019  08:31:04
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -16,8 +16,13 @@ onload_z_=: empty
 RATIONALIZED_z_=: 1
 EXTENDEDSINE_z_=: 0
 smoutputINV_z_=: empty
-AABUILT=: '2019-05-07  09:39:15'
-AABUILT=: '2019-05-07  10:12:10'
+AABUILT=: '2019-05-25  07:52:45'
+AABUILT=: '2019-05-25  07:56:30'
+AABUILT=: '2019-05-25  17:37:12'
+AABUILT=: '2019-05-25  18:00:45'
+AABUILT=: '2019-05-25  18:03:17'
+AABUILT=: '2019-05-25  18:08:06'
+AABUILT=: '2019-05-25  18:08:42'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -2613,12 +2618,17 @@ case. 1 do.
 case. 2 do.
  lin0=. sw'y=(y)       lnos       qtys        ||      quan un        siqn us'
  z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.SEP1 ,.quan ,.SP ,.un ,.SP ,.siqn ,.SP ,.us
+case. 3 do.
+ z=. ,.each vhold ; CH ; vquan ; qtys ; (>UNITN) ; (>UNITS) ; TTn
+ return.
 case.   do.
  lin0=. CAPT
  z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qtys ,.SP ,.SP ,.TTn
 end.
 lin0 , z #~ force0 -.vhidd
 )
+
+onload 'sm ct 3'
 
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 0 :0
@@ -3358,7 +3368,7 @@ d_X return.
 cocurrent 'cal'
 
 CAL_SAVED=: }: 0 :0
-Thursday 25 April 2019  02:11:14
+Saturday 25 May 2019  18:08:39
 )
 
 
@@ -3383,10 +3393,11 @@ Undo void undo 1                   \=undo
 AABT void AABUILT                  \last-updated timestamp
 ABOU void ABOUT                    \About the engine
 ANCS r    ancestors r              \ancestors of item r
+ARRO void (arrowch z);z=.arrowgen''\arrow drawing data
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
-CTBB void ctb''                    \t-table display: boxed raw data
+CTBB void ct 3                     \t-table display: boxed raw data
 CTBN n    utf8 x2f ct n            \t-table display choice: utf-8
 CTBU void utf8 x2f ct''            \t-table display: utf-8
 DIRT void dirty''                  \flag: unsaved changes

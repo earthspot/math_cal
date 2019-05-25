@@ -50,9 +50,15 @@ case. 1 do.  NB. (quan) x(un) y(uuqy) -args for uu -->(qtys)
 case. 2 do.  NB. c/f 1 but different arrangement
  lin0=. sw'y=(y)       lnos       qtys        ||      quan un        siqn us'
  z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.SEP1 ,.quan ,.SP ,.un ,.SP ,.siqn ,.SP ,.us
+case. 3 do.  NB. boxed text
+ z=. ,.each vhold ; CH ; vquan ; qtys ; (>UNITN) ; (>UNITS) ; TTn
+NB.  z=. }.each z  NB. drop item {0} from each entry
+ return.
 case.   do.  NB. OPERATIONAL USE
  lin0=. CAPT
  z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qtys ,.SP ,.SP ,.TTn
 end.
 lin0 , z #~ force0 -.vhidd        NB. remove hidden lines ALSO {0}
 )
+
+onload 'sm ct 3'
