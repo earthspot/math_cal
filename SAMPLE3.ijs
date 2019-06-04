@@ -1,57 +1,34 @@
+SAVED=: '2019-06-04  16:00:33'
 CAPT=: 'Pseudogravity by rotation'
 
-TT=: cmx 0 : 0
-tn                           tu    ts    td     tf                                   
-period of rotation=          min   s      0 0 0                                      
-/{1}                         Hz    /s     1 0 0 %a: a(min) [/min]                    
-r:radius of circuit          km    m      0 0 0                                      
-circumference                km    m      3 0 0 a*2*PI: a(km)                        
-v:rotational speed           km/s  m/s    2 4 0 a*b:    a(cyc/sec),b(km)             
-c:centripetal acceleration   m/s/s m/s^2  5 3 0 v*v/r:  v(m/s),r(m)                  
-TARGET pseudogravity         *     *     10 8 9 i choice(a,b): i(/),a(m/s/s),b(m/s/s)
-g:earth gravity unit=        m/s/s m/s^2  0 0 0                                      
-a:mars gravity unit=         m/s/s m/s^2  0 0 0                                      
-selector(click tool 0 or 1)= /     /      0 0 0                                      
-Set to 1 to force equality   *     *      6 7 0 a/b:           a(m/s/s),b(*)         
-Set to 0 to force equality   *     *      6 7 0 a-b: a(m/s/s),b(*)                   
+TTIMAGE=: 0 define
+Pseudogravity by rotation                             
+  ┌   {1}          1 min      period of rotation=     
+┌ │ ┌ {2} @  894.826 m        length of boom          
+│ ├ └>{3} @ 5622.358 m        circumference of circle 
+├ └>  {4} @   93.706 m/s      pod velocity            
+└>┌ ┌ {5} @    9.813 m/s²     centripetal acceleration
+  │ ├ {6}          1 earth.g  earth gravity unit=     
+  ├ │ {7}          1 mars.g   mars gravity unit=      
+  │ └>{8} @        1 /        earth pod boom -->1     
+  └>  {9} @    2.644 /        mars pod boom -->1      
 )
 
-vquan=: numvec 0 : 0
-0
-1
-0.0166666666666666664
-0.894564730378200279
-5.62071597023337599
-0.0936785995038895841
-9.80999999999999694
-9.8100000000000005
-9.8100000000000005
-3.70999999999999996
-0
-0.999999999999999667
-_3.55271367880050093e_15
+TT=: cmx 0 define
+tn                       tu      ts    td    tf                            
+period of rotation=      min     s     0 0 0                               
+length of boom           m       m     0 0 0                               
+circumference of circle  m       m     2 0 0 PI2*r : r(m)                  
+pod velocity             m/s     m/s   3 1 0 a%b: a(m),b(min)              
+centripetal acceleration m/s^2   m/s^2 4 2 0 (v^2)/r : v(m/s),r(m)         
+earth gravity unit=      earth.g m/s^2 0 0 0                               
+mars gravity unit=       mars.g  m/s^2 0 0 0                               
+earth pod boom -->1      /       /     5 6 0 a%b: a(m/s^2),b(m/s^2)        
+mars pod boom -->1       /       /     5 7 0 a%b: a(m/s^2),b(m/s^2)        
 )
 
-vfact=: numvec 0 : 0
-0
-60
-1
-1000
-1000
-1000
-1
-1
-1
-1
-1
-1
-1
-)
+vquan=: 0 1 983871610484263r1099511627776 3090923823572919236298708913400686655391627852379891811r549755813888000000000000000000000000000000000000000 3090923823572919236298708913400686655391627852379891811r32985348833280000000000000000000000000000000000000000 9710423576942357254264803056411305733176394666970034452614768703503641171922093324701321610767r989560464998400000000000000000000000000000000000000000000000000000000000000000000000000000000 1348669941241994140625r1348669941241994018816 1 9710423576942357254264803056411305733176394666970034452614768703503641171922093324701321610767r9710423576942357812500000000000000000000000000000000000000000000000000000000000000000000000000 9710423576942357254264803056411305733176394666970034452614768703503641171922093324701321610767r3672258885609062400000000000000000000000000000000000000000000000000000000000000000000000000000
 
-exe11=: 3 : 'a%b [a=. 6{y [b=. 7{y'
-exe12=: 3 : 'a-b [a=. 6{y [b=. 7{y'
-exe2=: 3 : '%a [a=. 1{y'
-exe4=: 3 : 'a*2*PI [a=. 3{y'
-exe5=: 3 : 'a*b [a=. 2{y [b=. 4{y'
-exe6=: 3 : 'v*v%r [v=. 5{y [r=. 3{y'
-exe7=: 3 : 'i choice(a,b) [i=. 10{y [a=. 8{y [b=. 9{y'
+vfact=: 0 60 1 1 1 1 613304083r62500000 3711r1000 1 1
+
+vmodl=: 0 1 1 1 1 1 1 1 1 1
