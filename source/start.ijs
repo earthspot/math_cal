@@ -108,7 +108,8 @@ RETURNED=: ''	NB. noun returned by i/f call
 STARTED=: 0	NB. 1==start completes ok
 TIMEOUT=: 5	NB. seconds (used by: timeout)
 TOLERANCE=: 1e_5	NB. default tolerance for comparing physical quantities
-TTn=: ,:'tn'	NB. t-table cache for item names
+NB. TTn=: ,:'tn'	NB. t-table cache for item names
+TTN=: ,<'tn'	NB. t-table cache for item names (boxed)
 WARNPLEX=: 1	NB. 1==run warnplex after each recalc
 i.0 0
 )

@@ -8,7 +8,7 @@ cocurrent 'cal'
   NB. This needs a forward-definition of (items) to prevent
   NB. |syntax error: script
   NB. wherever "items" appears in a tacit defn
-items=: 3 : 'i. #TTn'	NB. fwd-ref fixup
+items=: 3 : 'i.#TTN'		NB. fwd-ref fixup
 bh=:    ] }.~ [: >: ' ' i.~ ]	NB. behead y up to 1st SP
 boxvec=: [: dltb&.> <"1		NB. convert cmx-->boxed list
 brace=: 1 |. '}{' , ":
@@ -18,7 +18,7 @@ cmx=: [: > <;._2			NB. fwd-ref fixup
 cr=: [: 5!:5 boxopen
 crr=: > , '=: ' , cr
 detb=: 3 : 'deb y rplc TAB ; SP'	NB. c/f deb, but TAB-->SP
-dtlf=: #~ ([: +./\. (10{a.)&~:)   NB. delete trailing LF's
+dtlf=: #~ ([: +./\. (10{a.)&~:)	NB. delete trailing LF's
 ifdefined=: 0 <: [: 4!:0 <
 isBoxed=: 32 = 3!:0
 isLen2=: 2 = #
@@ -160,9 +160,6 @@ not=: -.		NB. own copy of tabz verb
   NB. (calls to these verbs may be embedded in t-table script)
 sig=: 3 : 'SIG__uun=: y'
 uunicode=: 3 : 'SIC__uun=: y'
-
-  NB. "boxed" variant of ct'' - for special t-table displays
-ctb=: 3 : '}.each ,.each vhold ; CH ; vquan ; (>UNITN) ; (>UNITS) ; TTn'
 
 cv_z_=: cv_cal_
 cx_z_=: cx_cal_

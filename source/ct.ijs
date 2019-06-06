@@ -1,7 +1,7 @@
 	NB. cal - ct.ijs
 '==================== [cal] ct.ijs ===================='
 0 :0
-Thursday 4 April 2019  22:18:14
+Wednesday 5 June 2019  22:03:36
 -
 ct=="see t-table" -generates display layout for the t-table
 )
@@ -37,7 +37,8 @@ un=. >UNITN                       NB.0 nominal units (x-arg for uu)
 us=. >UNITS                       NB.0 col of SI-units
 uuqy=. siqn ,.SP ,.us             NB.0 SI-qty (y-arg for uu)
 qtys=. mjust wc un uu__uun uuqy   NB.0 qtys using un&uu
-  NB. NB.0 are the only nouns needed for (default) x=0
+nams=. >uucp each TTN             NB.0 item names in unicode
+  NB. NB.0 are the only nouns needed for (default) y==''
   NB. consider not assigning the others to reduce execution time
  lin0=. sw' +++ (CAPT) in diagnostic mode y=(y)'
 select. y
@@ -50,15 +51,15 @@ case. 1 do.  NB. (quan) x(un) y(uuqy) -args for uu -->(qtys)
 case. 2 do.  NB. c/f 1 but different arrangement
  lin0=. sw'y=(y)       lnos       qtys        ||      quan un        siqn us'
  z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.SEP1 ,.quan ,.SP ,.un ,.SP ,.siqn ,.SP ,.us
-case. 3 do.  NB. boxed text
- z=. ,.each vhold ; CH ; vquan ; qtys ; (>UNITN) ; (>UNITS) ; TTn
-NB.  z=. }.each z  NB. drop item {0} from each entry
+case. 3 do.  NB. boxed list of columns
+ z=. ,.each vhold ; CH ; vquan ; qtys ; un ; us ; nams
+NB.  z=. }.each z  NB. drop item {0} from each column
  return.
 case.   do.  NB. OPERATIONAL USE
  lin0=. CAPT
- z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qtys ,.SP ,.SP ,.TTn
+ z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qtys ,.SP ,.SP ,.nams
 end.
 lin0 , z #~ force0 -.vhidd        NB. remove hidden lines ALSO {0}
 )
 
-onload 'sm ct 3'
+onload 'sm ct '''''

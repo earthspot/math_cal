@@ -34,7 +34,7 @@ CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
 CTBB void ct 3                     \t-table display: boxed raw data
-CTBN n    utf8 x2f ct n            \t-table display choice: utf-8
+CTBN n    ct n                     \t-table display choice: n
 CTBU void utf8 x2f ct''            \t-table display: utf-8
 DIRT void dirty''                  \flag: unsaved changes
 FMLA r    formula r                \formula of item r
@@ -45,7 +45,7 @@ ITMS void }.items''                \list of non-0 item#s
 JXDO yy   ". yy                    \run J code in this loc
 MSSG void MESSAGE                  \message text from last instruction
 MSID void MESSAGE_ID               \message-ID of last instruction
-NAME r    dtb r{TTn                \name of item r
+NAME r    dtb r pick TTN           \name of item r
 PARS r    parents r                \parents of item r
 QCAL void CAL                      \the CAL instruction set
 RETA yy   'assert last noun retd'  \=+assert last noun returned

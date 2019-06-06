@@ -82,7 +82,7 @@ for_i. i.#y do.
 'c b e'=. i{y [ rev=. 0
 if. b>e do. 'e b rev'=. b ; e ; 1 end.
 NB. --b e are top/bot corners, not source/target
-z=. (#TTn) $ 0
+z=. 0*items''
 z=. 2 (b to e) }z
 if. rev do.  NB. identify upward arrow
   z=. 4 b }z
@@ -201,7 +201,7 @@ r1 a }vsiqn
 
 bend=: 3 : 0
   NB. perm to move item y bottom or top (y<0)
-z=. i.t=. #TTn
+z=. items''
 if. y e. (0 -.~ z,-z) do.
   z=. z -. 0  NB. remove the title line
   z=. z -. |y
@@ -212,7 +212,7 @@ end.
 
 bubb=: 3 : 0
   NB. perm to move item y down or up (y<0)
-z=. i.t=. #TTn
+t=. #z=. items''
 if. y e. (}.}:z),2}.-z do.
 z+(-|y+y<0)|. t{.1 _1
 end.
@@ -537,14 +537,14 @@ for_v. ','cut extn do. NB. scan arg specs in: extn
 end.
 )
 
-fitemsub=: 3 : 0
-  NB. substitute braced args named in formula(y)
-z=. y{TTn
-for_entry. fargs y do.
-  'n i var unit'=. entry
-  z=. z rplc (brace var) ; (brace i)
-end.
-)
+NB. fitemsub=: 3 : 0
+NB.   NB. substitute braced args named in formula(y)
+NB. z=. y{TTn
+NB. for_entry. fargs y do.
+NB.   'n i var unit'=. entry
+NB.   z=. z rplc (brace var) ; (brace i)
+NB. end.
+NB. )
 
 fcalc=: 3 : 0
   NB. forward calculation
@@ -945,7 +945,8 @@ end.
 )
 
 hlv=: -:
-holds=: 3 : 'vhold +. +./"1 HOLD= TTn'
+NB. holds=: 3 : 'vhold +. +./"1 HOLD= TTn'
+holds=: 3 : 'vhold +. +./"1 HOLD= >TTN'
 
 id=: 3 : 0
 z=. ": (|: ,: i.#y)
@@ -1036,7 +1037,7 @@ _ e. |y
 isNum=: ([: 1: 0 + ]) ::0:  NB. i.e. can you add 1 to y?
 isnums=: [: *./ '0123456789' e.~ ]
 isnums=: (0 < #) *. [: *./ '0123456789' e.~ ]  NB. replacement
-items=: 3 : 'i. #TTn'
+items=: 3 : 'i.#TTN'
 ln=: ^.
 log10=: 10&^.
 log2=: 2&^.
@@ -1044,6 +1045,7 @@ log2=: 2&^.
 mandhold=: _1&$: :(4 : 0)
   NB. set (x=1) /reset (x=0) /toggle (x=_1) mandatory hold on item(s) y
 if. 1<#y do. for_i. y do. x mandhold i end. return. end.
+TTn=. >TTN
 lab=. (dtb y{TTn)-.SH,HOLD  NB. new label without chars: SH or HOLD
 held=. (SH e. y{TTn) or (HOLD e. y{TTn)  NB. accept SH too
 select. x
@@ -1198,23 +1200,32 @@ end.
 relabel=: 4 : 0
   NB. relabel row x as: y
 if. notitem x do. return. end.
-i=. (#TTn)x}items''
-TTn=: i{TTn,y
+NB. i=. (#TTn)x}items''
+NB. TTn=: i{TTn,y
+TTN=: (<,y) x}TTN
 'relabel' dirty 1
 )
 
-relabelitems=: 4 : 0
-  NB. relabel the items in TTn (y) according to perm: (x)
-r=. $y  NB. shape of table: y
-NB. io=: x2b >brace each ":each items''
-NB. ii=: x2b >brace each ":each x
-io=. x2b >brace each ":each x{items''
-ii=. x2b >brace each ":each i.#x
-r $ y rplc , io,.ii
+displaceTTN=: 3 : 0
+  NB. displace the items in global: TTN by increment: y
+]io=. x2b >brace each ":each items''
+]ii=. x2b >brace each ":each y+items''
+for_item. TTN[z=.'' do. line=. >item
+  z=. z , <line rplc ,io,.ii
+end.
 )
 
-  NB. Instrs which change the t-table are all-lowercase
+relabelTTN=: 3 : 0
+  NB. relabel the items in global: TTN according to mapping: (y)
+]io=. x2b >brace each ":each y{items''
+]ii=. x2b >brace each ":each i.#y
+for_item. TTN[z=.'' do. line=. >item
+  z=. z , <line rplc ,io,.ii
+end.
+)
+
 changesTtable=: ] -: tolower
+  NB. …instrs which change the t-table are all-lowercase
 
 reselect=: empty
 
@@ -1348,7 +1359,13 @@ end.
 if. 0<#units do. y forceunits units end.
 if. 0<#name do. y relabel name end.
 y forcevalue valu
-16 message y;valu
+  NB. now proceed as in: setvalue
+CH=: recal y
+if. y{CH do. 16 message y;x
+elseif. 0<#OVERHELDS do. 35 message listitems OVERHELDS
+elseif. do. 17 message y;x
+end.
+OVERHELDS=: ''
 )
 
 shortpath=: 3 : 0
@@ -1486,7 +1503,8 @@ invalplot''
 'yts cyc fac'=. convert ytu
   NB. (check cyc~:0 at this point?)
   NB. See: TTlist for vars comprising the t-table to be adjusted
-TTn=: TTn,ytn
+NB. TTn=: TTn,ytn
+TTN=: TTN,<ytn
 TD=: TD,0  NB. dumb line
 TTf=: TTf,SP  NB. dumb line
 UNITN=: UNITN,<,kosher ytu
@@ -1516,16 +1534,25 @@ UNITS=: UNITS,<,kosher yts
 vquan=: 'ttafl.1'ratit vquan,0r1    NB. placeholder, recomputed by: recal
 vfact=: 'ttafl.2'ratit vfact , 'ttafl.3'ratit fac
 TD=: TD,,".ytd
-TTn=: TTn,,ytn
-TTn=: (}:TTn) , fitemsub <:#TTn
+NB. TTn=: TTn,,ytn
+NB. TTn=: (}:TTn) , fitemsub <:#TTn
+TTN=: TTN , <,ytn fsub #TTN
 ttfix''
 invalexe''
 CH=: recal 0
 'ttafl' dirty 1
 )
 
+fsub=: 4 : 0
+  NB. new TTN item (y) - (x) with subst from (formula y)
+for_item. fargs y do.
+  'n i var unit'=. item
+  x=. x rplc (brace var) ; (brace i)
+end.
+)
+
 ttappend=: 3 : 0
-  NB. append the chosen t-table to the one loaded
+  NB. append chosen t-table to the existing one
 sllog'ttappend y'
 invalexe''      NB. existing 'exe' verbs are invalid
 SWAPPED=: 0      NB. fmla order (overridden by t-table script)
@@ -1541,15 +1568,17 @@ vmodlS=. vmodl
 vhiddS=. vhidd
 UNITSsav=. UNITS
 UNITNsav=. UNITN
+nt0=. #TTNsav=. TTN  NB. remember the original t-table size
 vhidd=: vmodl=: _
-loadFixed file1
+loadFixed file1  NB. creates globals: CAPT TT TTINFO vquan vfact
 CAPT=: CAPTsav  NB. discard new caption and restore old one
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
 empty 't' setcols TT  NB. to set: tn tu ts td tf
-nt0=. #TTn  NB. remember the last TT size
-TTn=: TTn, debc TT cols tn
-nt1=. #TTn  NB. the current TT size
+TTN=: b4x debc TT cols tn
+TTN=: displaceTTN <:nt0  NB. displace all item#s to their new posns
+  NB. start combining the 2 t-tables
+nt1=. #TTN=: TTNsav,TTN  NB. (size of) NEW COMBINED TT
 z=. ". debc TT cols td
 if. 1=$$z do. z=. |: ,:z end.  NB. >>>>>>>>> fix for munged 1-col TD
 TD=: TD , (<:nt0) dadd z
@@ -1584,12 +1613,8 @@ tag,'appended: ',file1
 eraseRedundantCaches=: 3 : 0
   NB. patchup until time to do some spring-cleaning!!
 erase y
-smoutput '>>> THESE CACHES DELETED: ',y
+msg '>>> eraseRedundantCaches: (y) deleted'
 )
-
-NB. displacement=: 3 : 0 "1
-NB. uuengine 'DISP',y
-NB. )
 
 vdisp=: 3 : 0
   NB. returns v-shaped vector of displacements at point-of-use
@@ -1613,7 +1638,7 @@ case. do. nb 'ttauf:' ; 'bad funct line' ; y return.
 end.
 'fmla extn'=. fmla_extn fext
 vc=. ','cut extn    NB. boxed spec for each dependent var
-deps=. ":(#TTn)+i.$vc    NB. dependencies on feeders
+deps=. ":(#items'')+i.$vc    NB. dependencies on feeders
 for_i. i.$vc do.    NB. scan dep units
   v=. >i{vc      NB. the i-th spec
   'n unit'=. '('cut detb v-.')'  NB. (n;unit) from: 'n(unit)'
@@ -1655,9 +1680,8 @@ ttdelete_one=: 3 : 0
 ttfix=: 3 : 0
   NB. fixup the tt-vars after adding new line(s)
   NB. called by: ttadl, ttafl
-  NB. assume TTn is up-to-date…
 invalplot''
-t=. #TTn    NB. id of new last item of t-table
+t=. #items''    NB. id of new last item of t-table
   NB. extend by "overtake" ({.) all TT-compatible lists…
 vquan=: t{.vquan
 vsiqn=: t{.vsiqn
@@ -1686,19 +1710,14 @@ invalinfo''     NB. existing  info display is invalid
 TTINFO=:''      NB. create empty
 SWAPPED=: 0     NB. fmla order (overridden by t-table script)
 file=: expandedPath y    NB. y is generalised file descriptor
-NB. 	smoutput '──────────────────────────────────────────────'
-NB. 	smoutput crr,'y'
-NB. 	smoutput 'expandedPath(y) ',quote expandedPath(y)
-NB. 	smoutput 'ttload ',quote file
-NB. 	smoutput '──────────────────────────────────────────────'
 if. -.fexist file do. 20 message file return. end.  NB. IAC 5 DEC 18
 vhidd=: vmodl=: _
-loadFixed file
+loadFixed file  NB. creates globals: CAPT TT TTINFO vquan vfact
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
-empty 't' setcols TT  NB. to set: tn tu ts td tf
-NB. TTn=: debc TT hcols tn
-TTn=: ucp"1 debc TT hcols tn	NB. [=:] & accom unicode in item name
+'t' setcols TT		NB. ASSIGNS column defns: tn tu ts td tf
+NB. TTn  =: ucp"1 debc TT hcols tn  NB. [=:] & accom unicode in item name
+TTN=: utf8 each b4x debc TT hcols tn
 TTu=. debc TT hcols tu	NB. only needed inside this verb
 TTs=. debc TT hcols ts	NB. only needed inside this verb
 TD=: 0,". debc TT cols td	NB. debc==delete-extra-blank-cols
@@ -1734,8 +1753,9 @@ vchecks''
 ttmerge=: 4 : 0
   NB. delete target item y after pointing its descendants to item x
 invalplot''
-]t=. x y}items''
-]TTn=: t relabelitems TTn
+t=. x y}items''
+NB. TTn=: t relabelitems TTn
+TTN=: relabelTTN t
 if. y incompat_i x do. 24 message x; y return. end.
 select. z=.hasf x,y
 case. 0 0 do.
@@ -1772,7 +1792,8 @@ invalplot''     NB. replot caches are invalid
 invalexe''      NB. existing 'exe' verbs are invalid
 invalinfo''     NB. existing info display is invalid
 TTINFO=:''      NB. create empty
-TTn=: ,:'tn'
+NB. TTn=: ,:'tn'
+TTN=: ,<'tn'
 TD=: 1 1$0
 TTf=: ,:'tf'
 UNITN=: UNITS=: ,<'??'
@@ -1818,7 +1839,7 @@ ttsav=: 4 : 0
   NB. save the t-table as: y
   NB. Bool x=1 -- DENY overwrite of existing file y
   NB. Bool x=0 -- ALLOW overwrite of existing file y
-	msg '+++ ttsav (y)'  NB. the unexpanded name: y
+msg '+++ ttsav (y)'  NB. the unexpanded name: y
   NB. if empty y use existing (file) as last set by: ttload
   NB. else accept filename y as the new (file)
 if. 0<#y do. file=: expandedPath y end.
@@ -1826,8 +1847,8 @@ NB. ...hence if y-:'' then file is left as it stands
 TTs=. ('ts',>}.UNITS)
 TTu=. ('tu',>}.UNITN)
   NB. Rebuild TT from fields…
-TT=:  TTn sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
-empty 't' setcols TT
+TT=:  (>TTN) sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
+'t' setcols TT
 SAVED=: date''
 ]z=. (crr'SAVED'),LF,crr'CAPT'
 z=. z,LF2,'TTIMAGE=: 0 define',(,LF,.ct''),LF,')'
@@ -1887,9 +1908,8 @@ end.
 t=. 0 promo t    NB. ensure t doesn't move (hdr) item 0
 t=. t-.t-.(items'')  NB. remove bad ids
 invalexe''    NB. existing 'exe' verbs are invalid
-TTn=: t relabelitems TTn
-TTn=: t{TTn
-NB. TTn=: t relabelitems t{TTn
+NB. TTn=: t{ t relabelitems TTn
+TTN=: t{ relabelTTN t
 if. x do.
   TD=: t sortTD TD  NB. correctly displace the dependencies
 else.
@@ -2203,6 +2223,6 @@ datatype 'ratit 1r2 + i.5
 datatype ratit 0.5 + i.5
 )
 
-onload }: 0 : 0
-smoutput expandedPath '$'
-)
+NB. onload }: 0 : 0
+NB. smoutput expandedPath '$'
+NB. )

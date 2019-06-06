@@ -23,6 +23,18 @@ AABUILT=: '2019-05-25  18:00:45'
 AABUILT=: '2019-05-25  18:03:17'
 AABUILT=: '2019-05-25  18:08:06'
 AABUILT=: '2019-05-25  18:08:42'
+AABUILT=: '2019-06-05  05:12:03'
+AABUILT=: '2019-06-05  16:28:48'
+AABUILT=: '2019-06-05  16:42:08'
+AABUILT=: '2019-06-05  17:22:13'
+AABUILT=: '2019-06-05  17:39:38'
+AABUILT=: '2019-06-05  18:18:19'
+AABUILT=: '2019-06-05  19:00:37'
+AABUILT=: '2019-06-05  21:32:52'
+AABUILT=: '2019-06-05  22:24:09'
+AABUILT=: '2019-06-05  23:44:54'
+AABUILT=: '2019-06-06  00:17:36'
+AABUILT=: '2019-06-06  00:34:59'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -93,7 +105,7 @@ SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'
 SL=: '/'
-SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTn TTf file UNITS UNITN CAPT'
+SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTN TTf file UNITS UNITN CAPT'
 SP=: ' '
 ST=: '*'
 UL=: '_'
@@ -110,7 +122,7 @@ cocurrent 'cal'
 
 
 
-items=: 3 : 'i. #TTn'
+items=: 3 : 'i.#TTN'
 bh=:    ] }.~ [: >: ' ' i.~ ]
 boxvec=: [: dltb&.> <"1
 brace=: 1 |. '}{' , ":
@@ -254,9 +266,6 @@ not=: -.
 
 sig=: 3 : 'SIG__uun=: y'
 uunicode=: 3 : 'SIC__uun=: y'
-
-
-ctb=: 3 : '}.each ,.each vhold ; CH ; vquan ; (>UNITN) ; (>UNITS) ; TTn'
 
 cv_z_=: cv_cal_
 cx_z_=: cx_cal_
@@ -521,7 +530,7 @@ if. 0=#y do. ' ' return. end.
 for_i. i.#y do.
 'c b e'=. i{y [ rev=. 0
 if. b>e do. 'e b rev'=. b ; e ; 1 end.
-z=. (#TTn) $ 0
+z=. 0*items''
 z=. 2 (b to e) }z
 if. rev do.
   z=. 4 b }z
@@ -639,7 +648,7 @@ r1 a }vsiqn
 
 bend=: 3 : 0
 
-z=. i.t=. #TTn
+z=. items''
 if. y e. (0 -.~ z,-z) do.
   z=. z -. 0
   z=. z -. |y
@@ -650,7 +659,7 @@ end.
 
 bubb=: 3 : 0
 
-z=. i.t=. #TTn
+t=. #z=. items''
 if. y e. (}.}:z),2}.-z do.
 z+(-|y+y<0)|. t{.1 _1
 end.
@@ -966,16 +975,6 @@ for_v. ','cut extn do.
   z=. z , v_index ; (v_index{dep) ; '('cut }: >v
 end.
 )
-
-fitemsub=: 3 : 0
-
-z=. y{TTn
-for_entry. fargs y do.
-  'n i var unit'=. entry
-  z=. z rplc (brace var) ; (brace i)
-end.
-)
-
 fcalc=: 3 : 0
 
 
@@ -1360,7 +1359,7 @@ end.
 )
 
 hlv=: -:
-holds=: 3 : 'vhold +. +./"1 HOLD= TTn'
+holds=: 3 : 'vhold +. +./"1 HOLD= >TTN'
 
 id=: 3 : 0
 z=. ": (|: ,: i.#y)
@@ -1451,7 +1450,7 @@ _ e. |y
 isNum=: ([: 1: 0 + ]) ::0:
 isnums=: [: *./ '0123456789' e.~ ]
 isnums=: (0 < #) *. [: *./ '0123456789' e.~ ]
-items=: 3 : 'i. #TTn'
+items=: 3 : 'i.#TTN'
 ln=: ^.
 log10=: 10&^.
 log2=: 2&^.
@@ -1459,6 +1458,7 @@ log2=: 2&^.
 mandhold=: _1&$: :(4 : 0)
 
 if. 1<#y do. for_i. y do. x mandhold i end. return. end.
+TTn=. >TTN
 lab=. (dtb y{TTn)-.SH,HOLD
 held=. (SH e. y{TTn) or (HOLD e. y{TTn)
 select. x
@@ -1608,21 +1608,30 @@ end.
 relabel=: 4 : 0
 
 if. notitem x do. return. end.
-i=. (#TTn)x}items''
-TTn=: i{TTn,y
+TTN=: (<,y) x}TTN
 'relabel' dirty 1
 )
 
-relabelitems=: 4 : 0
+displaceTTN=: 3 : 0
 
-r=. $y
-io=. x2b >brace each ":each x{items''
-ii=. x2b >brace each ":each i.#x
-r $ y rplc , io,.ii
+]io=. x2b >brace each ":each items''
+]ii=. x2b >brace each ":each y+items''
+for_item. TTN[z=.'' do. line=. >item
+  z=. z , <line rplc ,io,.ii
+end.
 )
 
+relabelTTN=: 3 : 0
+
+]io=. x2b >brace each ":each y{items''
+]ii=. x2b >brace each ":each i.#y
+for_item. TTN[z=.'' do. line=. >item
+  z=. z , <line rplc ,io,.ii
+end.
+)
 
 changesTtable=: ] -: tolower
+
 
 reselect=: empty
 
@@ -1752,7 +1761,13 @@ end.
 if. 0<#units do. y forceunits units end.
 if. 0<#name do. y relabel name end.
 y forcevalue valu
-16 message y;valu
+
+CH=: recal y
+if. y{CH do. 16 message y;x
+elseif. 0<#OVERHELDS do. 35 message listitems OVERHELDS
+elseif. do. 17 message y;x
+end.
+OVERHELDS=: ''
 )
 
 shortpath=: 3 : 0
@@ -1887,7 +1902,7 @@ invalplot''
 'yts cyc fac'=. convert ytu
 
 
-TTn=: TTn,ytn
+TTN=: TTN,<ytn
 TD=: TD,0
 TTf=: TTf,SP
 UNITN=: UNITN,<,kosher ytu
@@ -1917,12 +1932,19 @@ UNITS=: UNITS,<,kosher yts
 vquan=: 'ttafl.1'ratit vquan,0r1
 vfact=: 'ttafl.2'ratit vfact , 'ttafl.3'ratit fac
 TD=: TD,,".ytd
-TTn=: TTn,,ytn
-TTn=: (}:TTn) , fitemsub <:#TTn
+TTN=: TTN , <,ytn fsub #TTN
 ttfix''
 invalexe''
 CH=: recal 0
 'ttafl' dirty 1
+)
+
+fsub=: 4 : 0
+
+for_item. fargs y do.
+  'n i var unit'=. item
+  x=. x rplc (brace var) ; (brace i)
+end.
 )
 
 ttappend=: 3 : 0
@@ -1942,15 +1964,17 @@ vmodlS=. vmodl
 vhiddS=. vhidd
 UNITSsav=. UNITS
 UNITNsav=. UNITN
+nt0=. #TTNsav=. TTN
 vhidd=: vmodl=: _
 loadFixed file1
 CAPT=: CAPTsav
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
 
 empty 't' setcols TT
-nt0=. #TTn
-TTn=: TTn, debc TT cols tn
-nt1=. #TTn
+TTN=: b4x debc TT cols tn
+TTN=: displaceTTN <:nt0
+
+nt1=. #TTN=: TTNsav,TTN
 z=. ". debc TT cols td
 if. 1=$$z do. z=. |: ,:z end.
 TD=: TD , (<:nt0) dadd z
@@ -1985,8 +2009,9 @@ tag,'appended: ',file1
 eraseRedundantCaches=: 3 : 0
 
 erase y
-smoutput '>>> THESE CACHES DELETED: ',y
+msg '>>> eraseRedundantCaches: (y) deleted'
 )
+
 vdisp=: 3 : 0
 
 ([: uuengine 'DISP' , ])"1 >UNITN
@@ -2009,7 +2034,7 @@ case. do. nb 'ttauf:' ; 'bad funct line' ; y return.
 end.
 'fmla extn'=. fmla_extn fext
 vc=. ','cut extn
-deps=. ":(#TTn)+i.$vc
+deps=. ":(#items'')+i.$vc
 for_i. i.$vc do.
   v=. >i{vc
   'n unit'=. '('cut detb v-.')'
@@ -2051,9 +2076,8 @@ ttdelete_one=: 3 : 0
 ttfix=: 3 : 0
 
 
-
 invalplot''
-t=. #TTn
+t=. #items''
 
 vquan=: t{.vquan
 vsiqn=: t{.vsiqn
@@ -2087,8 +2111,8 @@ vhidd=: vmodl=: _
 loadFixed file
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
 
-empty 't' setcols TT
-TTn=: ucp"1 debc TT hcols tn
+'t' setcols TT
+TTN=: utf8 each b4x debc TT hcols tn
 TTu=. debc TT hcols tu
 TTs=. debc TT hcols ts
 TD=: 0,". debc TT cols td
@@ -2123,8 +2147,8 @@ vchecks''
 ttmerge=: 4 : 0
 
 invalplot''
-]t=. x y}items''
-]TTn=: t relabelitems TTn
+t=. x y}items''
+TTN=: relabelTTN t
 if. y incompat_i x do. 24 message x; y return. end.
 select. z=.hasf x,y
 case. 0 0 do.
@@ -2161,7 +2185,7 @@ invalplot''
 invalexe''
 invalinfo''
 TTINFO=:''
-TTn=: ,:'tn'
+TTN=: ,<'tn'
 TD=: 1 1$0
 TTf=: ,:'tf'
 UNITN=: UNITS=: ,<'??'
@@ -2206,15 +2230,15 @@ ttsav=: 4 : 0
 
 
 
-	msg '+++ ttsav (y)'
+msg '+++ ttsav (y)'
 
 
 if. 0<#y do. file=: expandedPath y end.
 TTs=. ('ts',>}.UNITS)
 TTu=. ('tu',>}.UNITN)
 
-TT=:  TTn sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
-empty 't' setcols TT
+TT=:  (>TTN) sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
+'t' setcols TT
 SAVED=: date''
 ]z=. (crr'SAVED'),LF,crr'CAPT'
 z=. z,LF2,'TTIMAGE=: 0 define',(,LF,.ct''),LF,')'
@@ -2271,8 +2295,7 @@ end.
 t=. 0 promo t
 t=. t-.t-.(items'')
 invalexe''
-TTn=: t relabelitems TTn
-TTn=: t{TTn
+TTN=: t{ relabelTTN t
 if. x do.
   TD=: t sortTD TD
 else.
@@ -2563,13 +2586,9 @@ datatype 'ratit 1r2 + i.5
 datatype ratit 0.5 + i.5
 )
 
-onload }: 0 : 0
-smoutput expandedPath '$'
-)
-
 '==================== [cal] ct.ijs ===================='
 0 :0
-Thursday 4 April 2019  22:18:14
+Wednesday 5 June 2019  22:03:36
 -
 ct=="see t-table" -generates display layout for the t-table
 )
@@ -2605,6 +2624,7 @@ un=. >UNITN
 us=. >UNITS
 uuqy=. siqn ,.SP ,.us
 qtys=. mjust wc un uu__uun uuqy
+nams=. >uucp each TTN
 
 
  lin0=. sw' +++ (CAPT) in diagnostic mode y=(y)'
@@ -2619,16 +2639,16 @@ case. 2 do.
  lin0=. sw'y=(y)       lnos       qtys        ||      quan un        siqn us'
  z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.SEP1 ,.quan ,.SP ,.un ,.SP ,.siqn ,.SP ,.us
 case. 3 do.
- z=. ,.each vhold ; CH ; vquan ; qtys ; (>UNITN) ; (>UNITS) ; TTn
+ z=. ,.each vhold ; CH ; vquan ; qtys ; un ; us ; nams
  return.
 case.   do.
  lin0=. CAPT
- z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qtys ,.SP ,.SP ,.TTn
+ z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qtys ,.SP ,.SP ,.nams
 end.
 lin0 , z #~ force0 -.vhidd
 )
 
-onload 'sm ct 3'
+onload 'sm ct '''''
 
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 0 :0
@@ -3398,7 +3418,7 @@ CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
 CTBB void ct 3                     \t-table display: boxed raw data
-CTBN n    utf8 x2f ct n            \t-table display choice: utf-8
+CTBN n    ct n                     \t-table display choice: n
 CTBU void utf8 x2f ct''            \t-table display: utf-8
 DIRT void dirty''                  \flag: unsaved changes
 FMLA r    formula r                \formula of item r
@@ -3409,7 +3429,7 @@ ITMS void }.items''                \list of non-0 item#s
 JXDO yy   ". yy                    \run J code in this loc
 MSSG void MESSAGE                  \message text from last instruction
 MSID void MESSAGE_ID               \message-ID of last instruction
-NAME r    dtb r{TTn                \name of item r
+NAME r    dtb r pick TTN           \name of item r
 PARS r    parents r                \parents of item r
 QCAL void CAL                      \the CAL instruction set
 RETA yy   'assert last noun retd'  \=+assert last noun returned
@@ -4659,7 +4679,7 @@ RETURNED=: ''
 STARTED=: 0
 TIMEOUT=: 5
 TOLERANCE=: 1e_5
-TTn=: ,:'tn'
+TTN=: ,<'tn'
 WARNPLEX=: 1
 i.0 0
 )
