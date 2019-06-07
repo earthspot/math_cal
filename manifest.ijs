@@ -2,7 +2,7 @@ NB. math/cal manifest
 
 CAPTION=: 'Scientific calculator engine'
 
-VERSION=: '2.1.20'
+VERSION=: '2.1.21'
 
 DEPENDS=: 0 : 0
 format/zulu
