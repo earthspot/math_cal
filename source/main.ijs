@@ -527,15 +527,15 @@ for_i. i.$vc do.    NB. for each varspec in turn
 end.
 )
 
-fargs=: 3 : 0
-  NB. table of args named in formula(y)
-'fmla extn'=. fmla_extn formula y
-dep=. 0-.~y{TD    NB. dependencies
-z=. empty''
-for_v. ','cut extn do. NB. scan arg specs in: extn
-  z=. z , v_index ; (v_index{dep) ; '('cut }: >v
-end.
-)
+NB. fargs=: 3 : 0
+NB.   NB. table of args named in formula(y)
+NB. 'fmla extn'=. fmla_extn formula y
+NB. dep=. 0-.~y{TD    NB. dependencies
+NB. z=. empty''
+NB. for_v. ','cut extn do. NB. scan arg specs in: extn
+NB.   z=. z , v_index ; (v_index{dep) ; '('cut }: >v
+NB. end.
+NB. )
 
 NB. fitemsub=: 3 : 0
 NB.   NB. substitute braced args named in formula(y)
@@ -1468,14 +1468,14 @@ sP0=: 4 : 'x,.y'
 sP1=: 4 : '(x,.SP),.y'
 sP2=: 4 : '((x,.SP),.SP),.y'
 targs=: [: {. [: }. [: |: [: ;: a2x
-tbx=: ijs
+tbx=: ,&'.tbx'"_
 
 title=: 3 : 0
   NB. access the title stored for current t-table
   NB. used by: tabengine
 CAPT
 :
-CAPT=: y      NB. call: 1 title <updated_title>
+CAPT=: y  NB. call: 1 title <updated_title>
 )
 
 tranhold=: _1&$: :(4 : 0)
@@ -1536,20 +1536,20 @@ vfact=: 'ttafl.2'ratit vfact , 'ttafl.3'ratit fac
 TD=: TD,,".ytd
 NB. TTn=: TTn,,ytn
 NB. TTn=: (}:TTn) , fitemsub <:#TTn
-TTN=: TTN , <,ytn fsub #TTN
+TTN=: TTN , <,ytn
 ttfix''
 invalexe''
 CH=: recal 0
 'ttafl' dirty 1
 )
 
-fsub=: 4 : 0
-  NB. new TTN item (y) - (x) with subst from (formula y)
-for_item. fargs y do.
-  'n i var unit'=. item
-  x=. x rplc (brace var) ; (brace i)
-end.
-)
+NB. fsub=: 4 : 0
+NB.   NB. new TTN item (y) - (x) with subst from (formula y)
+NB. for_item. fargs y do.
+NB.   'n i var unit'=. item
+NB.   x=. x rplc (brace var) ; (brace i)
+NB. end.
+NB. )
 
 ttappend=: 3 : 0
   NB. append chosen t-table to the existing one
@@ -1698,7 +1698,7 @@ vsiq0=: vsiqn
 'ttfix' dirty 1
 )
 
-ttload=: 3 : 0
+tt0load=: 3 : 0
   NB. load the chosen t-table
 if. isEmpty y do. 19 message '' return. end.  NB. IAC 5 DEC 18
 plotclose''
@@ -1727,14 +1727,14 @@ empty erase 'TT'      NB. delete TT as a redundant cache
   NB. re-create vfact and the units cols
 z=. convert each UNITN=: kosher each boxvec TTu  NB. nominal units
 UNITS=: kosher each (>&{.) each z    NB. SI-units
-vfact=: 'ttload.1'ratit 0,>(>&{:) each }.z
+vfact=: 'tt0load.1'ratit 0,>(>&{:) each }.z
   NB. Now setup work flags
 CH=: flags 0       NB. "Changed" flags
 if. 1=#vhidd do. vhidd=: flags 0 end.  NB. =1 if row is hidden when displayed
 if. 1=#vmodl do. vmodl=: flags 1 end.  NB. The break-back model to be used
 vhold=: flags 0    NB. TEST ONLY >>>>> default==no holds saved in t-table
-vqua0=: vquan=: 'ttload.1'ratit vquan
-vsiq0=: vsiqn=: 'ttload.2'ratit (vdisp'') + vquan*vfact
+vqua0=: vquan=: 'tt0load.1'ratit vquan
+vsiq0=: vsiqn=: 'tt0load.2'ratit (vdisp'') + vquan*vfact
   NB. 'exe' fns can be included in the saved t-table
   NB. but replace them anyway
 genexe each I. hasfb''
@@ -1745,7 +1745,7 @@ settitle CAPT
 reselect 0
 CH=: recal 0
 NB. snapshot 1
-'ttload' dirty 0  NB. resets the dirty-bit
+'tt0load' dirty 0  NB. resets the dirty-bit
 vchecks''
 27 message tag; filename file
 )
@@ -1835,7 +1835,7 @@ ttsavo=: 3 : '0 ttsav y'                NB. save as y over an existing file
 ttsavs=: 3 : '0 ttsaveCopyAs SAMPLE'    NB. save a COPY of the current t-table as: SAMPLE
 ttsavt=: 3 : '1 ttsav safefname CAPT'   NB. save t-table from caption
 
-ttsav=: 4 : 0
+tt0sav=: 4 : 0
   NB. save the t-table as: y
   NB. Bool x=1 -- DENY overwrite of existing file y
   NB. Bool x=0 -- ALLOW overwrite of existing file y
@@ -1868,7 +1868,7 @@ NB. z=. z,LF,'sig ',":sig''  NB. restore significant figures
 if. UNDEF -: fname file do. 29 message'' return. end.
 retco=. archive filename file
 data=: z   NB. DIAGNOSTIC TO ACCOMPANY: file
-empty erase 'TT' NB. TT is nowadays a redundant cache!
+NB. 	empty erase 'TT' NB. TT is nowadays a redundant cache!
 mfile=: filename file  NB. t-table name for message
   NB. x=1 authorizes fexist trap...
 if. x and PROTECT and fexist file do.
@@ -2088,7 +2088,7 @@ vchecks RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError) dltb YY
 
 tabengineError=: 3 : 0
   NB. report reason for instruction error
-smoutput z=. 'tabengineError: bad instruction' ; INSTR ; ('errmsg from CAL_',INST) ; 13!:12''
+smoutput z=. >'tabengineError: bad instruction' ; INSTR ; ('errmsg from CAL_',INST) ; 13!:12''
 z return.
 )
 
@@ -2223,6 +2223,77 @@ datatype 'ratit 1r2 + i.5
 datatype ratit 0.5 + i.5
 )
 
+NB. =========== tt1load tt1sav ========================
+
+tt1sav=: 4 : 0
+  NB. save the t-table as: y
+  NB. Bool x=1 -- DENY overwrite of existing file y
+  NB. Bool x=0 -- ALLOW overwrite of existing file y
+msg '+++ tt1sav (y)'  NB. the unexpanded name: y
+  NB. if empty y use existing (file) as last set by: ttload
+  NB. else accept filename y as the new (file)
+if. 0<#y do. file=: expandedPath y end.
+NB. ...hence if y-:'' then file is left as it stands
+z=. 3!:1 ". SNAPSP rplc SP ; SC
+if. UNDEF -: fname file do. 29 message'' return. end.
+retco=. archive filename file
+NB. data=: z   NB. DIAGNOSTIC TO ACCOMPANY: file <<<<<<<<<<<<<<<<<<<<NEEDED?
+mfile=: filename file  NB. t-table name for message
+  NB. x=1 authorizes fexist trap...
+if. x and PROTECT and fexist file do.
+  PROTECT=: 0  NB. allow it to work a second time
+  NB. DO NOT save file...
+  NB. (Leave as a job for the topend to optionally call ttsavo)
+  42 message mfile return.
+end.
+  NB. Save file and report the result...
+bytes=. z fwrite file
+msg 28 message bytes; mfile
+if. bytes>0 do.  NB. t-table was saved ok
+  ]mmm=. 30 message mfile; bytes
+  'tt1sav'dirty 0 NB. flag: t-table no longer needs saving
+else.            NB. file could not be saved...
+  ]mmm=. 31 message mfile
+end.
+msg'--- tt1sav returns message:(LF)(mmm)'
+mmm return.  NB. return resulting message for top-end
+)
+
+tt1load=: 3 : 0
+  NB. load the chosen t-table
+if. isEmpty y do. 19 message '' return. end.  NB. IAC 5 DEC 18
+plotclose''
+MSLOG=: 0 0$''  NB. stop it getting too big
+snapshot 0      NB. to recover space
+invalplot''     NB. replot caches are invalid
+invalexe''      NB. existing 'exe' verbs are invalid
+invalinfo''     NB. existing  info display is invalid
+TTINFO=:''      NB. create empty
+SWAPPED=: 0     NB. fmla order (overridden by t-table script)
+file=: expandedPath y    NB. y is generalised file descriptor
+if. -.fexist file do. 20 message file return. end.  NB. IAC 5 DEC 18
+vhidd=: vmodl=: _
+(SNAPSP)=: 3!:2 fread file=: expandedPath tt'TNAM'
+  NB. regenerate 'exe' fns
+genexe each I. hasfb''
+tag=. SWAPPED#'\'  NB. indicator: needs saving in cleaned-up form
+reselect 0
+NB. CH=: recal 0  NB. WHY?
+NB. snapshot 1
+'tt1load' dirty 0  NB. resets the dirty-bit
+vchecks''
+27 message tag; filename file
+)
+
+ttsav=: tt1sav  NB. from now on ALWAYS save in new format
+
+ttload=: 3 : 0
+if. y endsWith '.ijs' do. tt0load y else. tt1load y
+tt0load`tt1load@. y endsWith '.ijs'
+)
+
+
+NB. =========== onload ========================
 NB. onload }: 0 : 0
-NB. smoutput expandedPath '$'
+NB. smoutput 'expression here'
 NB. )

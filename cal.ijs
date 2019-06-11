@@ -35,6 +35,9 @@ AABUILT=: '2019-06-05  22:24:09'
 AABUILT=: '2019-06-05  23:44:54'
 AABUILT=: '2019-06-06  00:17:36'
 AABUILT=: '2019-06-06  00:34:59'
+AABUILT=: '2019-06-11  02:18:49'
+AABUILT=: '2019-06-11  02:37:07'
+AABUILT=: '2019-06-11  02:40:28'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -963,16 +966,6 @@ for_i. i.$vc do.
   v=. >i{vc
   'n unit'=. '('cut detb v-.')'
   z=. z,<unit
-end.
-)
-
-fargs=: 3 : 0
-
-'fmla extn'=. fmla_extn formula y
-dep=. 0-.~y{TD
-z=. empty''
-for_v. ','cut extn do.
-  z=. z , v_index ; (v_index{dep) ; '('cut }: >v
 end.
 )
 fcalc=: 3 : 0
@@ -1932,21 +1925,12 @@ UNITS=: UNITS,<,kosher yts
 vquan=: 'ttafl.1'ratit vquan,0r1
 vfact=: 'ttafl.2'ratit vfact , 'ttafl.3'ratit fac
 TD=: TD,,".ytd
-TTN=: TTN , <,ytn fsub #TTN
+TTN=: TTN , <,ytn
 ttfix''
 invalexe''
 CH=: recal 0
 'ttafl' dirty 1
 )
-
-fsub=: 4 : 0
-
-for_item. fargs y do.
-  'n i var unit'=. item
-  x=. x rplc (brace var) ; (brace i)
-end.
-)
-
 ttappend=: 3 : 0
 
 sllog'ttappend y'
