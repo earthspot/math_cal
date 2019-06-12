@@ -47,6 +47,9 @@ loadFixed TPUU sl 'uu.ijs'
 uun=: uuconnect''  NB. create instance of class UU
 make_CAL'' NB. create semantic fns for tabengine
 globmake'' NB. make global nouns
+tbx=: SAVEFORMAT&Xtbx   NB. the preferred (global) version of: tbx
+file=: tbx UNDEF	NB. the loaded filename cache
+ttsav=: tt0sav`tt1sav @. SAVEFORMAT
 progress _ NB. init progressbar to idle state
 extendedSine EXTENDEDSINE  NB. enable/disable extended trig fns
 0 enlog 0  NB. start a new log file
@@ -91,7 +94,6 @@ globmake=: 3 : 0
   NB. Init global nouns
   NB. These are NOT "constants" - they may change in-session
   NB. If _cal_ used as a class these will be in the numbered locale
-file=: tbx UNDEF
 ARROWCH=: ARROWCH1	NB. arrow-drawing chars (see consts.ijs)
 DASHBOARD=: 0	NB. 1==dashboard enabled
 DIRTY=: 0		NB. 1==t-table needs saving
@@ -105,10 +107,11 @@ PAD=: 10		NB. used by: pad
 PROTECT=: 1	NB. 1==don't overwrite t-table of same name
 PLOT=: 0		NB. plot control parameter
 RETURNED=: ''	NB. noun returned by i/f call
+SAVEFORMAT=: 1	NB. 0=ijs 1=tbx
 STARTED=: 0	NB. 1==start completes ok
+STATE=: ''	NB. UU state cache (empty for unset)
 TIMEOUT=: 5	NB. seconds (used by: timeout)
 TOLERANCE=: 1e_5	NB. default tolerance for comparing physical quantities
-NB. TTn=: ,:'tn'	NB. t-table cache for item names
 TTN=: ,<'tn'	NB. t-table cache for item names (boxed)
 WARNPLEX=: 1	NB. 1==run warnplex after each recalc
 i.0 0

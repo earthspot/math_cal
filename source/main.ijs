@@ -1430,7 +1430,7 @@ NB.  ssw '... snapshot snapped: (nom) [(tallyZN _)] vquan=[(vquan)]'
 'snapped: ',nom
 :
 nom=. nxt rZN=:x
-(SNAPSP)=: ".nom
+()=: ".nom
 NB.  ssw '+++ snapshot restored: (nom) vquan=[(vquan)]'
 'restored: ',nom
 )
@@ -1468,7 +1468,6 @@ sP0=: 4 : 'x,.y'
 sP1=: 4 : '(x,.SP),.y'
 sP2=: 4 : '((x,.SP),.SP),.y'
 targs=: [: {. [: }. [: |: [: ;: a2x
-tbx=: ,&'.tbx'"_
 
 title=: 3 : 0
   NB. access the title stored for current t-table
@@ -1700,7 +1699,10 @@ vsiq0=: vsiqn
 
 tt0load=: 3 : 0
   NB. load the chosen t-table
+	msg=. smoutput&sw
+msg '+++ tt0load: y=[(y)]'
 if. isEmpty y do. 19 message '' return. end.  NB. IAC 5 DEC 18
+tbx=. 0&Xtbx    NB. needs to be LOCALLY FORCED
 plotclose''
 MSLOG=: 0 0$''  NB. stop it getting too big
 snapshot 0      NB. to recover space
@@ -1839,6 +1841,7 @@ tt0sav=: 4 : 0
   NB. save the t-table as: y
   NB. Bool x=1 -- DENY overwrite of existing file y
   NB. Bool x=0 -- ALLOW overwrite of existing file y
+tbx=. 1&Xtbx    NB. needs to be LOCALLY FORCED
 msg '+++ ttsav (y)'  NB. the unexpanded name: y
   NB. if empty y use existing (file) as last set by: ttload
   NB. else accept filename y as the new (file)
@@ -1867,7 +1870,6 @@ NB. z=. z,LF2,'uunicode ',":uunicode''  NB. restore SI conformance level
 NB. z=. z,LF,'sig ',":sig''  NB. restore significant figures
 if. UNDEF -: fname file do. 29 message'' return. end.
 retco=. archive filename file
-data=: z   NB. DIAGNOSTIC TO ACCOMPANY: file
 NB. 	empty erase 'TT' NB. TT is nowadays a redundant cache!
 mfile=: filename file  NB. t-table name for message
   NB. x=1 authorizes fexist trap...
@@ -2122,10 +2124,6 @@ ttlib=: 3 : 0
 jpath tbx TPTT sl y
 )
 
-ttsamps=: 3 : 0
-jpath tbx TPSA sl y
-)
-
 archive=: 3 : 0
   NB. archive t-table: y (the unexpanded path name)
   NB. xtx appends correct filename extension if none given
@@ -2141,16 +2139,21 @@ tgt=. fld sl xtx y
 tgt fcopynew sce
 )
 
+ttsamps=: 3 : 0
+  NB. expand suffix: (y) to full path of a factory sample
+jpath SAVEFORMAT Xtbx zzzz=: TPSA sl SAMPLE,":y
+)
+
 expandedPath=: 3 : 0
   NB. find full pathname of t-table file (y) in its various forms
 if. 0=#y do. y=. file end.
 if. y-: '$$' do.
   z=. ttlib SAMPLE  NB. look in t-tables library first
-  if. -.fexist z do. ttsamps SAMPLE end.  NB. then factory
-elseif. (y-:'$')or(y-:,'$')  do. ttsamps SAMPLE  NB. only factory
-elseif. '$'= {.y do. ttsamps SAMPLE,}.y
-elseif. isnums y do. ttsamps SAMPLE,y
-elseif. isNo {.y do. ttsamps SAMPLE,":y
+  if. -.fexist z do. ttsamps '' end.  NB. then factory
+elseif. y ident '$'  do. ttsamps''  NB. only factory
+elseif. '$'= {.y do. ttsamps }.y
+elseif. isnums y do. ttsamps y
+elseif. isNo {.y do. ttsamps y
 elseif. '~'={.y  do. dtb jpath y
 elseif. '/'={.y  do. y  NB. assume y is fullpath (MAC/Unix only)
 elseif.          do. ttlib dtb y
@@ -2229,15 +2232,20 @@ tt1sav=: 4 : 0
   NB. save the t-table as: y
   NB. Bool x=1 -- DENY overwrite of existing file y
   NB. Bool x=0 -- ALLOW overwrite of existing file y
+tbx=. 1&Xtbx    NB. needs to be LOCALLY FORCED
 msg '+++ tt1sav (y)'  NB. the unexpanded name: y
   NB. if empty y use existing (file) as last set by: ttload
   NB. else accept filename y as the new (file)
 if. 0<#y do. file=: expandedPath y end.
 NB. ...hence if y-:'' then file is left as it stands
-z=. 3!:1 ". SNAPSP rplc SP ; SC
+SAVED=: date''
+TTIMAGE=: ct''
+STATE=: state__uun''  NB. capture UU state for reinstatement
+  NB. STATE is SIC SCI SIG SIZ
+z=. 3!:1 ". SAVESP rplc SP ; SC
 if. UNDEF -: fname file do. 29 message'' return. end.
 retco=. archive filename file
-NB. data=: z   NB. DIAGNOSTIC TO ACCOMPANY: file <<<<<<<<<<<<<<<<<<<<NEEDED?
+data1Saved=: z  NB. DIAGNOSTIC TO ACCOMPANY: file
 mfile=: filename file  NB. t-table name for message
   NB. x=1 authorizes fexist trap...
 if. x and PROTECT and fexist file do.
@@ -2261,7 +2269,10 @@ mmm return.  NB. return resulting message for top-end
 
 tt1load=: 3 : 0
   NB. load the chosen t-table
+	msg=. smoutput&sw
+msg '+++ tt1load: y=[(y)]'
 if. isEmpty y do. 19 message '' return. end.  NB. IAC 5 DEC 18
+tbx=. 1&Xtbx    NB. needs to be LOCALLY FORCED
 plotclose''
 MSLOG=: 0 0$''  NB. stop it getting too big
 snapshot 0      NB. to recover space
@@ -2273,27 +2284,41 @@ SWAPPED=: 0     NB. fmla order (overridden by t-table script)
 file=: expandedPath y    NB. y is generalised file descriptor
 if. -.fexist file do. 20 message file return. end.  NB. IAC 5 DEC 18
 vhidd=: vmodl=: _
-(SNAPSP)=: 3!:2 fread file=: expandedPath tt'TNAM'
+try. (SAVESP)=: data1Loaded=: 3!:2 fread file
+catch. ssw '>>> tt1load[(#o2b SAVESP)-(#data1Loaded)]: load error, file (file) may be corrupt'
+end.
+if. 1=#vhidd do. vhidd=: flags 0 end.  NB. =1 if row is hidden when displayed
+if. 1=#vmodl do. vmodl=: flags 1 end.  NB. The break-back model to be used
+msg '... tt1load: vmodl=(vmodl) vhidd=(vhidd)'
   NB. regenerate 'exe' fns
 genexe each I. hasfb''
 tag=. SWAPPED#'\'  NB. indicator: needs saving in cleaned-up form
 reselect 0
-NB. CH=: recal 0  NB. WHY?
+NB. CH=: recal 0   NB. WHY?
 NB. snapshot 1
+state__uun STATE   NB. reinstate UU state at pt when saved
 'tt1load' dirty 0  NB. resets the dirty-bit
 vchecks''
 27 message tag; filename file
 )
 
-ttsav=: tt1sav  NB. from now on ALWAYS save in new format
-
-ttload=: 3 : 0
-if. y endsWith '.ijs' do. tt0load y else. tt1load y
-tt0load`tt1load@. y endsWith '.ijs'
+ttQload=: 3 : 0
+	msg=. smoutput&sw
+y=. expandedPath y
+NB. BUT THIS WILL LOAD EXISTING file IF y=''
+msg '+++ ttQload: y=[(y)]'
+if. (y endsWith '.tbx')or('$' = {.y) do. tt1load y else. tt0load y end.
 )
 
+ttload=: ttQload  NB. to permit manual redirection
 
-NB. =========== onload ========================
+Xtbx=: 4 : 0
+  NB. FORCE extension: ijs onto path (y)
+if. DT={._4|.y do. y=. _4}.y end.
+if. x do. y,'.tbx' else. y,'.ijs' end.
+)
+
+NB. NB. =========== onload ========================
 NB. onload }: 0 : 0
-NB. smoutput 'expression here'
+NB. smoutput (tbx 'abracabra') ; (tbx 'abracabra.ijs') ; (tbx 'abracabra.tbx')
 NB. )

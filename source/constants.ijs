@@ -28,6 +28,7 @@ SC=: ';'
 SH=: '!'
 SL=: '/'
 SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTN TTf file UNITS UNITN CAPT'
+SAVESP=: 'SAVED TTIMAGE STATE ',SNAPSP
 SP=: ' '
 ST=: '*'
 UL=: '_'

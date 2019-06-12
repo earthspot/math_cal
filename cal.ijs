@@ -38,6 +38,29 @@ AABUILT=: '2019-06-06  00:34:59'
 AABUILT=: '2019-06-11  02:18:49'
 AABUILT=: '2019-06-11  02:37:07'
 AABUILT=: '2019-06-11  02:40:28'
+AABUILT=: '2019-06-11  20:23:12'
+AABUILT=: '2019-06-11  20:23:59'
+AABUILT=: '2019-06-11  20:27:55'
+AABUILT=: '2019-06-11  20:28:25'
+AABUILT=: '2019-06-11  20:35:49'
+AABUILT=: '2019-06-11  20:36:47'
+AABUILT=: '2019-06-11  20:43:30'
+AABUILT=: '2019-06-11  20:44:07'
+AABUILT=: '2019-06-11  20:47:07'
+AABUILT=: '2019-06-11  20:47:19'
+AABUILT=: '2019-06-11  20:50:21'
+AABUILT=: '2019-06-11  20:51:52'
+AABUILT=: '2019-06-11  20:54:07'
+AABUILT=: '2019-06-11  20:56:32'
+AABUILT=: '2019-06-11  21:03:32'
+AABUILT=: '2019-06-11  21:45:38'
+AABUILT=: '2019-06-12  00:39:01'
+AABUILT=: '2019-06-12  00:41:05'
+AABUILT=: '2019-06-12  01:23:43'
+AABUILT=: '2019-06-12  01:45:13'
+AABUILT=: '2019-06-12  01:47:52'
+AABUILT=: '2019-06-12  03:08:40'
+AABUILT=: '2019-06-12  03:11:27'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -109,6 +132,7 @@ SC=: ';'
 SH=: '!'
 SL=: '/'
 SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTN TTf file UNITS UNITN CAPT'
+SAVESP=: 'SAVED TTIMAGE STATE ',SNAPSP
 SP=: ' '
 ST=: '*'
 UL=: '_'
@@ -1824,7 +1848,7 @@ cutbackZN nom
 'snapped: ',nom
 :
 nom=. nxt rZN=:x
-(SNAPSP)=: ".nom
+()=: ".nom
 'restored: ',nom
 )
 
@@ -1860,7 +1884,6 @@ sP0=: 4 : 'x,.y'
 sP1=: 4 : '(x,.SP),.y'
 sP2=: 4 : '((x,.SP),.SP),.y'
 targs=: [: {. [: }. [: |: [: ;: a2x
-tbx=: ijs
 
 title=: 3 : 0
 
@@ -2078,9 +2101,12 @@ vsiq0=: vsiqn
 'ttfix' dirty 1
 )
 
-ttload=: 3 : 0
+tt0load=: 3 : 0
 
+	msg=. smoutput&sw
+msg '+++ tt0load: y=[(y)]'
 if. isEmpty y do. 19 message '' return. end.
+tbx=. 0&Xtbx
 plotclose''
 MSLOG=: 0 0$''
 snapshot 0
@@ -2106,14 +2132,14 @@ empty erase 'TT'
 
 z=. convert each UNITN=: kosher each boxvec TTu
 UNITS=: kosher each (>&{.) each z
-vfact=: 'ttload.1'ratit 0,>(>&{:) each }.z
+vfact=: 'tt0load.1'ratit 0,>(>&{:) each }.z
 
 CH=: flags 0
 if. 1=#vhidd do. vhidd=: flags 0 end.
 if. 1=#vmodl do. vmodl=: flags 1 end.
 vhold=: flags 0
-vqua0=: vquan=: 'ttload.1'ratit vquan
-vsiq0=: vsiqn=: 'ttload.2'ratit (vdisp'') + vquan*vfact
+vqua0=: vquan=: 'tt0load.1'ratit vquan
+vsiq0=: vsiqn=: 'tt0load.2'ratit (vdisp'') + vquan*vfact
 
 
 genexe each I. hasfb''
@@ -2123,7 +2149,7 @@ tag=. SWAPPED#'\'
 settitle CAPT
 reselect 0
 CH=: recal 0
-'ttload' dirty 0
+'tt0load' dirty 0
 vchecks''
 27 message tag; filename file
 )
@@ -2210,10 +2236,11 @@ ttsavo=: 3 : '0 ttsav y'
 ttsavs=: 3 : '0 ttsaveCopyAs SAMPLE'
 ttsavt=: 3 : '1 ttsav safefname CAPT'
 
-ttsav=: 4 : 0
+tt0sav=: 4 : 0
 
 
 
+tbx=. 1&Xtbx
 msg '+++ ttsav (y)'
 
 
@@ -2238,8 +2265,6 @@ if. 0<$TTINFO do.
 end.
 if. UNDEF -: fname file do. 29 message'' return. end.
 retco=. archive filename file
-data=: z
-empty erase 'TT'
 mfile=: filename file
 
 if. x and PROTECT and fexist file do.
@@ -2448,7 +2473,7 @@ vchecks RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError) dltb YY
 
 tabengineError=: 3 : 0
 
-smoutput z=. 'tabengineError: bad instruction' ; INSTR ; ('errmsg from CAL_',INST) ; 13!:12''
+smoutput z=. >'tabengineError: bad instruction' ; INSTR ; ('errmsg from CAL_',INST) ; 13!:12''
 z return.
 )
 
@@ -2476,10 +2501,6 @@ ttlib=: 3 : 0
 jpath tbx TPTT sl y
 )
 
-ttsamps=: 3 : 0
-jpath tbx TPSA sl y
-)
-
 archive=: 3 : 0
 
 
@@ -2495,16 +2516,21 @@ tgt=. fld sl xtx y
 tgt fcopynew sce
 )
 
+ttsamps=: 3 : 0
+
+jpath SAVEFORMAT Xtbx zzzz=: TPSA sl SAMPLE,":y
+)
+
 expandedPath=: 3 : 0
 
 if. 0=#y do. y=. file end.
 if. y-: '$$' do.
   z=. ttlib SAMPLE
-  if. -.fexist z do. ttsamps SAMPLE end.
-elseif. (y-:'$')or(y-:,'$')  do. ttsamps SAMPLE
-elseif. '$'= {.y do. ttsamps SAMPLE,}.y
-elseif. isnums y do. ttsamps SAMPLE,y
-elseif. isNo {.y do. ttsamps SAMPLE,":y
+  if. -.fexist z do. ttsamps '' end.
+elseif. y ident '$'  do. ttsamps''
+elseif. '$'= {.y do. ttsamps }.y
+elseif. isnums y do. ttsamps y
+elseif. isNo {.y do. ttsamps y
 elseif. '~'={.y  do. dtb jpath y
 elseif. '/'={.y  do. y
 elseif.          do. ttlib dtb y
@@ -2568,6 +2594,91 @@ datatype 'mytest' ratit 1 0 1
 datatype 'mytest' ratit 0.5 + i.5
 datatype 'ratit 1r2 + i.5
 datatype ratit 0.5 + i.5
+)
+tt1sav=: 4 : 0
+
+
+
+tbx=. 1&Xtbx
+msg '+++ tt1sav (y)'
+
+
+if. 0<#y do. file=: expandedPath y end.
+SAVED=: date''
+TTIMAGE=: ct''
+STATE=: state__uun''
+
+z=. 3!:1 ". SAVESP rplc SP ; SC
+if. UNDEF -: fname file do. 29 message'' return. end.
+retco=. archive filename file
+data1Saved=: z
+mfile=: filename file
+
+if. x and PROTECT and fexist file do.
+  PROTECT=: 0
+
+
+  42 message mfile return.
+end.
+
+bytes=. z fwrite file
+msg 28 message bytes; mfile
+if. bytes>0 do.
+  ]mmm=. 30 message mfile; bytes
+  'tt1sav'dirty 0
+else.
+  ]mmm=. 31 message mfile
+end.
+msg'--- tt1sav returns message:(LF)(mmm)'
+mmm return.
+)
+
+tt1load=: 3 : 0
+
+	msg=. smoutput&sw
+msg '+++ tt1load: y=[(y)]'
+if. isEmpty y do. 19 message '' return. end.
+tbx=. 1&Xtbx
+plotclose''
+MSLOG=: 0 0$''
+snapshot 0
+invalplot''
+invalexe''
+invalinfo''
+TTINFO=:''
+SWAPPED=: 0
+file=: expandedPath y
+if. -.fexist file do. 20 message file return. end.
+vhidd=: vmodl=: _
+try. (SAVESP)=: data1Loaded=: 3!:2 fread file
+catch. ssw '>>> tt1load[(#o2b SAVESP)-(#data1Loaded)]: load error, file (file) may be corrupt'
+end.
+if. 1=#vhidd do. vhidd=: flags 0 end.
+if. 1=#vmodl do. vmodl=: flags 1 end.
+msg '... tt1load: vmodl=(vmodl) vhidd=(vhidd)'
+
+genexe each I. hasfb''
+tag=. SWAPPED#'\'
+reselect 0
+state__uun STATE
+'tt1load' dirty 0
+vchecks''
+27 message tag; filename file
+)
+
+ttQload=: 3 : 0
+	msg=. smoutput&sw
+y=. expandedPath y
+msg '+++ ttQload: y=[(y)]'
+if. (y endsWith '.tbx')or('$' = {.y) do. tt1load y else. tt0load y end.
+)
+
+ttload=: ttQload
+
+Xtbx=: 4 : 0
+
+if. DT={._4|.y do. y=. _4}.y end.
+if. x do. y,'.tbx' else. y,'.ijs' end.
 )
 
 '==================== [cal] ct.ijs ===================='
@@ -4602,6 +4713,9 @@ loadFixed TPUU sl 'uu.ijs'
 uun=: uuconnect''
 make_CAL''
 globmake''
+tbx=: SAVEFORMAT&Xtbx
+file=: tbx UNDEF
+ttsav=: tt0sav`tt1sav @. SAVEFORMAT
 progress _
 extendedSine EXTENDEDSINE
 0 enlog 0
@@ -4646,7 +4760,6 @@ globmake=: 3 : 0
 
 
 
-file=: tbx UNDEF
 ARROWCH=: ARROWCH1
 DASHBOARD=: 0
 DIRTY=: 0
@@ -4660,7 +4773,9 @@ PAD=: 10
 PROTECT=: 1
 PLOT=: 0
 RETURNED=: ''
+SAVEFORMAT=: 1
 STARTED=: 0
+STATE=: ''
 TIMEOUT=: 5
 TOLERANCE=: 1e_5
 TTN=: ,<'tn'
