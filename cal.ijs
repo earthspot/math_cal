@@ -61,6 +61,9 @@ AABUILT=: '2019-06-12  01:45:13'
 AABUILT=: '2019-06-12  01:47:52'
 AABUILT=: '2019-06-12  03:08:40'
 AABUILT=: '2019-06-12  03:11:27'
+AABUILT=: '2019-06-22  10:56:15'
+AABUILT=: '2019-06-22  11:23:57'
+AABUILT=: '2019-06-22  11:28:49'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -1165,7 +1168,6 @@ shortened=: 3 : 0
 fixfmla=: ('/';'%') rplc~ ]
 
 fixttf=: 3 : 0
-
 if. -.SWAPPED do. y return. end.
 z=. ,:'tf'
 for_i. }.items'' do.
@@ -1954,7 +1956,7 @@ invalexe''
 CH=: recal 0
 'ttafl' dirty 1
 )
-ttappend=: 3 : 0
+tt0append=: 3 : 0
 
 sllog'ttappend y'
 invalexe''
@@ -2595,6 +2597,56 @@ datatype 'mytest' ratit 0.5 + i.5
 datatype 'ratit 1r2 + i.5
 datatype ratit 0.5 + i.5
 )
+tt1append=: 3 : 0
+sllog'tt1append y'
+invalexe''
+SWAPPED=: 0
+file1=: expandedPath y
+if. mt file1            do. 19 message '' return.
+elseif. -.fexist file1  do. 20 message file1 return.
+end.
+
+CAPTsav=. CAPT
+vquanS=. 'tt1append.1'ratit vquan
+vfactS=. 'tt1append.2'ratit vfact
+vmodlS=. vmodl
+vhiddS=. vhidd
+UNITSsav=. UNITS
+UNITNsav=. UNITN
+nt0=. #TTNsav=. TTN
+vhidd=: vmodl=: _
+TDsav=. TD
+TTfsav=. TTf
+try. (SAVESP)=: data1Loaded=: 3!:2 fread file1
+catch. ssw '>>> tt1append[(#o2b SAVESP)-(#data1Loaded)]: load error, file (file) may be corrupt'
+end.
+CAPT=: CAPTsav
+TTN=: displaceTTN <:nt0
+
+nt1=. #TTN=: TTNsav, }.TTN
+TD=: TDsav, (<:nt0) dadd }.TD
+TTf=: TTfsav, fixttf }.TTf
+UNITN=: kosher each UNITNsav, }.UNITN
+UNITS=: kosher each UNITSsav, }.UNITS
+vfact=: vfactS, }.vfact
+
+CH=:    flags 0
+vhold=: flags 0
+if. 1=#vhidd do. vhidd=: nt1 {. vhiddS
+else.     vhidd=: vhiddS, }.vhidd
+end.
+if. 1=#vmodl do. vmodl=: vmodlS, (nt1-nt0)#1
+else.     vmodl=: vmodlS, }.vmodl
+end.
+vqua0=: vquan=: 'tt1append.3'ratit vquanS, }.vquan
+vsiq0=: vsiqn=: 'tt1append.4'ratit (vdisp'') + vquan*vfact
+genexe each I. hasfb''
+tag=. SWAPPED#'\'
+reselect 0
+'tt1append' dirty 1
+tag,'appended: ',file1
+)
+
 tt1sav=: 4 : 0
 
 
@@ -2667,13 +2719,19 @@ vchecks''
 )
 
 ttQload=: 3 : 0
-	msg=. smoutput&sw
 y=. expandedPath y
 msg '+++ ttQload: y=[(y)]'
 if. (y endsWith '.tbx')or('$' = {.y) do. tt1load y else. tt0load y end.
 )
 
+ttQappend=: 3 : 0
+y=. expandedPath y
+msg '+++ ttQappend: y=[(y)]'
+if. (y endsWith '.tbx')or('$' = {.y) do. tt1append y else. tt0append y end.
+)
+
 ttload=: ttQload
+ttappend=: ttQappend
 
 Xtbx=: 4 : 0
 

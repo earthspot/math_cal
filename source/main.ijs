@@ -720,7 +720,7 @@ shortened=: 3 : 0
 fixfmla=: ('/';'%') rplc~ ]
 
 fixttf=: 3 : 0
-  NB. reverse fmla if SWAPPED
+NB. reverse fmla if SWAPPED
 NB. y is formula table: TTf
 if. -.SWAPPED do. y return. end.
 z=. ,:'tf'
@@ -1550,8 +1550,8 @@ NB.   x=. x rplc (brace var) ; (brace i)
 NB. end.
 NB. )
 
-ttappend=: 3 : 0
-  NB. append chosen t-table to the existing one
+tt0append=: 3 : 0
+  NB. append chosen t-table (.ijs) to the existing one
 sllog'ttappend y'
 invalexe''      NB. existing 'exe' verbs are invalid
 SWAPPED=: 0      NB. fmla order (overridden by t-table script)
@@ -2226,7 +2226,59 @@ datatype 'ratit 1r2 + i.5
 datatype ratit 0.5 + i.5
 )
 
-NB. =========== tt1load tt1sav ========================
+NB. =========== tt1append tt1sav tt1load ===============
+
+tt1append=: 3 : 0
+NB. append chosen (.tbx) t-table (y) to the existing one
+sllog'tt1append y'
+invalexe''   NB. existing 'exe' verbs are invalid
+SWAPPED=: 0  NB. fmla order (overridden by t-table script)
+file1=: expandedPath y    NB. y is generalised file descriptor
+if. mt file1            do. 19 message '' return.
+elseif. -.fexist file1  do. 20 message file1 return.
+end.
+  NB. copy t-table nouns cos these will change…
+CAPTsav=. CAPT
+vquanS=. 'tt1append.1'ratit vquan
+vfactS=. 'tt1append.2'ratit vfact
+vmodlS=. vmodl
+vhiddS=. vhidd
+UNITSsav=. UNITS
+UNITNsav=. UNITN
+nt0=. #TTNsav=. TTN  NB. remember the original t-table size
+vhidd=: vmodl=: _
+TDsav=. TD
+TTfsav=. TTf
+try. (SAVESP)=: data1Loaded=: 3!:2 fread file1
+catch. ssw '>>> tt1append[(#o2b SAVESP)-(#data1Loaded)]: load error, file (file) may be corrupt'
+end.
+CAPT=: CAPTsav  NB. discard new caption and restore old one
+TTN=: displaceTTN <:nt0  NB. displace all item#s to their new posns
+  NB. start combining the old and new t-tables
+nt1=. #TTN=: TTNsav, }.TTN  NB. (size of) NEW COMBINED TT
+TD=: TDsav, (<:nt0) dadd }.TD
+TTf=: TTfsav, fixttf }.TTf
+UNITN=: kosher each UNITNsav, }.UNITN  NB. nominal units
+UNITS=: kosher each UNITSsav, }.UNITS  NB. SI-units
+vfact=: vfactS, }.vfact
+  NB. regenerate work flags
+CH=:    flags 0    NB. "Changed" flags
+vhold=: flags 0    NB. TEST ONLY >>>>> default==no holds for TT
+if. 1=#vhidd do. vhidd=: nt1 {. vhiddS
+else.     vhidd=: vhiddS, }.vhidd
+end.
+if. 1=#vmodl do. vmodl=: vmodlS, (nt1-nt0)#1
+else.     vmodl=: vmodlS, }.vmodl
+end.
+vqua0=: vquan=: 'tt1append.3'ratit vquanS, }.vquan
+vsiq0=: vsiqn=: 'tt1append.4'ratit (vdisp'') + vquan*vfact
+genexe each I. hasfb''
+tag=. SWAPPED#'\'  NB. indicator: needs saving in cleaned-up form
+reselect 0
+NB. CH=: recal 0   NB. WHY RECALCULATE?
+'tt1append' dirty 1
+tag,'appended: ',file1
+)
 
 tt1sav=: 4 : 0
   NB. save the t-table as: y
@@ -2303,14 +2355,23 @@ vchecks''
 )
 
 ttQload=: 3 : 0
-	msg=. smoutput&sw
+NB. determines which to call: tt0* or tt1*, based on file extn
 y=. expandedPath y
 NB. BUT THIS WILL LOAD EXISTING file IF y=''
 msg '+++ ttQload: y=[(y)]'
 if. (y endsWith '.tbx')or('$' = {.y) do. tt1load y else. tt0load y end.
 )
 
+ttQappend=: 3 : 0
+NB. determines which to call: tt0* or tt1*, based on file extn
+y=. expandedPath y
+NB. BUT THIS WILL LOAD EXISTING file IF y=''
+msg '+++ ttQappend: y=[(y)]'
+if. (y endsWith '.tbx')or('$' = {.y) do. tt1append y else. tt0append y end.
+)
+
 ttload=: ttQload  NB. to permit manual redirection
+ttappend=: ttQappend  NB. to permit manual redirection
 
 Xtbx=: 4 : 0
   NB. FORCE extension: ijs onto path (y)
