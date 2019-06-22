@@ -1,5 +1,5 @@
 0 :0
-Wednesday 15 May 2019  08:31:04
+Saturday 22 June 2019  11:41:58
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -16,54 +16,8 @@ onload_z_=: empty
 RATIONALIZED_z_=: 1
 EXTENDEDSINE_z_=: 0
 smoutputINV_z_=: empty
-AABUILT=: '2019-05-25  07:52:45'
-AABUILT=: '2019-05-25  07:56:30'
-AABUILT=: '2019-05-25  17:37:12'
-AABUILT=: '2019-05-25  18:00:45'
-AABUILT=: '2019-05-25  18:03:17'
-AABUILT=: '2019-05-25  18:08:06'
-AABUILT=: '2019-05-25  18:08:42'
-AABUILT=: '2019-06-05  05:12:03'
-AABUILT=: '2019-06-05  16:28:48'
-AABUILT=: '2019-06-05  16:42:08'
-AABUILT=: '2019-06-05  17:22:13'
-AABUILT=: '2019-06-05  17:39:38'
-AABUILT=: '2019-06-05  18:18:19'
-AABUILT=: '2019-06-05  19:00:37'
-AABUILT=: '2019-06-05  21:32:52'
-AABUILT=: '2019-06-05  22:24:09'
-AABUILT=: '2019-06-05  23:44:54'
-AABUILT=: '2019-06-06  00:17:36'
-AABUILT=: '2019-06-06  00:34:59'
-AABUILT=: '2019-06-11  02:18:49'
-AABUILT=: '2019-06-11  02:37:07'
-AABUILT=: '2019-06-11  02:40:28'
-AABUILT=: '2019-06-11  20:23:12'
-AABUILT=: '2019-06-11  20:23:59'
-AABUILT=: '2019-06-11  20:27:55'
-AABUILT=: '2019-06-11  20:28:25'
-AABUILT=: '2019-06-11  20:35:49'
-AABUILT=: '2019-06-11  20:36:47'
-AABUILT=: '2019-06-11  20:43:30'
-AABUILT=: '2019-06-11  20:44:07'
-AABUILT=: '2019-06-11  20:47:07'
-AABUILT=: '2019-06-11  20:47:19'
-AABUILT=: '2019-06-11  20:50:21'
-AABUILT=: '2019-06-11  20:51:52'
-AABUILT=: '2019-06-11  20:54:07'
-AABUILT=: '2019-06-11  20:56:32'
-AABUILT=: '2019-06-11  21:03:32'
-AABUILT=: '2019-06-11  21:45:38'
-AABUILT=: '2019-06-12  00:39:01'
-AABUILT=: '2019-06-12  00:41:05'
-AABUILT=: '2019-06-12  01:23:43'
-AABUILT=: '2019-06-12  01:45:13'
-AABUILT=: '2019-06-12  01:47:52'
-AABUILT=: '2019-06-12  03:08:40'
-AABUILT=: '2019-06-12  03:11:27'
-AABUILT=: '2019-06-22  10:56:15'
-AABUILT=: '2019-06-22  11:23:57'
-AABUILT=: '2019-06-22  11:28:49'
+AABUILT=: '2019-06-22  11:42:49'
+AABUILT=: '2019-06-22  11:44:14'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -2601,7 +2555,7 @@ tt1append=: 3 : 0
 sllog'tt1append y'
 invalexe''
 SWAPPED=: 0
-file1=: expandedPath y
+file1=. expandedPath y
 if. mt file1            do. 19 message '' return.
 elseif. -.fexist file1  do. 20 message file1 return.
 end.
@@ -2687,7 +2641,6 @@ mmm return.
 
 tt1load=: 3 : 0
 
-	msg=. smoutput&sw
 msg '+++ tt1load: y=[(y)]'
 if. isEmpty y do. 19 message '' return. end.
 tbx=. 1&Xtbx

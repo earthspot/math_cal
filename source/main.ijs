@@ -1699,7 +1699,6 @@ vsiq0=: vsiqn
 
 tt0load=: 3 : 0
   NB. load the chosen t-table
-	msg=. smoutput&sw
 msg '+++ tt0load: y=[(y)]'
 if. isEmpty y do. 19 message '' return. end.  NB. IAC 5 DEC 18
 tbx=. 0&Xtbx    NB. needs to be LOCALLY FORCED
@@ -2233,7 +2232,7 @@ NB. append chosen (.tbx) t-table (y) to the existing one
 sllog'tt1append y'
 invalexe''   NB. existing 'exe' verbs are invalid
 SWAPPED=: 0  NB. fmla order (overridden by t-table script)
-file1=: expandedPath y    NB. y is generalised file descriptor
+file1=. expandedPath y    NB. y is generalised file descriptor
 if. mt file1            do. 19 message '' return.
 elseif. -.fexist file1  do. 20 message file1 return.
 end.
@@ -2321,7 +2320,6 @@ mmm return.  NB. return resulting message for top-end
 
 tt1load=: 3 : 0
   NB. load the chosen t-table
-	msg=. smoutput&sw
 msg '+++ tt1load: y=[(y)]'
 if. isEmpty y do. 19 message '' return. end.  NB. IAC 5 DEC 18
 tbx=. 1&Xtbx    NB. needs to be LOCALLY FORCED
