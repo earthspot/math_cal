@@ -26,13 +26,14 @@ if. 900 < ". }. '/' taketo 9!:14'' do.
   require 'math/calculus'
   sslope_z_=: sslope_jcalculus_
 else.
-  sslope_z_=: D:
+  ". :: 0: 'sslope_z_=: D:'
 end.
 i.0 0
 )
 
 
 AABUILT=: '2019-12-16  01:10:24'
+AABUILT=: '2019-12-16  02:03:36'
 
 '==================== [cal] help.ijs ===================='
 0 :0

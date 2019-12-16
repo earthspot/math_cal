@@ -28,10 +28,11 @@ NB. smoutput '<><><> sslope is software'
   sslope_z_=: sslope_jcalculus_
 else.
 NB. smoutput '<><><> sslope is D:'
-  sslope_z_=: D:
+  ". :: 0: 'sslope_z_=: D:'
 end.
 i.0 0
 )
 
 
 AABUILT=: '2019-12-16  01:10:24'
+AABUILT=: '2019-12-16  02:03:36'
