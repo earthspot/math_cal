@@ -396,15 +396,13 @@ y+z*x
 )
 
 deletefile=: 3 : 0
-  NB. delete t-table (y) in Ttables folder ONLY
-  NB. but ONLY IF a valid t-table...
-me=. 'deletefile'
-y=. jpathsep y
-nom=. filename expandedPath y
-if. SL e. y do. pth=.(y i:'/'){.y else. pth=.'' end.
-  sllog 'me nom pth y'
-file0=: jpath ttlib nom
-if. fexist file0 do.
+  NB. delete t-table (y) in Ttables folder TPTT ONLY
+  NB. but ONLY IF y exists, is fullpath and is in TPTT
+NB. WARNING: UNTESTED <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+nom=. jpathsep y
+  sllog 'deletefile nom y'
+file0=: nom
+if. (fexist file0) and (TPTT,'/')-:pathof file0 do.
   empty ferase file0
   38 message file0
 else.
@@ -968,7 +966,7 @@ TTINFO return.
   NB. x=0 - TTINFO merely initialized, resetting dirty flag
   NB. x=1 - TTINFO updated with (y), setting dirty flag
 'info' dirty x
-empty TTINFO=: y
+emptyMessage TTINFO=: y
 )
 
 initialized=: 3 : 0
@@ -1053,7 +1051,7 @@ case. _1 do. (-.held)mandhold y return.  NB. toggle the setting
 case.  1 do. y relabel lab,HOLD
 case.  0 do. y relabel lab
 end.
-'mandhold' dirty 1
+emptyMessage 'mandhold' dirty 1
 )
 
 merge=: 3 : 0
@@ -1074,6 +1072,8 @@ MSLOG=: MSLOG,MESSAGE
 NB. ssw '... message: MESSAGE_ID=(MESSAGE_ID) MESSAGE=…(LF)(MESSAGE)'
 MESSAGE return.  NB. heritage convention
 )
+
+emptyMessage=: empty  NB. FINESSE THIS?????
 
 nochange=: empty
 noop=: empty
@@ -1203,7 +1203,7 @@ if. notitem x do. return. end.
 NB. i=. (#TTn)x}items''
 NB. TTn=: i{TTn,y
 TTN=: (<,y) x}TTN
-'relabel' dirty 1
+emptyMessage 'relabel' dirty 1
 )
 
 displaceTTN=: 3 : 0
@@ -1323,8 +1323,9 @@ setparam=: empty
 
 settitle=: 3 : 0
   NB. set the t-table caption
+  NB. used by: CAL_interface
 CAPT=: y
-'settitle' dirty 1
+emptyMessage 'settitle' dirty 1
 )
 
 setvalue=: 4 : 0
@@ -1430,7 +1431,7 @@ NB.  ssw '... snapshot snapped: (nom) [(tallyZN _)] vquan=[(vquan)]'
 'snapped: ',nom
 :
 nom=. nxt rZN=:x
-()=: ".nom
+(SNAPSP)=: ".nom
 NB.  ssw '+++ snapshot restored: (nom) vquan=[(vquan)]'
 'restored: ',nom
 )
@@ -1471,7 +1472,7 @@ targs=: [: {. [: }. [: |: [: ;: a2x
 
 title=: 3 : 0
   NB. access the title stored for current t-table
-  NB. used by: tabengine
+  NB. consider using: settitle
 CAPT
 :
 CAPT=: y  NB. call: 1 title <updated_title>
@@ -1491,7 +1492,7 @@ case. _1 do. vhold=: (-.y{vhold) y}vhold
 case.  1 do. vhold=: 1 y}vhold
 case.  0 do. vhold=: 0 y}vhold
 end.
-empty''
+emptyMessage''
 )
 
 ttadl=: 3 : 0
@@ -1513,7 +1514,7 @@ vfact=: 'ttadl.2'ratit vfact , fac
 vsiqn=: 'ttadl.3'ratit (vdisp'') + vquan*vfact
 ttfix''
   NB. (c/f ttafl, no need to recal here)
-'ttadl' dirty 1
+emptyMessage 'ttadl' dirty 1
 )
 
 ttafl=: 3 : 0
@@ -1539,7 +1540,7 @@ TTN=: TTN , <,ytn
 ttfix''
 invalexe''
 CH=: recal 0
-'ttafl' dirty 1
+emptyMessage 'ttafl' dirty 1
 )
 
 NB. fsub=: 4 : 0
@@ -1555,7 +1556,7 @@ tt0append=: 3 : 0
 sllog'ttappend y'
 invalexe''      NB. existing 'exe' verbs are invalid
 SWAPPED=: 0      NB. fmla order (overridden by t-table script)
-file1=. expandedPath y    NB. y is generalised file descriptor
+file1=: 0 expandedPath y    NB. y is generalised file descriptor
 if. mt file1            do. 19 message '' return.
 elseif. -.fexist file1  do. 20 message file1 return.
 end.
@@ -1694,7 +1695,7 @@ TD=:    t{.TD
   NB. rather than try to preserve it…
 vqua0=: vquan
 vsiq0=: vsiqn
-'ttfix' dirty 1
+i.0 0
 )
 
 tt0load=: 3 : 0
@@ -1710,7 +1711,8 @@ invalexe''      NB. existing 'exe' verbs are invalid
 invalinfo''     NB. existing  info display is invalid
 TTINFO=:''      NB. create empty
 SWAPPED=: 0     NB. fmla order (overridden by t-table script)
-file=: expandedPath y    NB. y is generalised file descriptor
+file1=: ''      NB. unused in tt0load
+file=: 0 expandedPath y    NB. y is generalised file descriptor
 if. -.fexist file do. 20 message file return. end.  NB. IAC 5 DEC 18
 vhidd=: vmodl=: _
 loadFixed file  NB. creates globals: CAPT TT TTINFO vquan vfact
@@ -1801,11 +1803,28 @@ UNITN=: UNITS=: ,<'??'
 vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: ,0r1
 CH=: vhold=: vmodl=: vhidd=: ,0
 file=:  tbx UNDEF
+file1=: ''      NB. unused in ttnew
 settitle CAPT=: UNDEF_CAPT
 reselect 0
 NB. snapshot 1
 'ttnew' dirty 0  NB. resets the dirty-bit
-0 message ''
+0 message ''  NB. to be sure to reset MESSAGE_ID etc
+)
+
+NB. ================================================
+NB. These cover-verbs are ONLY called by CAL_interface…
+ttsava=: 1&ttsav                        NB. (safe) save t-table as (y)
+ttsavc=: 1&ttsaveCopyAs                 NB. (safe) save a COPY of current t-table as (y)
+ttsave=: 3 : '0 ttsav filename file'    NB. (over-)save current t-table
+ttsavo=: 3 : '0 ttsav y'                NB. save as (y) over any existing file: (y)
+ttsavs=: 3 : '0 ttsaveCopyAs SAMPLE'    NB. (over-)save a COPY of current t-table as: SAMPLE
+ttsavt=: 3 : '1 ttsav safefname CAPT'   NB. (safe) save t-table from caption
+NB. ================================================
+
+safefname=: 3 : 0 "0
+  NB. make a safe filename from (caption) y
+  NB. viz no embedded unicode or any non-alpha char
+if. y e. SAFECHARS do. y else. UL end.
 )
 
 ttsaveCopyAs=: 4 : 0
@@ -1820,35 +1839,28 @@ file=: SAVEDfile
 if. -. (filename y)-:filename file do.
   'ttsaveCopyAs'dirty SAVEDdirty
 end.
-mmm  NB. return any messages from ttsav
+mmm return. NB. any message from "ttsav" (tt0sav or tt1sav)
 )
 
-safefname=: 3 : 0 "0
-  NB. make a safe filename from (caption) y
-  NB. viz no embedded unicode or any non-alpha char
-if. y e. SAFECHARS do. y else. UL end.
-)
-
-ttsava=: 1&ttsav                        NB. save t-table as y
-ttsavc=: 1&ttsaveCopyAs                 NB. save a COPY of the current t-table as: y
-ttsave=: 3 : '0 ttsav filename file'    NB. save current t-table
-ttsavo=: 3 : '0 ttsav y'                NB. save as y over an existing file
-ttsavs=: 3 : '0 ttsaveCopyAs SAMPLE'    NB. save a COPY of the current t-table as: SAMPLE
-ttsavt=: 3 : '1 ttsav safefname CAPT'   NB. save t-table from caption
+ttsav=:  4 : 'x (tt0sav`tt1sav @. SAVEFORMAT) y'
+  NB. Bool x=0 -- ALLOW overwrite of existing file y
+  NB. Bool x=1 -- DENY overwrite of existing file y
 
 tt0sav=: 4 : 0
-  NB. save the t-table as: y
+  NB. save the t-table as: (y).ijs
   NB. Bool x=1 -- DENY overwrite of existing file y
   NB. Bool x=0 -- ALLOW overwrite of existing file y
 tbx=. 1&Xtbx    NB. needs to be LOCALLY FORCED
-msg '+++ ttsav (y)'  NB. the unexpanded name: y
+msg '+++ tt0sav (y)'  NB. the unexpanded name: y
   NB. if empty y use existing (file) as last set by: ttload
   NB. else accept filename y as the new (file)
-if. 0<#y do. file=: expandedPath y end.
-NB. ...hence if y-:'' then file is left as it stands
+if. 0<#y do. file=: 0 expandedPath y end.
+  NB. ...hence if y-:'' then file is left as it stands
+  NB. BUT… this verb saves ONLY in "ijs" format…
+file=: file rplc '.tbx' ; '.ijs'
+  NB. Rebuild TT from fields…
 TTs=. ('ts',>}.UNITS)
 TTu=. ('tu',>}.UNITN)
-  NB. Rebuild TT from fields…
 TT=:  (>TTN) sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
 't' setcols TT
 SAVED=: date''
@@ -1875,25 +1887,25 @@ mfile=: filename file  NB. t-table name for message
 if. x and PROTECT and fexist file do.
   PROTECT=: 0  NB. allow it to work a second time
   NB. DO NOT save file...
-  NB. (Leave as a job for the topend to optionally call ttsavo)
+  NB. (Leave it to the topend to optionally call instr: 'savo')
   42 message mfile return.
 end.
   NB. Save file and report the result...
 if.-. 'literal' -: datatype z do.
-  msg'... ttsav: z to be saved is: (datatype z) shape=($z)'
+  msg'... tt0sav: z to be saved is: (datatype z) shape=($z)'
   z=. utf8 x2f z
-  msg'... ttsav: z now: (datatype z) shape=($z)'
+  msg'... tt0sav: z now: (datatype z) shape=($z)'
   PROTECT=: 1  NB. re-establish protection
 end.
 bytes=. z fwrite file
 	msg 28 message bytes; mfile
 if. bytes>0 do.  NB. t-table was saved ok
   ]mmm=. 30 message mfile; bytes
-  'ttsav'dirty 0 NB. flag: t-table no longer needs saving
+  'tt0sav'dirty 0 NB. flag: t-table no longer needs saving
 else.            NB. file could not be saved...
   ]mmm=. 31 message mfile
 end.
-msg'--- ttsav returns message:(LF)(mmm)'
+msg'--- tt0sav returns message:(LF)(mmm)'
 mmm return.  NB. return resulting message for top-end
 )
 
@@ -2119,14 +2131,10 @@ y return.
 
 temp=: [: jpath '~temp/' , ijs@":
 
-ttlib=: 3 : 0
-jpath tbx TPTT sl y
-)
-
 archive=: 3 : 0
   NB. archive t-table: y (the unexpanded path name)
-  NB. xtx appends correct filename extension if none given
-xtx=. tbx  NB. the correct extension for a t-table
+  NB. xtx appends preferred filename extension if none given
+xtx=. tbx  NB. the preferred extension for a t-table
 sce=. ttlib y
   NB. Don't archive empty file, return _2 instead
 if. 0=#z=.freads sce do. _2 return. end.
@@ -2138,24 +2146,32 @@ tgt=. fld sl xtx y
 tgt fcopynew sce
 )
 
-ttsamps=: 3 : 0
-  NB. expand suffix: (y) to full path of a factory sample
-jpath SAVEFORMAT Xtbx zzzz=: TPSA sl SAMPLE,":y
+ttlib=: 0 ddefine
+  NB. x == 0=ijs 1=tbx
+jpath x Xtbx TPTT sl y
 )
 
-expandedPath=: 3 : 0
+ttsamps=: 0 ddefine
+  NB. expand suffix: (y) to full path of a factory sample
+  NB. x == 0=ijs 1=tbx
+jpath x Xtbx zzzz=: TPSA sl SAMPLE,":y
+)
+
+expandedPath=: 0 ddefine
   NB. find full pathname of t-table file (y) in its various forms
-if. 0=#y do. y=. file end.
+  NB. x == 0=ijs 1=tbx
+  NB. …x is typically set to LOADFORMAT or SAVEFORMAT depending on context
+if. 0=#y do. y=. file return. end.
 if. y-: '$$' do.
-  z=. ttlib SAMPLE  NB. look in t-tables library first
-  if. -.fexist z do. ttsamps '' end.  NB. then factory
-elseif. y ident '$'  do. ttsamps''  NB. only factory
-elseif. '$'= {.y do. ttsamps }.y
-elseif. isnums y do. ttsamps y
-elseif. isNo {.y do. ttsamps y
+  z=. 1 ttlib SAMPLE  NB. look in t-tables library first
+  if. -.fexist z do. 1 ttsamps'' end.  NB. then factory sample
+elseif. y ident '$' do. 1 ttsamps''  NB. ONLY factory sample
+elseif. '$'= {.y do. 1 ttsamps }.y
+elseif. isnums y do. 1 ttsamps y
+elseif. isNo {.y do. 1 ttsamps y
 elseif. '~'={.y  do. dtb jpath y
 elseif. '/'={.y  do. y  NB. assume y is fullpath (MAC/Unix only)
-elseif.          do. ttlib dtb y
+elseif.          do. x ttlib filename dtb y
 end.
 )
 
@@ -2229,10 +2245,11 @@ NB. =========== tt1append tt1sav tt1load ===============
 
 tt1append=: 3 : 0
 NB. append chosen (.tbx) t-table (y) to the existing one
+NB. >>> WON'T WORK with old (.ijs) t-tables
 sllog'tt1append y'
 invalexe''   NB. existing 'exe' verbs are invalid
 SWAPPED=: 0  NB. fmla order (overridden by t-table script)
-file1=. expandedPath y    NB. y is generalised file descriptor
+file1=: 1 expandedPath y    NB. y is generalised file descriptor
 if. mt file1            do. 19 message '' return.
 elseif. -.fexist file1  do. 20 message file1 return.
 end.
@@ -2248,9 +2265,9 @@ nt0=. #TTNsav=. TTN  NB. remember the original t-table size
 vhidd=: vmodl=: _
 TDsav=. TD
 TTfsav=. TTf
-try. (SAVESP)=: data1Loaded=: 3!:2 fread file1
-catch. ssw '>>> tt1append[(#o2b SAVESP)-(#data1Loaded)]: load error, file (file) may be corrupt'
-end.
+(>{.z)=: z=. 3!:2 fread file1
+data1Loaded=: z  NB. REMOVABLE DIAGNOSTIC TO ACCOMPANY: file
+  NB. …discard (data1Loaded data1Saved) once code is debugged and stable
 CAPT=: CAPTsav  NB. discard new caption and restore old one
 TTN=: displaceTTN <:nt0  NB. displace all item#s to their new posns
   NB. start combining the old and new t-tables
@@ -2287,26 +2304,31 @@ tbx=. 1&Xtbx    NB. needs to be LOCALLY FORCED
 msg '+++ tt1sav (y)'  NB. the unexpanded name: y
   NB. if empty y use existing (file) as last set by: ttload
   NB. else accept filename y as the new (file)
-if. 0<#y do. file=: expandedPath y end.
+if. 0<#y do. file=: 1 expandedPath y end.
 NB. ...hence if y-:'' then file is left as it stands
+  NB. BUT… this verb saves ONLY in "tbx" format…
+file=: file rplc '.ijs' ; '.tbx'
+  NB. Build new binary contents of (file)…
 SAVED=: date''
 TTIMAGE=: ct''
-STATE=: state__uun''  NB. capture UU state for reinstatement
-  NB. STATE is SIC SCI SIG SIZ
-z=. 3!:1 ". SAVESP rplc SP ; SC
+  NB. capture UU state [SIC SCI SIG SIZ] for reinstatement
+STATE=: state__uun''
+binlist=. 'binlist SAVED TTIMAGE STATE ',SNAPSP
+bindata=. 3!:1 ". binlist rplc SP ; SC
 if. UNDEF -: fname file do. 29 message'' return. end.
 retco=. archive filename file
-data1Saved=: z  NB. DIAGNOSTIC TO ACCOMPANY: file
 mfile=: filename file  NB. t-table name for message
   NB. x=1 authorizes fexist trap...
 if. x and PROTECT and fexist file do.
   PROTECT=: 0  NB. allow it to work a second time
   NB. DO NOT save file...
-  NB. (Leave as a job for the topend to optionally call ttsavo)
+  NB. (Leave it to the topend to optionally call instr: 'savo')
   42 message mfile return.
 end.
+data1Saved=: bindata  NB. REMOVABLE DIAGNOSTIC TO ACCOMPANY: file
+  NB. …discard (data1Loaded data1Saved) once code is debugged and stable
   NB. Save file and report the result...
-bytes=. z fwrite file
+bytes=. bindata fwrite file
 msg 28 message bytes; mfile
 if. bytes>0 do.  NB. t-table was saved ok
   ]mmm=. 30 message mfile; bytes
@@ -2331,12 +2353,13 @@ invalexe''      NB. existing 'exe' verbs are invalid
 invalinfo''     NB. existing  info display is invalid
 TTINFO=:''      NB. create empty
 SWAPPED=: 0     NB. fmla order (overridden by t-table script)
-file=: expandedPath y    NB. y is generalised file descriptor
+file1=: ''      NB. unused in tt1load
+file=: 1 expandedPath y    NB. y is generalised file descriptor
 if. -.fexist file do. 20 message file return. end.  NB. IAC 5 DEC 18
 vhidd=: vmodl=: _
-try. (SAVESP)=: data1Loaded=: 3!:2 fread file
-catch. ssw '>>> tt1load[(#o2b SAVESP)-(#data1Loaded)]: load error, file (file) may be corrupt'
-end.
+(>{.z)=: z=. 3!:2 fread file
+data1Loaded=: z  NB. REMOVABLE DIAGNOSTIC TO ACCOMPANY: file
+  NB. …discard (data1Loaded data1Saved) once code is debugged and stable
 if. 1=#vhidd do. vhidd=: flags 0 end.  NB. =1 if row is hidden when displayed
 if. 1=#vmodl do. vmodl=: flags 1 end.  NB. The break-back model to be used
 msg '... tt1load: vmodl=(vmodl) vhidd=(vhidd)'
@@ -2354,16 +2377,14 @@ vchecks''
 
 ttQload=: 3 : 0
 NB. determines which to call: tt0* or tt1*, based on file extn
-y=. expandedPath y
-NB. BUT THIS WILL LOAD EXISTING file IF y=''
+y=. LOADFORMAT expandedPath y
 msg '+++ ttQload: y=[(y)]'
 if. (y endsWith '.tbx')or('$' = {.y) do. tt1load y else. tt0load y end.
 )
 
 ttQappend=: 3 : 0
 NB. determines which to call: tt0* or tt1*, based on file extn
-y=. expandedPath y
-NB. BUT THIS WILL LOAD EXISTING file IF y=''
+y=. LOADFORMAT expandedPath y
 msg '+++ ttQappend: y=[(y)]'
 if. (y endsWith '.tbx')or('$' = {.y) do. tt1append y else. tt0append y end.
 )

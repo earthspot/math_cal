@@ -1,8 +1,12 @@
 0 :0
-Saturday 22 June 2019  11:41:58
+Monday 16 December 2019  00:55:54
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
+-
+smoutputINV_z_=: smoutput
+-
+Primitive: "D:" replaced throughout by cover conjunction: " sslope_z_ "
 )
 
 require 'format/zulu'
@@ -16,8 +20,19 @@ onload_z_=: empty
 RATIONALIZED_z_=: 1
 EXTENDEDSINE_z_=: 0
 smoutputINV_z_=: empty
-AABUILT=: '2019-06-22  11:42:49'
-AABUILT=: '2019-06-22  11:44:14'
+
+3 : 0''
+if. 900 < ". }. '/' taketo 9!:14'' do.
+  require 'math/calculus'
+  sslope_z_=: sslope_jcalculus_
+else.
+  sslope_z_=: D:
+end.
+i.0 0
+)
+
+
+AABUILT=: '2019-12-16  01:10:24'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -88,8 +103,7 @@ SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'
 SL=: '/'
-SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTN TTf file UNITS UNITN CAPT'
-SAVESP=: 'SAVED TTIMAGE STATE ',SNAPSP
+SNAPSP=: 'TTINFO vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTN TTf file UNITS UNITN CAPT'
 SP=: ' '
 ST=: '*'
 UL=: '_'
@@ -823,13 +837,10 @@ y+z*x
 deletefile=: 3 : 0
 
 
-me=. 'deletefile'
-y=. jpathsep y
-nom=. filename expandedPath y
-if. SL e. y do. pth=.(y i:'/'){.y else. pth=.'' end.
-  sllog 'me nom pth y'
-file0=: jpath ttlib nom
-if. fexist file0 do.
+nom=. jpathsep y
+  sllog 'deletefile nom y'
+file0=: nom
+if. (fexist file0) and (TPTT,'/')-:pathof file0 do.
   empty ferase file0
   38 message file0
 else.
@@ -1354,7 +1365,7 @@ TTINFO return.
 
 
 'info' dirty x
-empty TTINFO=: y
+emptyMessage TTINFO=: y
 )
 
 initialized=: 3 : 0
@@ -1439,7 +1450,7 @@ case. _1 do. (-.held)mandhold y return.
 case.  1 do. y relabel lab,HOLD
 case.  0 do. y relabel lab
 end.
-'mandhold' dirty 1
+emptyMessage 'mandhold' dirty 1
 )
 
 merge=: 3 : 0
@@ -1459,6 +1470,8 @@ MESSAGE=: sw '[cal#(x)] ',mm
 MSLOG=: MSLOG,MESSAGE
 MESSAGE return.
 )
+
+emptyMessage=: empty
 
 nochange=: empty
 noop=: empty
@@ -1582,7 +1595,7 @@ relabel=: 4 : 0
 
 if. notitem x do. return. end.
 TTN=: (<,y) x}TTN
-'relabel' dirty 1
+emptyMessage 'relabel' dirty 1
 )
 
 displaceTTN=: 3 : 0
@@ -1698,8 +1711,9 @@ setparam=: empty
 
 settitle=: 3 : 0
 
+
 CAPT=: y
-'settitle' dirty 1
+emptyMessage 'settitle' dirty 1
 )
 
 setvalue=: 4 : 0
@@ -1804,7 +1818,7 @@ cutbackZN nom
 'snapped: ',nom
 :
 nom=. nxt rZN=:x
-()=: ".nom
+(SNAPSP)=: ".nom
 'restored: ',nom
 )
 
@@ -1863,7 +1877,7 @@ case. _1 do. vhold=: (-.y{vhold) y}vhold
 case.  1 do. vhold=: 1 y}vhold
 case.  0 do. vhold=: 0 y}vhold
 end.
-empty''
+emptyMessage''
 )
 
 ttadl=: 3 : 0
@@ -1884,7 +1898,7 @@ vfact=: 'ttadl.2'ratit vfact , fac
 vsiqn=: 'ttadl.3'ratit (vdisp'') + vquan*vfact
 ttfix''
 
-'ttadl' dirty 1
+emptyMessage 'ttadl' dirty 1
 )
 
 ttafl=: 3 : 0
@@ -1908,14 +1922,14 @@ TTN=: TTN , <,ytn
 ttfix''
 invalexe''
 CH=: recal 0
-'ttafl' dirty 1
+emptyMessage 'ttafl' dirty 1
 )
 tt0append=: 3 : 0
 
 sllog'ttappend y'
 invalexe''
 SWAPPED=: 0
-file1=. expandedPath y
+file1=: 0 expandedPath y
 if. mt file1            do. 19 message '' return.
 elseif. -.fexist file1  do. 20 message file1 return.
 end.
@@ -2054,12 +2068,11 @@ TD=:    t{.TD
 
 vqua0=: vquan
 vsiq0=: vsiqn
-'ttfix' dirty 1
+i.0 0
 )
 
 tt0load=: 3 : 0
 
-	msg=. smoutput&sw
 msg '+++ tt0load: y=[(y)]'
 if. isEmpty y do. 19 message '' return. end.
 tbx=. 0&Xtbx
@@ -2071,7 +2084,8 @@ invalexe''
 invalinfo''
 TTINFO=:''
 SWAPPED=: 0
-file=: expandedPath y
+file1=: ''
+file=: 0 expandedPath y
 if. -.fexist file do. 20 message file return. end.
 vhidd=: vmodl=: _
 loadFixed file
@@ -2158,10 +2172,22 @@ UNITN=: UNITS=: ,<'??'
 vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: ,0r1
 CH=: vhold=: vmodl=: vhidd=: ,0
 file=:  tbx UNDEF
+file1=: ''
 settitle CAPT=: UNDEF_CAPT
 reselect 0
 'ttnew' dirty 0
 0 message ''
+)
+ttsava=: 1&ttsav
+ttsavc=: 1&ttsaveCopyAs
+ttsave=: 3 : '0 ttsav filename file'
+ttsavo=: 3 : '0 ttsav y'
+ttsavs=: 3 : '0 ttsaveCopyAs SAMPLE'
+ttsavt=: 3 : '1 ttsav safefname CAPT'
+safefname=: 3 : 0 "0
+
+
+if. y e. SAFECHARS do. y else. UL end.
 )
 
 ttsaveCopyAs=: 4 : 0
@@ -2176,34 +2202,28 @@ file=: SAVEDfile
 if. -. (filename y)-:filename file do.
   'ttsaveCopyAs'dirty SAVEDdirty
 end.
-mmm
+mmm return.
 )
 
-safefname=: 3 : 0 "0
+ttsav=:  4 : 'x (tt0sav`tt1sav @. SAVEFORMAT) y'
 
 
-if. y e. SAFECHARS do. y else. UL end.
-)
-
-ttsava=: 1&ttsav
-ttsavc=: 1&ttsaveCopyAs
-ttsave=: 3 : '0 ttsav filename file'
-ttsavo=: 3 : '0 ttsav y'
-ttsavs=: 3 : '0 ttsaveCopyAs SAMPLE'
-ttsavt=: 3 : '1 ttsav safefname CAPT'
 
 tt0sav=: 4 : 0
 
 
 
 tbx=. 1&Xtbx
-msg '+++ ttsav (y)'
+msg '+++ tt0sav (y)'
 
 
-if. 0<#y do. file=: expandedPath y end.
+if. 0<#y do. file=: 0 expandedPath y end.
+
+
+file=: file rplc '.tbx' ; '.ijs'
+
 TTs=. ('ts',>}.UNITS)
 TTu=. ('tu',>}.UNITN)
-
 TT=:  (>TTN) sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
 't' setcols TT
 SAVED=: date''
@@ -2231,20 +2251,20 @@ if. x and PROTECT and fexist file do.
 end.
 
 if.-. 'literal' -: datatype z do.
-  msg'... ttsav: z to be saved is: (datatype z) shape=($z)'
+  msg'... tt0sav: z to be saved is: (datatype z) shape=($z)'
   z=. utf8 x2f z
-  msg'... ttsav: z now: (datatype z) shape=($z)'
+  msg'... tt0sav: z now: (datatype z) shape=($z)'
   PROTECT=: 1
 end.
 bytes=. z fwrite file
 	msg 28 message bytes; mfile
 if. bytes>0 do.
   ]mmm=. 30 message mfile; bytes
-  'ttsav'dirty 0
+  'tt0sav'dirty 0
 else.
   ]mmm=. 31 message mfile
 end.
-msg'--- ttsav returns message:(LF)(mmm)'
+msg'--- tt0sav returns message:(LF)(mmm)'
 mmm return.
 )
 
@@ -2453,10 +2473,6 @@ y return.
 
 temp=: [: jpath '~temp/' , ijs@":
 
-ttlib=: 3 : 0
-jpath tbx TPTT sl y
-)
-
 archive=: 3 : 0
 
 
@@ -2472,24 +2488,32 @@ tgt=. fld sl xtx y
 tgt fcopynew sce
 )
 
-ttsamps=: 3 : 0
+ttlib=: 0 ddefine
 
-jpath SAVEFORMAT Xtbx zzzz=: TPSA sl SAMPLE,":y
+jpath x Xtbx TPTT sl y
 )
 
-expandedPath=: 3 : 0
+ttsamps=: 0 ddefine
 
-if. 0=#y do. y=. file end.
+
+jpath x Xtbx zzzz=: TPSA sl SAMPLE,":y
+)
+
+expandedPath=: 0 ddefine
+
+
+
+if. 0=#y do. y=. file return. end.
 if. y-: '$$' do.
-  z=. ttlib SAMPLE
-  if. -.fexist z do. ttsamps '' end.
-elseif. y ident '$'  do. ttsamps''
-elseif. '$'= {.y do. ttsamps }.y
-elseif. isnums y do. ttsamps y
-elseif. isNo {.y do. ttsamps y
+  z=. 1 ttlib SAMPLE
+  if. -.fexist z do. 1 ttsamps'' end.
+elseif. y ident '$' do. 1 ttsamps''
+elseif. '$'= {.y do. 1 ttsamps }.y
+elseif. isnums y do. 1 ttsamps y
+elseif. isNo {.y do. 1 ttsamps y
 elseif. '~'={.y  do. dtb jpath y
 elseif. '/'={.y  do. y
-elseif.          do. ttlib dtb y
+elseif.          do. x ttlib filename dtb y
 end.
 )
 pushme=: empty
@@ -2555,7 +2579,7 @@ tt1append=: 3 : 0
 sllog'tt1append y'
 invalexe''
 SWAPPED=: 0
-file1=. expandedPath y
+file1=: 1 expandedPath y
 if. mt file1            do. 19 message '' return.
 elseif. -.fexist file1  do. 20 message file1 return.
 end.
@@ -2571,9 +2595,9 @@ nt0=. #TTNsav=. TTN
 vhidd=: vmodl=: _
 TDsav=. TD
 TTfsav=. TTf
-try. (SAVESP)=: data1Loaded=: 3!:2 fread file1
-catch. ssw '>>> tt1append[(#o2b SAVESP)-(#data1Loaded)]: load error, file (file) may be corrupt'
-end.
+(>{.z)=: z=. 3!:2 fread file1
+data1Loaded=: z
+
 CAPT=: CAPTsav
 TTN=: displaceTTN <:nt0
 
@@ -2609,15 +2633,18 @@ tbx=. 1&Xtbx
 msg '+++ tt1sav (y)'
 
 
-if. 0<#y do. file=: expandedPath y end.
+if. 0<#y do. file=: 1 expandedPath y end.
+
+file=: file rplc '.ijs' ; '.tbx'
+
 SAVED=: date''
 TTIMAGE=: ct''
-STATE=: state__uun''
 
-z=. 3!:1 ". SAVESP rplc SP ; SC
+STATE=: state__uun''
+binlist=. 'binlist SAVED TTIMAGE STATE ',SNAPSP
+bindata=. 3!:1 ". binlist rplc SP ; SC
 if. UNDEF -: fname file do. 29 message'' return. end.
 retco=. archive filename file
-data1Saved=: z
 mfile=: filename file
 
 if. x and PROTECT and fexist file do.
@@ -2626,8 +2653,10 @@ if. x and PROTECT and fexist file do.
 
   42 message mfile return.
 end.
+data1Saved=: bindata
 
-bytes=. z fwrite file
+
+bytes=. bindata fwrite file
 msg 28 message bytes; mfile
 if. bytes>0 do.
   ]mmm=. 30 message mfile; bytes
@@ -2652,12 +2681,13 @@ invalexe''
 invalinfo''
 TTINFO=:''
 SWAPPED=: 0
-file=: expandedPath y
+file1=: ''
+file=: 1 expandedPath y
 if. -.fexist file do. 20 message file return. end.
 vhidd=: vmodl=: _
-try. (SAVESP)=: data1Loaded=: 3!:2 fread file
-catch. ssw '>>> tt1load[(#o2b SAVESP)-(#data1Loaded)]: load error, file (file) may be corrupt'
-end.
+(>{.z)=: z=. 3!:2 fread file
+data1Loaded=: z
+
 if. 1=#vhidd do. vhidd=: flags 0 end.
 if. 1=#vmodl do. vmodl=: flags 1 end.
 msg '... tt1load: vmodl=(vmodl) vhidd=(vhidd)'
@@ -2672,13 +2702,13 @@ vchecks''
 )
 
 ttQload=: 3 : 0
-y=. expandedPath y
+y=. LOADFORMAT expandedPath y
 msg '+++ ttQload: y=[(y)]'
 if. (y endsWith '.tbx')or('$' = {.y) do. tt1load y else. tt0load y end.
 )
 
 ttQappend=: 3 : 0
-y=. expandedPath y
+y=. LOADFORMAT expandedPath y
 msg '+++ ttQappend: y=[(y)]'
 if. (y endsWith '.tbx')or('$' = {.y) do. tt1append y else. tt0append y end.
 )
@@ -2758,7 +2788,7 @@ onload 'sm ct '''''
 
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 0 :0
-Monday 8 April 2019  13:27:46
+Tuesday 27 August 2019  15:11:26
 -
 INVERSION TEST: use SAMPLE4
 -
@@ -2768,6 +2798,22 @@ key verb: inversion itself is called by: beval ("backward-evaluation")
 -
 breakback''	shows a diagram of the basic inversion algorithm
 	breakback_cal_ -defined in utilities.ijs
+-
+INVERSION HEURISTICS
+inversionA=: beginstop ::inversion_inverNRUC_ ::endstop
+inversionB=: beginstop ::inversion_inverTAY_ ::endstop
+
+-
+inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
+inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
+inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
+-
+inversion0=: beginstop ::inverCser ::endstop
+inversion1=: beginstop ::inverNRser ::endstop
+inversion2=: beginstop ::inverNRRser ::endstop
+inversion3=: beginstop ::inverCser ::inverNRser ::endstop
+
+inversion3=: beginstop ::inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRFC_ ::inversion_inverNRUC_ ::endstop
 -
 NOTATION:
   ! -- must not change for duration of (inversion-)invocation
@@ -2805,8 +2851,59 @@ TO DO: Walkthru how cal responds to endstop,
 )
 
 cocurrent 'cal'
+atrain=: adverb define
 
-inversion=: endstop
+
+13 : ('(', ')y',~ (}:u) rplc LF ; ' ::')
+)
+
+inversion0=: (0 : 0) atrain
+beginstop
+inversion_inverC0_
+inversion_inverC1_
+inversion_inverC2_
+inversion_inverC3_
+inversion_inverC4_
+inversion_inverC5_
+inversion_inverC6_
+inversion_inverC7_
+inversion_inverC8_
+inversion_inverC9_
+endstop
+)
+
+inversion1=: (0 : 0) atrain
+beginstop
+inversion_inverNRFC_
+inversion_inverNRUC_
+endstop
+)
+
+inversion2=: (0 : 0) atrain
+beginstop
+inversion_inverNRFCR_
+inversion_inverNRUC_
+endstop
+)
+
+inversion3=: (0 : 0) atrain
+beginstop
+inversion_inverC0_
+inversion_inverC1_
+inversion_inverC2_
+inversion_inverC3_
+inversion_inverC4_
+inversion_inverC5_
+inversion_inverC6_
+inversion_inverC7_
+inversion_inverC8_
+inversion_inverC9_
+inversion_inverNRFC_
+inversion_inverNRUC_
+endstop
+)
+
+inversion=: inversion3
 
 beginstop=: 4 : 0
 
@@ -2843,8 +2940,8 @@ z [INVERSION_cal_=: INVERSION_cal_ , <z=. y
 )
 
 inversionC=: 4 : 0
-	smoutputINV '+++++ inversion_(>coname$0)_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
+smoutputINV '+++++ ',me,' entered'
 
 
 
@@ -2868,7 +2965,7 @@ ssw'... (me): Y0D=(Y0D) ~= fwdX1=(fwd X1) ??'
 assert. Y0D approximates_cal_ fwd X1
 ssw'--- (me): …yes, close enough. […Exits]'
 register me
-	smoutputINV '----- inversion_(>coname$0)_ returns X1'
+smoutputINV '----- ',me,' returns X1'
 X1 return.
 )
 
@@ -2891,7 +2988,7 @@ inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
 assert. amodel -: ,1
-]B=: 0.00000001 (fwd D:1) X0
+]B=: 0.00000001 (fwd sslope_z_ 1) X0
 bwd=: B %~ ]
 i.0 0
 )
@@ -3418,8 +3515,8 @@ Y0D=: Y0+dY0
 d1X=: ($X0)$1
 
 if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
-D1fwd=: DELTA&(fwd D:1)
-D2fwd=: DELTA&(fwd D:2)
+D1fwd=: DELTA&(fwd sslope_z_ 1)
+D2fwd=: DELTA&(fwd sslope_z_ 2)
 G=: % D1fwd X0
 H=: % D2fwd X0
   smoutput H1 ; H2
@@ -4683,24 +4780,38 @@ cocurrent 'cal'
 
 VERSION=: '0.0.0'
 
-0 :0
-+++ CHOICE OF INVERSION HEURISTICS
-inversionA=: beginstop ::inversion_inverNRUC_ ::endstop
-inversionB=: beginstop ::inversion_inverTAY_ ::endstop
-
--
-inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
-inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
-inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
--
-inversion0=: beginstop ::inverCser ::endstop
-inversion1=: beginstop ::inverNRser ::endstop
-inversion2=: beginstop ::inverNRRser ::endstop
-inversion3=: beginstop ::inverCser ::inverNRser ::endstop
-)
-inversion3=: beginstop ::inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRFC_ ::inversion_inverNRUC_ ::endstop
-
 inversion=: inversion3
+
+globmake=: 3 : 0
+
+
+
+ARROWCH=: ARROWCH1
+DASHBOARD=: 0
+DIRTY=: 0
+INST=: UNSET
+INSTR=: UNSET
+ITEMNO=: _1
+INVERSION=: ''
+LASTINSTR=: UNSET
+LOADFORMAT=: 1
+LOGINSTR=: ''
+MAXINVERT=: 30
+MSLOG=: 0 0$''
+OVERHELDS=: ''
+PAD=: 10
+PROTECT=: 1
+PLOT=: 0
+RETURNED=: UNSET
+SAVEFORMAT=: 1
+STARTED=: 0
+STATE=: ''
+TIMEOUT=: 5
+TOLERANCE=: 1e_5
+TTN=: ,<'tn'
+WARNPLEX=: 1
+i.0 0
+)
 
 start=: 3 : 0
 
@@ -4725,8 +4836,8 @@ uun=: uuconnect''
 make_CAL''
 globmake''
 tbx=: SAVEFORMAT&Xtbx
+file1=: ''
 file=: tbx UNDEF
-ttsav=: tt0sav`tt1sav @. SAVEFORMAT
 progress _
 extendedSine EXTENDEDSINE
 0 enlog 0
@@ -4765,33 +4876,6 @@ uuengine		=: uuengine__uun
 uniform		=: uniform__uun
 kosher		=: (0&uniform)"1
 uun return.
-)
-
-globmake=: 3 : 0
-
-
-
-ARROWCH=: ARROWCH1
-DASHBOARD=: 0
-DIRTY=: 0
-ITEMNO=: _1
-INVERSION=: ''
-LOGINSTR=: ''
-MAXINVERT=: 30
-MSLOG=: 0 0$''
-OVERHELDS=: ''
-PAD=: 10
-PROTECT=: 1
-PLOT=: 0
-RETURNED=: ''
-SAVEFORMAT=: 1
-STARTED=: 0
-STATE=: ''
-TIMEOUT=: 5
-TOLERANCE=: 1e_5
-TTN=: ,<'tn'
-WARNPLEX=: 1
-i.0 0
 )
 
 plotDisabled=: default bind 'NOPLOT'

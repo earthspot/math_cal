@@ -1,6 +1,6 @@
 NB. math_cal repo - run
 0 :0
-Saturday 11 May 2019  08:23:57
+Thursday 22 August 2019  16:21:45
 -
 open BUILTFILE
 )
@@ -26,7 +26,6 @@ load BUILTFILE
 
 smoutput sw'+++ run.ijs: BUILTFILE=[(BUILTFILE)] loaded ok'
 
-loadall=: [: load&.> ([: pathof&.> <&jpath) ,&.> [: {."1 [: 1!:0 <&jpath
 loadall TESTFILE
 smoutput sw'--- run.ijs: TESTFILE=[(TESTFILE)] completed ok'
 

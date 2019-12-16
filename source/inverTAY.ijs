@@ -14,7 +14,7 @@ coclass z=.'inverTAY'
 clear z
 
 TIMEOUT=: 5  NB. seconds
-DELTA=: 0.00000001  NB. interval needed by (D:)
+DELTA=: 0.00000001  NB. interval needed by sslope_z_
 
 timeout=: 3 : 0
   NB. force error when TIME exceeded
@@ -48,8 +48,8 @@ Y0D=: Y0+dY0     NB. the user-overtyped value (reconstituted)
 d1X=: ($X0)$1
   NB. …the 1st guess is uncritical BUT GUESS AGAIN IF WE GET ZERO ΔY
 if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end. NB. nudge slightly
-D1fwd=: DELTA&(fwd D:1)
-D2fwd=: DELTA&(fwd D:2)
+D1fwd=: DELTA&(fwd sslope_z_ 1)
+D2fwd=: DELTA&(fwd sslope_z_ 2)
 G=: % D1fwd X0  NB. gradient at X0
 H=: % D2fwd X0  NB. gravity at X0
   smoutput H1 ; H2

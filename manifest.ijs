@@ -2,16 +2,30 @@ NB. math/cal manifest
 
 CAPTION=: 'Scientific calculator engine'
 
-VERSION=: '2.1.21'
+VERSION=: '2.1.23'
 
 DEPENDS=: 0 : 0
 format/zulu
 graphics/plot
 math/uu
+math/calculus
 )
 
 FILES=: 0 : 0
-cal.ijscal.ijtmanifest.ijsSAMPLE.ijsSAMPLE0.ijsSAMPLE1.ijsSAMPLE2.ijsSAMPLE3.ijsSAMPLE4.ijsSAMPLE5.ijsSAMPLE6.ijsSAMPLE7.ijsSAMPLE8.ijsSAMPLE9.ijs
+cal.ijs
+cal.ijt
+manifest.ijs
+SAMPLE.tbx
+SAMPLE0.tbx
+SAMPLE1.tbx
+SAMPLE2.tbx
+SAMPLE3.tbx
+SAMPLE4.tbx
+SAMPLE5.tbx
+SAMPLE6.tbx
+SAMPLE7.tbx
+SAMPLE8.tbx
+SAMPLE9.tbx
 tpathjal.ijs
 )
 

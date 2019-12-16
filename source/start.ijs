@@ -5,24 +5,38 @@ cocurrent 'cal'
 
 VERSION=: '0.0.0'  NB. overridden by: manifest.ijs
 
-0 :0
-+++ CHOICE OF INVERSION HEURISTICS
-inversionA=: beginstop ::inversion_inverNRUC_ ::endstop  NB. TAY expt
-inversionB=: beginstop ::inversion_inverTAY_ ::endstop  NB. TAY expt
-	NB. use temp 41 to switch inversion between inversionA/B
--
-inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
-inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
-inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
--
-inversion0=: beginstop ::inverCser ::endstop    NB. debug inverCser
-inversion1=: beginstop ::inverNRser ::endstop   NB. debug inverNRser
-inversion2=: beginstop ::inverNRRser ::endstop  NB. debug N-R
-inversion3=: beginstop ::inverCser ::inverNRser ::endstop  NB. operational use
-)
-inversion3=: beginstop ::inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRFC_ ::inversion_inverNRUC_ ::endstop  NB. operational use
+inversion=: inversion3  NB. the best choice to-date
 
-inversion=: inversion3  NB. the best option to-date
+globmake=: 3 : 0
+  NB. Init global nouns
+  NB. These are NOT "constants" - they may change in-session
+  NB. If _cal_ used as a class: created in the numbered locale
+ARROWCH=: ARROWCH1	NB. arrow-drawing chars (see consts.ijs)
+DASHBOARD=: 0	NB. 1==dashboard enabled
+DIRTY=: 0		NB. 1==t-table needs saving
+INST=: UNSET	NB. 4-byte code of INSTR
+INSTR=: UNSET	NB. current full instruction (including arg: yy)
+ITEMNO=: _1	NB. 'exe'# of formula being executed
+INVERSION=: ''	NB. inversion heuristics register
+LASTINSTR=: UNSET	NB. assigned by: snap (called if changesTtable INST)
+LOADFORMAT=: 1	NB. 0=ijs 1=tbx - preferred format to load
+LOGINSTR=: ''	NB. internal log of CAL instructions performed
+MAXINVERT=: 30	NB. limits backfit cycles
+MSLOG=: 0 0$''	NB. accumulates MESSAGE
+OVERHELDS=: ''	NB. items recognised by: beval
+PAD=: 10		NB. used by: pad
+PROTECT=: 1	NB. 1==don't overwrite t-table of same name
+PLOT=: 0		NB. plot control parameter
+RETURNED=: UNSET	NB. noun returned by i/f call
+SAVEFORMAT=: 1	NB. 0=ijs 1=tbx - preferred format to save
+STARTED=: 0	NB. 1==start completes ok
+STATE=: ''	NB. UU state cache (empty for unset)
+TIMEOUT=: 5	NB. seconds (used by: timeout)
+TOLERANCE=: 1e_5	NB. default tolerance for comparing physical quantities
+TTN=: ,<'tn'	NB. t-table cache for item names (boxed)
+WARNPLEX=: 1	NB. 1==run warnplex after each recalc
+i.0 0
+)
 
 start=: 3 : 0
   NB. start the CAL-engine
@@ -48,8 +62,8 @@ uun=: uuconnect''  NB. create instance of class UU
 make_CAL'' NB. create semantic fns for tabengine
 globmake'' NB. make global nouns
 tbx=: SAVEFORMAT&Xtbx   NB. the preferred (global) version of: tbx
+file1=: '' NB. unused in start
 file=: tbx UNDEF	NB. the loaded filename cache
-ttsav=: tt0sav`tt1sav @. SAVEFORMAT
 progress _ NB. init progressbar to idle state
 extendedSine EXTENDEDSINE  NB. enable/disable extended trig fns
 0 enlog 0  NB. start a new log file
@@ -88,33 +102,6 @@ uuengine		=: uuengine__uun
 uniform		=: uniform__uun
 kosher		=: (0&uniform)"1	NB. to convert units to ASCII
 uun return.
-)
-
-globmake=: 3 : 0
-  NB. Init global nouns
-  NB. These are NOT "constants" - they may change in-session
-  NB. If _cal_ used as a class these will be in the numbered locale
-ARROWCH=: ARROWCH1	NB. arrow-drawing chars (see consts.ijs)
-DASHBOARD=: 0	NB. 1==dashboard enabled
-DIRTY=: 0		NB. 1==t-table needs saving
-ITEMNO=: _1	NB. 'exe'# of formula being executed
-INVERSION=: ''	NB. inversion heuristics register
-LOGINSTR=: ''	NB. internal log of CAL instructions performed
-MAXINVERT=: 30	NB. limits backfit cycles
-MSLOG=: 0 0$''	NB. accumulates MESSAGE
-OVERHELDS=: ''	NB. items recognised by: beval
-PAD=: 10		NB. used by: pad
-PROTECT=: 1	NB. 1==don't overwrite t-table of same name
-PLOT=: 0		NB. plot control parameter
-RETURNED=: ''	NB. noun returned by i/f call
-SAVEFORMAT=: 1	NB. 0=ijs 1=tbx
-STARTED=: 0	NB. 1==start completes ok
-STATE=: ''	NB. UU state cache (empty for unset)
-TIMEOUT=: 5	NB. seconds (used by: timeout)
-TOLERANCE=: 1e_5	NB. default tolerance for comparing physical quantities
-TTN=: ,<'tn'	NB. t-table cache for item names (boxed)
-WARNPLEX=: 1	NB. 1==run warnplex after each recalc
-i.0 0
 )
 
 plotDisabled=: default bind 'NOPLOT'

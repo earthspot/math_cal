@@ -1,6 +1,6 @@
 NB. math_cal repo - build
 0 :0
-Sunday 9 June 2019  02:12:50
+Thursday 22 August 2019  22:19:59
 -
 open BUILTFILE
 )
@@ -20,7 +20,7 @@ NOW=: date''
 HEADERFILE_z_=: GIT,'/source/header.ijs'
 BUILTFILE_z_=: GIT,'/cal.ijs'
 
-RB=: ')'
+NB. RB=: ')'
 
   NB. Modify header.ijs with current date written into it
 HEADERFILE fappend~ LF,'AABUILT=: ',quote NOW

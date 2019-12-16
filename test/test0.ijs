@@ -1,9 +1,29 @@
-smoutput(jpathsep>(4!:4<'zx'){4!:3'');~zx=.'cal expandedPath component test'
+smoutput<>|.(jpathsep>(4!:4<'zx'){4!:3'');zx=.'cal test0 - expandedPath'
+0 :0
+Friday 23 August 2019  13:56:36
+)
 cocurrent 'cal'
 Q=: 3 : 'q1234__=: y'
-A=: 3 : 'assert. y-:q1234__ [qqq__=: y;q1234__'
+A=: 3 : 'assert. y-:q1234__ [q5678__=: y'
+test=: 3 : 0
+smoutput '>>> test: Q…'
+smoutput q1234__
+smoutput '>>> test: A…'
+smoutput q5678__
+)
 
-start_cal_ '$'	NB. start with factory SAMPLE
+start '$'          NB. start with factory SAMPLE
+NB. start ''       NB. start with NO t-table
+
+
+3 : 0 '' NB. THE FOLLOWING TESTS ARE ONLY VALID FOR LOADFORMAT=1 …
+if. 1~:LOADFORMAT do.
+Q=: ]
+A=: ]
+end.
+i.0 0
+)
+
 
 Q expandedPath '$'
 A '/users/ianclark/documents/github/math_cal/SAMPLE.tbx'

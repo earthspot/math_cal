@@ -2,7 +2,7 @@
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 NB. TABULA inversion controller via daisychain technique
 0 :0
-Monday 8 April 2019  13:27:46
+Tuesday 27 August 2019  15:11:26
 -
 INVERSION TEST: use SAMPLE4
 -
@@ -12,6 +12,22 @@ key verb: inversion itself is called by: beval ("backward-evaluation")
 -
 breakback''	shows a diagram of the basic inversion algorithm
 	breakback_cal_ -defined in utilities.ijs
+-
+INVERSION HEURISTICS
+inversionA=: beginstop ::inversion_inverNRUC_ ::endstop  NB. TAY expt
+inversionB=: beginstop ::inversion_inverTAY_ ::endstop  NB. TAY expt
+	NB. use temp 41 to switch inversion between inversionA/B
+-
+inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
+inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
+inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
+-
+inversion0=: beginstop ::inverCser ::endstop    NB. debug inverCser
+inversion1=: beginstop ::inverNRser ::endstop   NB. debug inverNRser
+inversion2=: beginstop ::inverNRRser ::endstop  NB. debug N-R
+inversion3=: beginstop ::inverCser ::inverNRser ::endstop  NB. operational use
+
+inversion3=: beginstop ::inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRFC_ ::inversion_inverNRUC_ ::endstop  NB. operational use
 -
 NOTATION:
   ! -- must not change for duration of (inversion-)invocation
@@ -50,7 +66,60 @@ TO DO: Walkthru how cal responds to endstop,
 
 cocurrent 'cal'
 
-inversion=: endstop  NB. placeholder, overridden by: start
+NB. NOW DEFINED IN: handy4uu…
+atrain=: adverb define
+  NB. LF-separated list --> train using Adverse (::)
+  NB. needs to be defined before first use
+13 : ('(', ')y',~ (}:u) rplc LF ; ' ::')
+)
+
+inversion0=: (0 : 0) atrain  NB. debug inverC* train
+beginstop
+inversion_inverC0_
+inversion_inverC1_
+inversion_inverC2_
+inversion_inverC3_
+inversion_inverC4_
+inversion_inverC5_
+inversion_inverC6_
+inversion_inverC7_
+inversion_inverC8_
+inversion_inverC9_
+endstop
+)
+
+inversion1=: (0 : 0) atrain  NB. debug inverNR* train
+beginstop
+inversion_inverNRFC_
+inversion_inverNRUC_
+endstop
+)
+
+inversion2=: (0 : 0) atrain  NB. debug N-R
+beginstop
+inversion_inverNRFCR_
+inversion_inverNRUC_
+endstop
+)
+
+inversion3=: (0 : 0) atrain  NB. best heuristics so far
+beginstop
+inversion_inverC0_
+inversion_inverC1_
+inversion_inverC2_
+inversion_inverC3_
+inversion_inverC4_
+inversion_inverC5_
+inversion_inverC6_
+inversion_inverC7_
+inversion_inverC8_
+inversion_inverC9_
+inversion_inverNRFC_
+inversion_inverNRUC_
+endstop
+)
+
+inversion=: inversion3  NB. placeholder phrase, overridden by: start.ijs
 
 beginstop=: 4 : 0
   NB. ALWAYS the first verb in the daisychain
@@ -87,8 +156,8 @@ z [INVERSION_cal_=: INVERSION_cal_ , <z=. y
 )
 
 inversionC=: 4 : 0
-	smoutputINV '+++++ inversion_(>coname$0)_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
+smoutputINV '+++++ ',me,' entered'
   NB. === CURVE-FITTING INVERTER SADDLE for inverC* ===
   NB. COPIES MADE in locales: 'inverC*' (* = 1..9)
   NB. needs special case of verb: fit
@@ -112,7 +181,7 @@ ssw'... (me): Y0D=(Y0D) ~= fwdX1=(fwd X1) ??'
 assert. Y0D approximates_cal_ fwd X1
 ssw'--- (me): …yes, close enough. […Exits]'
 register me
-	smoutputINV '----- inversion_(>coname$0)_ returns X1'
+smoutputINV '----- ',me,' returns X1'
 X1 return.
 )
 
